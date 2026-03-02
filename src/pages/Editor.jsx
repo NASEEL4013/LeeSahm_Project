@@ -93,8 +93,8 @@ export default function Editor() {
     return (
         <div className="page editor">
             <header className="editor-header">
-                <h2>Canvas Editor</h2>
-                <p>나만의 감각으로 원본 작품을 새롭게 디자인하세요.</p>
+                <h2 className="wave-title-small">파동의 변형</h2>
+                <p>당신만의 주파수로 원본의 파동을 재해석해 보세요.</p>
             </header>
 
             <div className="editor-layout">

@@ -1,27 +1,22 @@
 .gallery-header {
     text-align: center;
-    margin-bottom: 3rem;
-}
-
-.gallery-header h2 {
-    font-size: 2.5rem;
-    background: linear-gradient(90deg, #6eb3ff, #b084cc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+    margin-bottom: 3.5rem;
 }
 
 .gallery-header p {
-    color: #a0a0a0;
+    color: #a3b8cc;
+    font-weight: 300;
+    letter-spacing: 1px;
 }
 
 .masonry-grid {
     column-count: 3;
-    column-gap: 1.5rem;
-    padding: 1rem;
+    column-gap: 2rem;
+    padding: 1rem 0;
+    width: 100%;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
     .masonry-grid {
         column-count: 2;
     }
@@ -35,68 +30,73 @@
 
 .art-card {
     break-inside: avoid;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
     position: relative;
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-    background-color: #1a1a1e;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .art-card img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     display: block;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
 }
 
 .art-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.2) 50%, transparent 100%);
+    background: linear-gradient(to top, rgba(5, 5, 15, 0.9) 0%, rgba(5, 5, 15, 0.3) 50%, transparent 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    padding: 1.5rem;
+    padding: 2rem 1.5rem;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
 }
 
 .art-title {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 400;
     color: #fff;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     transform: translateY(20px);
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
+    letter-spacing: 1px;
 }
 
 .btn-edit {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
-    padding: 0.5rem 1.2rem;
-    border-radius: 20px;
+    padding: 0.6rem 1.5rem;
+    border-radius: 30px;
     cursor: pointer;
     transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
+    font-weight: 300;
+    letter-spacing: 0.5px;
 }
 
 .btn-edit:hover {
     background: #fff;
-    color: #000;
+    color: #05050f;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
 /* Hover Effects */
 .art-card.hovered {
-    transform: scale(1.02);
+    transform: scale(1.03) translateY(-5px);
     z-index: 10;
-    box-shadow: 0 10px 30px rgba(176, 132, 204, 0.3);
+    box-shadow: 0 15px 40px rgba(123, 47, 247, 0.25);
+    border-color: rgba(123, 47, 247, 0.3);
 }
 
 .art-card.hovered img {
@@ -113,6 +113,6 @@
 }
 
 .art-card.dimmed {
-    opacity: 0.4;
-    filter: grayscale(80%);
+    opacity: 0.3;
+    filter: grayscale(60%) blur(2px);
 }

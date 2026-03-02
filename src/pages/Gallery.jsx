@@ -23,8 +23,8 @@ export default function Gallery() {
     return (
         <div className="page gallery">
             <header className="gallery-header">
-                <h2>Curated Artworks</h2>
-                <p>leesahm의 다채로운 디지털 아트 컬렉션을 탐험하세요.</p>
+                <h2 className="wave-title-small">파동의 집합</h2>
+                <p>각각의 작은 파동들이 만나 더 거대한 흐름을 만들어내는 갤러리 영역입니다.</p>
             </header>
 
             {loading ? (
@@ -39,7 +39,6 @@ export default function Gallery() {
                             className={`art-card ${hoveredId === art.id ? 'hovered' : ''} ${hoveredId && hoveredId !== art.id ? 'dimmed' : ''}`}
                             onMouseEnter={() => setHoveredId(art.id)}
                             onMouseLeave={() => setHoveredId(null)}
-                            style={{ height: art.height }}
                         >
                             <img src={art.url} alt={art.title} loading="lazy" />
                             <div className="art-overlay">
