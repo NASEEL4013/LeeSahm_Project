@@ -28,6 +28,8 @@ jobs:
             set sftp:auto-confirm yes;
             mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
             mirror --reverse --exclude-glob artworks/previews/ --exclude-glob artworks/originals/ dist/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/;
+            put dist/index.html -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/index.html;
+            put dist/404.html -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/404.html;
             put dist/.htaccess -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/.htaccess;
             bye
           "
