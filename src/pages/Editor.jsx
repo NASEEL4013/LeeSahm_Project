@@ -159,14 +159,17 @@ export default function Editor() {
     try {
       const canvas = document.createElement('canvas'); canvas.width = CANVAS.width; canvas.height = CANVAS.height
       const ctx = canvas.getContext('2d'); ctx.fillStyle = background; ctx.fillRect(0, 0, canvas.width, canvas.height)
+      let fallbackCount = 0
       for (const layer of layers) {
-        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = layer.originalUrl; await img.decode()
+        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = layer.originalUrl
+        try { await img.decode() } catch { img.src = layer.previewUrl; await img.decode(); fallbackCount += 1 }
         const height = layer.width * img.naturalHeight / img.naturalWidth
         ctx.save(); ctx.translate(layer.x + layer.width / 2, layer.y + height / 2); ctx.rotate(layer.rotation * Math.PI / 180)
         ctx.drawImage(img, -layer.width / 2, -height / 2, layer.width, height); ctx.restore()
       }
-      const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); setMessage('다운로드가 완료됐어요.')
-    } catch { setMessage('원본 이미지를 불러오지 못했습니다. Hostinger 원본 폴더를 확인해주세요.') }
+      const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click()
+      setMessage(fallbackCount ? `다운로드 완료 · 원본이 없는 작품 ${fallbackCount}개는 고화질 미리보기를 사용했어요.` : '다운로드가 완료됐어요.')
+    } catch { setMessage('이미지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
   }
 
   return (
