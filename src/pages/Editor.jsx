@@ -8,6 +8,16 @@ const BACKGROUNDS = [
   ['회색', '#a9a59d'], ['남색', '#17243c'], ['적색', '#9f3024'],
 ]
 
+function loadImage(url, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const image = new Image(); image.crossOrigin = 'anonymous'
+    const timer = window.setTimeout(() => { image.src = ''; reject(new Error('Image timeout')) }, timeoutMs)
+    image.onload = () => { window.clearTimeout(timer); resolve(image) }
+    image.onerror = () => { window.clearTimeout(timer); reject(new Error('Image error')) }
+    image.src = url
+  })
+}
+
 export default function Editor() {
   const [artworks, setArtworks] = useState([])
   const [pickerQuery, setPickerQuery] = useState('')
@@ -161,8 +171,8 @@ export default function Editor() {
       const ctx = canvas.getContext('2d'); ctx.fillStyle = background; ctx.fillRect(0, 0, canvas.width, canvas.height)
       let fallbackCount = 0
       for (const layer of layers) {
-        const img = new Image(); img.crossOrigin = 'anonymous'; img.src = layer.originalUrl
-        try { await img.decode() } catch { img.src = layer.previewUrl; await img.decode(); fallbackCount += 1 }
+        let img
+        try { img = await loadImage(layer.originalUrl, 3000) } catch { img = await loadImage(layer.previewUrl, 10000); fallbackCount += 1 }
         const height = layer.width * img.naturalHeight / img.naturalWidth
         ctx.save(); ctx.translate(layer.x + layer.width / 2, layer.y + height / 2); ctx.rotate(layer.rotation * Math.PI / 180)
         ctx.drawImage(img, -layer.width / 2, -height / 2, layer.width, height); ctx.restore()
