@@ -1,23 +1,41 @@
-import './Home.css'
+import { Link } from 'react-router-dom'
 
 export default function Home() {
-    return (
-        <div className="page home">
-            <section className="hero">
-                <div className="hero-content">
-                    <h1 className="wave-title">THE FLOW OF TIME AND EFFORT</h1>
-                    <p className="subtitle">일상의 시간, 그리고 끊임없는 수고로움은 하나의 선이 되어 파동을 만들어냅니다.</p>
-                    <div className="bio">
-                        <p>반복되는 선들은 저의 일상이자, 시간과 노력을 묵묵히 쌓아 올린 기록입니다.</p>
-                        <p>작은 파동들이 모여 하나의 온전한 흐름이 되듯, 각각의 그림들은 서로 만나고 겹치며 더 거대한 에너지를 표현합니다.</p>
-                        <p className="bio-highlight">저의 파동이 당신에게 닿아, 새로운 울림이 되기를 바랍니다.</p>
-                    </div>
-                    <div className="cta-container">
-                        <a href="/gallery" className="btn primary wave-btn">흐름 감상하기</a>
-                        <a href="/editor" className="btn secondary outline-btn">파동 얹어보기</a>
-                    </div>
-                </div>
-            </section>
+  return (
+    <div className="home-page">
+      <section className="hero">
+        <div className="hero-art" aria-hidden="true">
+          <img className="hero-art-a" src="/artworks/previews/001-1riNwZli.webp" alt="" />
+          <img className="hero-art-b" src="/artworks/previews/075-14ze9-ej.webp" alt="" />
         </div>
-    )
+        <div className="hero-copy">
+          <p className="eyebrow">The flow of time and effort</p>
+          <h1>파동이 만나<br />하나의 흐름이 되다</h1>
+          <p>Lee Sahm의 회화와, 작품 사이에서 새롭게 태어나는 관계를 경험하세요.</p>
+          <div className="hero-actions">
+            <Link className="button button-dark" to="/gallery">작품 감상하기</Link>
+            <Link className="text-link" to="/compose">나만의 조합 만들기 <span>↗</span></Link>
+          </div>
+        </div>
+        <span className="hero-index">001 — 390</span>
+      </section>
+      <section className="home-statement">
+        <p className="eyebrow">Statement</p>
+        <p className="statement-text">반복되는 선은 시간의 기록이 되고,<br />서로 다른 파동은 새로운 장면을 만든다.</p>
+        <Link className="text-link" to="/about">작가와 작품 세계</Link>
+      </section>
+      <section className="home-featured">
+        <div>
+          <p className="eyebrow">Selected works</p>
+          <h2>작품의 표면을<br />천천히 들여다보기</h2>
+          <Link className="button button-light" to="/gallery">전체 작품 보기</Link>
+        </div>
+        <div className="featured-images">
+          <img src="/artworks/previews/120-1ewyeyw1.webp" alt="Lee Sahm 작품 120" loading="lazy" />
+          <img src="/artworks/previews/200-16NpL5Si.webp" alt="Lee Sahm 작품 200" loading="lazy" />
+          <img src="/artworks/previews/300-1eyIdwLm.webp" alt="Lee Sahm 작품 300" loading="lazy" />
+        </div>
+      </section>
+    </div>
+  )
 }

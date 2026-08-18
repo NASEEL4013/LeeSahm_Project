@@ -56,7 +56,9 @@ def prepare(item):
 
 def main():
     files = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    files = [file for file in files if "확대" not in file["title"]]
     files.sort(key=lambda file: (number(file["title"]), file["title"], file["id"]))
+    files = list({file["title"].rsplit(".", 1)[0]: file for file in reversed(files)}.values())[::-1]
     ORIGINALS.mkdir(parents=True, exist_ok=True)
     PREVIEWS.mkdir(parents=True, exist_ok=True)
 

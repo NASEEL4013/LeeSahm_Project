@@ -1,17 +1,14 @@
-import { Link } from 'react-router-dom'
-import './Navbar.css'
+import { NavLink } from 'react-router-dom'
 
 export default function Navbar() {
-    return (
-        <nav className="navbar">
-            <div className="navbar-brand">
-                <Link to="/">leesahm</Link>
-            </div>
-            <ul className="navbar-links">
-                <li><Link to="/">About</Link></li>
-                <li><Link to="/gallery">Gallery</Link></li>
-                <li><Link to="/editor">Editor</Link></li>
-            </ul>
-        </nav>
-    )
+  return (
+    <nav className="navbar" aria-label="주요 메뉴">
+      <NavLink className="brand" to="/">LEE SAHM</NavLink>
+      <div className="nav-links">
+        <NavLink to="/about">Artist</NavLink>
+        <NavLink to="/gallery">Works</NavLink>
+        <NavLink className="compose-link" to="/compose">Compose</NavLink>
+      </div>
+    </nav>
+  )
 }

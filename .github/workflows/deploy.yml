@@ -18,6 +18,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Add SPA fallback
+        run: cp dist/index.html dist/404.html
       - name: Upload dist over SFTP
         run: |
           sudo apt-get update -qq
@@ -25,7 +27,8 @@ jobs:
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
             mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
-            mirror --reverse --exclude-glob artworks/previews/ dist/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/;
+            mirror --reverse --exclude-glob artworks/previews/ --exclude-glob artworks/originals/ dist/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/;
+            put dist/.htaccess -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/.htaccess;
             bye
           "
         env:
