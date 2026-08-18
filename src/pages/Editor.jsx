@@ -22,17 +22,14 @@ export default function Editor() {
 
     useEffect(() => {
         const canvas = canvasRef.current
-        const ctx = canvas.getContext('2d')
         const img = new Image()
         img.crossOrigin = 'anonymous' // CORS 문제 방지
 
         img.onload = () => {
             imageRef.current = img
-            // 캔버스 크기를 이미지 비율에 맞춰 조정
-            const maxWidth = 800
-            const scale = Math.min(maxWidth / img.width, 1)
-            canvas.width = img.width * scale
-            canvas.height = img.height * scale
+            // 화면에는 축소해 보여도 편집·다운로드는 원본 해상도를 유지
+            canvas.width = img.naturalWidth
+            canvas.height = img.naturalHeight
             applyFilters()
         }
         img.src = imageUrl
@@ -56,7 +53,7 @@ export default function Editor() {
         // 텍스트 추가 (있는 경우)
         if (text) {
             ctx.filter = 'none' // 텍스트에는 이미지 필터가 적용되지 않도록 초기화
-            ctx.font = 'bold 48px Inter'
+            ctx.font = `bold ${Math.max(48, Math.round(canvas.width * 0.06))}px Inter`
             ctx.fillStyle = textColor
             ctx.textAlign = 'center'
             ctx.textBaseline = 'middle'

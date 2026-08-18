@@ -40,10 +40,10 @@ export default function Gallery() {
                             onMouseEnter={() => setHoveredId(art.id)}
                             onMouseLeave={() => setHoveredId(null)}
                         >
-                            <img src={art.url} alt={art.title} loading="lazy" />
+                            <img src={art.previewUrl} alt={art.title} loading="lazy" />
                             <div className="art-overlay">
                                 <span className="art-title">{art.title}</span>
-                                <button className="btn-edit" onClick={() => window.location.href = `/editor?img=${art.url}`}>
+                                <button className="btn-edit" onClick={() => window.location.href = `/editor?img=${encodeURIComponent(art.originalUrl)}`}>
                                     Edit this Art
                                 </button>
                             </div>

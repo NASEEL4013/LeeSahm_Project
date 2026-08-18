@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "update-gallery": "node scripts/generate-gallery.js"
+    "prepare-artworks": "python scripts/prepare-artworks.py"
   },
   "dependencies": {
     "react": "^18.3.1",
