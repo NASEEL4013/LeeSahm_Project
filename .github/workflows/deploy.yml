@@ -1,31 +1,33 @@
-name: Build deploy branch
+name: Deploy to Hostinger
 
 on:
   push:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
-      - name: Publish dist
+      - name: Upload dist over SFTP
         run: |
-          cd dist
-          git init
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add -A
-          git commit -m "Deploy ${GITHUB_SHA}"
-          git push --force "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:deploy
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lftp
+          lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
+            set sftp:auto-confirm yes;
+            mirror --reverse --verbose dist/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/;
+            bye
+          "
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
