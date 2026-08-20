@@ -2,6 +2,7 @@ import concurrent.futures
 import json
 import time
 import urllib.request
+from collections import defaultdict
 from pathlib import Path
 
 from PIL import Image, ImageOps
@@ -11,6 +12,36 @@ MANIFEST = ROOT / "drive-artworks.json"
 ORIGINALS = ROOT / "hostinger-upload" / "artworks" / "originals"
 PREVIEWS = ROOT / "public" / "artworks" / "previews"
 DATA = ROOT / "public" / "artworks" / "data.json"
+
+
+def color_tags(path):
+    scores = defaultdict(float)
+    with Image.open(path) as image:
+        image = ImageOps.exif_transpose(image).convert("RGB")
+        image.thumbnail((96, 96), Image.Resampling.LANCZOS)
+        for hue, saturation, value in image.convert("HSV").get_flattened_data():
+            weight = 0.15 if value > 245 and saturation < 18 else 1.0
+            degrees = hue * 360 / 255
+            if saturation < 28:
+                group = "neutral"
+            elif saturation < 70 and 30 <= degrees < 75:
+                group = "yellow"
+            elif degrees < 45 or degrees >= 345:
+                group = "red"
+            elif degrees < 80:
+                group = "yellow"
+            elif degrees < 170:
+                group = "green"
+            elif degrees < 260:
+                group = "blue"
+            else:
+                group = "purple"
+            scores[group] += weight
+    ranked = sorted(scores, key=scores.get, reverse=True)
+    tags = ranked[:1]
+    if len(ranked) > 1 and scores[ranked[1]] >= scores[ranked[0]] * 0.28 and scores[ranked[1]] >= sum(scores.values()) * 0.07:
+        tags.append(ranked[1])
+    return tags
 
 
 def number(title):
@@ -51,6 +82,7 @@ def prepare(item):
         "title": file["title"].rsplit(".", 1)[0],
         "previewUrl": f"/artworks/previews/{preview.name}",
         "originalUrl": f"/artworks/originals/{original.name}",
+        "colors": color_tags(preview),
     }
 
 

@@ -1,3 +1,5 @@
 hostinger-upload/
 drive-artworks.json
-
+node_modules/
+.env
+.env.local

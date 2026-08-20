@@ -4,6 +4,10 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Gallery from './pages/Gallery'
 import Editor from './pages/Editor'
+import Board from './pages/Board'
+import PostDetail from './pages/PostDetail'
+import Login from './pages/Login'
+import { AuthProvider } from './AuthContext'
 import './App.css'
 
 function About() {
@@ -45,15 +49,20 @@ function About() {
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <main><Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/compose" element={<Editor />} />
-        <Route path="/editor" element={<Editor />} />
-        <Route path="*" element={<Home />} />
-      </Routes></main>
+      <AuthProvider>
+        <Navbar />
+        <main><Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/compose" element={<Editor />} />
+          <Route path="/editor" element={<Editor />} />
+          <Route path="/board" element={<Board />} />
+          <Route path="/board/:id" element={<PostDetail />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Home />} />
+        </Routes></main>
+      </AuthProvider>
     </BrowserRouter>
   )
 }
