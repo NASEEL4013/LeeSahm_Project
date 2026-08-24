@@ -29,7 +29,7 @@ jobs:
           sudo apt-get install -y -qq lftp
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
-            mirror --reverse dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
+            mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
             mirror --reverse dist/assets/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/assets/;
             put dist/artworks/data.json -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/data.json;
             put dist/index.html -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/index.html;
