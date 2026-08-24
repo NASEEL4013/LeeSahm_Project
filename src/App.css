@@ -88,6 +88,8 @@
 .picker-grid button { padding:0; cursor:pointer; border:2px solid transparent; background:#ddd; align-self:start; }
 .picker-grid button.picked { border-color:var(--red); opacity:.55; }
 .picker-grid img { display:block; width:100%; height:auto; }
+.picker-grid .picker-more { grid-column:1 / -1; padding:.75rem; color:var(--ink); background:#fff; border:1px solid var(--line); font-size:.72rem; }
+.picker-grid .picker-more span { margin-left:.35rem; color:var(--muted); font-size:.64rem; }
 .stage-area { padding:3vw; display:flex; flex-direction:column; justify-content:center; align-items:center; overflow:hidden; }
 .stage { width:100%; max-width:900px; aspect-ratio:4/3; position:relative; overflow:hidden; box-shadow:0 24px 70px rgba(30,25,18,.2); touch-action:none; }
 .stage-item { position:absolute; cursor:grab; user-select:none; transform-origin:center; border:0; touch-action:none; }

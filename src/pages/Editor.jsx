@@ -10,6 +10,7 @@ const DRAFT_KEY = 'leesahm-compose-draft'
 const MAX_CANVAS_SIZE = 5000
 const FIXED_ARTWORK_LONG_EDGE = 420
 const WORKSPACE_PADDING = 120
+const PICKER_PAGE_SIZE = 30
 const MODES = {
   free: { label: '자유 조합', limit: Infinity },
   500: { label: '500호 · 10점', limit: 10 },
@@ -62,6 +63,7 @@ export default function Editor() {
   const [artworks, setArtworks] = useState([])
   const [pickerQuery, setPickerQuery] = useState('')
   const [colorFilter, setColorFilter] = useState('all')
+  const [pickerLimit, setPickerLimit] = useState(PICKER_PAGE_SIZE)
   const [layers, setLayers] = useState(initialDraft?.layers ?? [])
   const [active, setActive] = useState(null)
   const [selectedIds, setSelectedIds] = useState([])
@@ -103,6 +105,8 @@ export default function Editor() {
     const numberQuery = query.replace(/\D/g, '')
     return artworks.filter((art) => (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery))))
   }, [artworks, pickerQuery, colorFilter])
+  const visibleArtworks = filteredArtworks.slice(0, pickerLimit)
+  useEffect(() => { setPickerLimit(PICKER_PAGE_SIZE) }, [pickerQuery, colorFilter])
 
   async function addLayer(art) {
     if (layers.some((layer) => layer.id === art.id)) { setActive(art.id); setSelectedIds([art.id]); return }
@@ -433,7 +437,7 @@ export default function Editor() {
     <div className="compose-page" onPointerMove={handlePointerMove} onPointerUp={endAction} onPointerCancel={endAction}>
       <header className="compose-header"><div><p className="eyebrow">Interactive studio</p><h1>Compose</h1></div><p>작품을 변형하지 않고, 위치와 크기만 조절해 새로운 관계를 만들어보세요.</p></header>
       <div className="studio">
-        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={layers.some((layer) => layer.id === art.id) ? 'picked' : ''} onClick={() => addLayer(art)} title={art.title}><img src={art.previewUrl} alt={art.title} loading="lazy" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
+        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{visibleArtworks.map((art) => <button key={art.id} className={layers.some((layer) => layer.id === art.id) ? 'picked' : ''} onClick={() => addLayer(art)} title={art.title}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}{pickerLimit < filteredArtworks.length && <button className="picker-more" onClick={() => setPickerLimit((limit) => limit + PICKER_PAGE_SIZE)}>더 불러오기 <span>{visibleArtworks.length}/{filteredArtworks.length}</span></button>}</div></aside>
         <section className="stage-area">
           <div className="stage" ref={stageRef} style={{ backgroundColor: BACKGROUND, aspectRatio: canvasSize.width / canvasSize.height, width: `min(100%, ${72 * canvasSize.width / canvasSize.height}vh)` }} onPointerDown={() => { setActive(null); setSelectedIds([]) }}>
             {guides.x !== null && <span className="snap-guide vertical" style={{ left: `${guides.x / canvasSize.width * 100}%` }} />}

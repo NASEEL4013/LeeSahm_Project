@@ -13,6 +13,7 @@ ORIGINALS = ROOT / "hostinger-upload" / "artworks" / "originals"
 PREVIEWS = ROOT / "public" / "artworks" / "previews"
 DATA = ROOT / "public" / "artworks" / "data.json"
 F50_RATIO = 116.8 / 91.0
+PICKER_SIZES = (600, 1000)
 
 
 def normalize_f50(image):
@@ -70,6 +71,7 @@ def prepare(item):
     base = f"{number(file['title']):03d}-{file['id'][:8]}"
     original = ORIGINALS / f"{base}.jpg"
     preview = PREVIEWS / f"{base}.webp"
+    picker_previews = {size: PREVIEWS / f"{base}-{size}.webp" for size in PICKER_SIZES}
 
     if not original.exists() or original.stat().st_size != file["size"]:
         url = f"https://drive.usercontent.google.com/download?id={file['id']}&export=download&confirm=t"
@@ -87,12 +89,18 @@ def prepare(item):
 
     with Image.open(original) as image:
         image = normalize_f50(ImageOps.exif_transpose(image))
+        for size, path in picker_previews.items():
+            picker_image = image.copy()
+            picker_image.thumbnail((size, size), Image.Resampling.LANCZOS)
+            picker_image.convert("RGB").save(path, "WEBP", quality=88, method=6)
         image.thumbnail((1400, 1400), Image.Resampling.LANCZOS)
         image.convert("RGB").save(preview, "WEBP", quality=82, method=6)
 
     return {
         "id": order + 1,
         "title": file["title"].rsplit(".", 1)[0],
+        "pickerUrl": f"/artworks/previews/{picker_previews[600].name}",
+        "pickerLargeUrl": f"/artworks/previews/{picker_previews[1000].name}",
         "previewUrl": f"/artworks/previews/{preview.name}",
         "originalUrl": f"/artworks/originals/{original.name}",
         "colors": color_tags(preview),
