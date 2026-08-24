@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -23,13 +25,34 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
-      - name: Upload dist over SFTP
+      - name: Check artwork preview changes
+        id: preview_changes
+        run: |
+          if git diff --quiet HEAD^ HEAD -- public/artworks/previews/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install SFTP client
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lftp
+      - name: Upload artwork previews
+        if: steps.preview_changes.outputs.changed == 'true'
+        run: |
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
             mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
+            bye
+          "
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
+      - name: Upload site over SFTP
+        run: |
+          lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
+            set sftp:auto-confirm yes;
             mirror --reverse dist/assets/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/assets/;
             put dist/artworks/data.json -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/data.json;
             put dist/index.html -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/index.html;
