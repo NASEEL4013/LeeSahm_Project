@@ -1,4 +1,5 @@
 const EPSILON = 0.5
+const nearbyOffsetCache = new Map()
 
 export const quarterTurn = (degrees) => Math.round(degrees / 90) * 90
 
@@ -100,6 +101,25 @@ export function findLargestOpenPlacement(layer, layers, canvas, minimumWidth = 4
     const candidate = { ...layer, width }
     const position = findOpenPosition(candidate, layers, canvas, step)
     if (position) return { ...candidate, ...position }
+  }
+  return null
+}
+
+export function findNearbyOpenPlacement(layer, layers, step = 20, maxDistance = 1000) {
+  if (!collides([layer], layers)) return layer
+  const cacheKey = `${step}:${maxDistance}`
+  let offsets = nearbyOffsetCache.get(cacheKey)
+  if (!offsets) {
+    offsets = []
+    for (let x = -maxDistance; x <= maxDistance; x += step) {
+      for (let y = -maxDistance; y <= maxDistance; y += step) offsets.push({ x, y })
+    }
+    offsets.sort((first, second) => Math.hypot(first.x, first.y) - Math.hypot(second.x, second.y))
+    nearbyOffsetCache.set(cacheKey, offsets)
+  }
+  for (const offset of offsets) {
+    const candidate = { ...layer, x: layer.x + offset.x, y: layer.y + offset.y }
+    if (!collides([candidate], layers)) return candidate
   }
   return null
 }

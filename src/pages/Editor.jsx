@@ -1,12 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { bounds, collides, compositionFrame, findLargestOpenPlacement, quarterTurn, scaleLayers, withinCanvas } from '../editorGeometry.js'
+import { bounds, collides, compositionFrame, findLargestOpenPlacement, findNearbyOpenPlacement, quarterTurn, scaleLayers, withinCanvas } from '../editorGeometry.js'
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 
 const SNAP_PX = 10
 const BACKGROUND = '#a9a59d'
 const DRAFT_KEY = 'leesahm-compose-draft'
+const MAX_CANVAS_SIZE = 5000
+const FIXED_ARTWORK_LONG_EDGE = 420
+const WORKSPACE_PADDING = 120
+const MODES = {
+  free: { label: '자유 조합', limit: Infinity },
+  500: { label: '500호 · 10점', limit: 10 },
+  1000: { label: '1000호 · 20점', limit: 20 },
+}
 const COLOR_FILTERS = [
   ['all', '전체', '#d8d3c9'], ['red', '빨강·주황', '#b7442f'], ['yellow', '노랑·베이지', '#d4a43f'],
   ['green', '초록', '#557b5a'], ['blue', '파랑·남색', '#385b83'], ['purple', '보라·분홍', '#885d80'], ['neutral', '흑백·회색', '#77736d'],
@@ -22,10 +30,30 @@ function loadImage(url, timeoutMs) {
   })
 }
 
+function sourceCrop(image, ratio) {
+  const sourceRatio = image.naturalWidth / image.naturalHeight
+  if (sourceRatio > 1 / ratio) {
+    const width = image.naturalHeight / ratio
+    return [(image.naturalWidth - width) / 2, 0, width, image.naturalHeight]
+  }
+  const height = image.naturalWidth * ratio
+  return [0, (image.naturalHeight - height) / 2, image.naturalWidth, height]
+}
+
+function fitWorkspace(layers) {
+  const frame = compositionFrame(layers)
+  if (!frame) return { layers, canvasSize: { width: 1200, height: 900 } }
+  return {
+    layers: frame.layers.map((layer) => ({ ...layer, x: layer.x + WORKSPACE_PADDING, y: layer.y + WORKSPACE_PADDING })),
+    canvasSize: { width: Math.max(1200, frame.width + WORKSPACE_PADDING * 2), height: Math.max(900, frame.height + WORKSPACE_PADDING * 2) },
+  }
+}
+
 function readDraft() {
   try {
     const draft = JSON.parse(localStorage.getItem(DRAFT_KEY))
-    return Array.isArray(draft?.layers) && Number.isFinite(draft?.canvasSize?.width) && Number.isFinite(draft?.canvasSize?.height) ? draft : null
+    const workspaceSize = draft?.workspaceSize ?? draft?.canvasSize
+    return Array.isArray(draft?.layers) && Number.isFinite(workspaceSize?.width) && Number.isFinite(workspaceSize?.height) ? { ...draft, workspaceSize } : null
   } catch { return null }
 }
 
@@ -37,7 +65,8 @@ export default function Editor() {
   const [layers, setLayers] = useState(initialDraft?.layers ?? [])
   const [active, setActive] = useState(null)
   const [selectedIds, setSelectedIds] = useState([])
-  const [canvasSize, setCanvasSize] = useState(initialDraft?.canvasSize ?? { width: 1200, height: 900 })
+  const [canvasSize, setCanvasSize] = useState(initialDraft?.workspaceSize ?? { width: 1200, height: 900 })
+  const [mode, setMode] = useState(initialDraft?.mode && MODES[initialDraft.mode] ? initialDraft.mode : 'free')
   const [postTitle, setPostTitle] = useState(initialDraft?.postTitle ?? '')
   const [postDescription, setPostDescription] = useState(initialDraft?.postDescription ?? '')
   const [publishing, setPublishing] = useState(false)
@@ -49,7 +78,16 @@ export default function Editor() {
   const fileInputRef = useRef(null)
 
   useEffect(() => { fetch('/artworks/data.json').then((res) => res.json()).then(setArtworks).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
-  useEffect(() => { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, canvasSize, postTitle, postDescription })) }, [layers, canvasSize, postTitle, postDescription])
+  useEffect(() => {
+    const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, mode, postTitle, postDescription })), 400)
+    return () => window.clearTimeout(timer)
+  }, [layers, canvasSize, mode, postTitle, postDescription])
+  useEffect(() => {
+    if (!message || message.endsWith('...')) return undefined
+    const timer = window.setTimeout(() => setMessage(''), 3000)
+    return () => window.clearTimeout(timer)
+  }, [message])
+  const fixedSize = mode !== 'free'
   const activeLayer = layers.find((layer) => layer.id === active)
   const exportFrame = useMemo(() => compositionFrame(layers), [layers])
   const selectionBounds = useMemo(() => {
@@ -69,13 +107,17 @@ export default function Editor() {
   async function addLayer(art) {
     if (layers.some((layer) => layer.id === art.id)) { setActive(art.id); setSelectedIds([art.id]); return }
     if (loadingIdsRef.current.has(art.id)) return
+    if (layers.length >= MODES[mode].limit) return setMessage(`${MODES[mode].label} 모드는 작품을 ${MODES[mode].limit}개까지 배치할 수 있어요.`)
     loadingIdsRef.current.add(art.id)
     try {
       const image = await loadImage(art.previewUrl, 10000)
       const ratio = image.naturalHeight / image.naturalWidth
-      const next = findLargestOpenPlacement({ ...art, x: 0, y: 0, width: 420, ratio, rotation: 0 }, layers, canvasSize)
+      const width = FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio)
+      const next = findLargestOpenPlacement({ ...art, x: 0, y: 0, width, ratio, rotation: 0 }, layers, { width: MAX_CANVAS_SIZE, height: MAX_CANVAS_SIZE }, fixedSize ? width : 40)
+      if (fixedSize && next?.width !== width) return setMessage('50호 실제 크기로 넣을 빈 공간이 없어요. 캔버스를 넓혀주세요.')
       if (!next) return setMessage('작품을 넣을 수 있는 빈 공간이 없어요.')
-      setLayers((current) => [...current, next]); setActive(art.id); setSelectedIds([art.id]); setMessage('')
+      const fitted = fitWorkspace([...layers, next])
+      setLayers(fitted.layers); setCanvasSize(fitted.canvasSize); setActive(art.id); setSelectedIds([art.id]); setMessage('')
     } catch { setMessage('작품을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
     finally { loadingIdsRef.current.delete(art.id) }
   }
@@ -108,6 +150,7 @@ export default function Editor() {
   }
 
   function beginGroupResize(event, corner) {
+    if (fixedSize) return
     event.preventDefault(); event.stopPropagation(); event.currentTarget.setPointerCapture(event.pointerId)
     const signs = { tl: [-1, -1], tr: [1, -1], bl: [-1, 1], br: [1, 1] }[corner]
     const anchor = {
@@ -127,7 +170,6 @@ export default function Editor() {
     const right = Math.max(...movedBounds.map((box) => box.right)); const bottom = Math.max(...movedBounds.map((box) => box.bottom))
     const threshold = SNAP_PX / scale; let bestX = null; let bestY = null
     const targets = stationary.map(bounds)
-    targets.push({ left: 0, right: canvasSize.width, top: 0, bottom: canvasSize.height })
     for (const target of targets) {
       for (const [movingEdge, fixedEdge] of [[left, target.left], [left, target.right], [right, target.left], [right, target.right]]) {
         const distance = fixedEdge - movingEdge
@@ -139,13 +181,6 @@ export default function Editor() {
       }
     }
     let snappedX = deltaX + (bestX?.distance ?? 0); let snappedY = deltaY + (bestY?.distance ?? 0)
-    const snapped = moving.map((layer) => ({ ...layer, x: action.startPositions[layer.id].x + snappedX, y: action.startPositions[layer.id].y + snappedY })).map(bounds)
-    const snappedLeft = Math.min(...snapped.map((box) => box.left)); const snappedRight = Math.max(...snapped.map((box) => box.right))
-    const snappedTop = Math.min(...snapped.map((box) => box.top)); const snappedBottom = Math.max(...snapped.map((box) => box.bottom))
-    if (snappedLeft < 0) { snappedX -= snappedLeft; bestX = { guide: 0 } }
-    if (snappedRight > canvasSize.width) { snappedX -= snappedRight - canvasSize.width; bestX = { guide: canvasSize.width } }
-    if (snappedTop < 0) { snappedY -= snappedTop; bestY = { guide: 0 } }
-    if (snappedBottom > canvasSize.height) { snappedY -= snappedBottom - canvasSize.height; bestY = { guide: canvasSize.height } }
     return { deltaX: snappedX, deltaY: snappedY, guideX: bestX?.guide ?? null, guideY: bestY?.guide ?? null }
   }
 
@@ -166,7 +201,7 @@ export default function Editor() {
     for (const other of stationary) {
       candidates.push(other.width, other.width * other.ratio / layer.ratio)
     }
-    const targetBounds = [...stationary.map(bounds), { left: 0, right: canvasSize.width, top: 0, bottom: canvasSize.height }]
+    const targetBounds = stationary.map(bounds)
     for (const otherBounds of targetBounds) {
       for (const edge of ['left', 'right', 'top', 'bottom']) {
         const slope = nextBounds[edge] - rawBounds[edge]
@@ -182,34 +217,20 @@ export default function Editor() {
     return snappedWidth ? resizedLayer(layer, action, snappedWidth) : raw
   }
 
-  function snapGroupScale(action, rawFactor, scale) {
-    const groupBounds = (factor) => {
-      const boxes = scaleLayers(action.startLayers, action.anchor, factor).map(bounds)
-      return { left: Math.min(...boxes.map((box) => box.left)), right: Math.max(...boxes.map((box) => box.right)), top: Math.min(...boxes.map((box) => box.top)), bottom: Math.max(...boxes.map((box) => box.bottom)) }
-    }
-    const current = groupBounds(rawFactor); const next = groupBounds(rawFactor + 0.001); const threshold = SNAP_PX / scale
-    const candidates = []
-    for (const [edge, target] of [['left', 0], ['right', canvasSize.width], ['top', 0], ['bottom', canvasSize.height]]) {
-      const slope = (next[edge] - current[edge]) / 0.001
-      if (Math.abs(slope) > 0.001 && Math.abs(current[edge] - target) <= threshold) candidates.push(rawFactor + (target - current[edge]) / slope)
-    }
-    return candidates.filter((factor) => factor > 0).sort((first, second) => Math.abs(first - rawFactor) - Math.abs(second - rawFactor))[0] ?? rawFactor
-  }
-
   function handlePointerMove(event) {
     const action = actionRef.current
     if (!action || !stageRef.current) return
     const rect = stageRef.current.getBoundingClientRect(); const scale = rect.width / canvasSize.width
-    if (action.type === 'group-resize') {
+    if (action.type === 'group-resize' && !fixedSize) {
       const pointerX = (event.clientX - rect.left) / scale; const pointerY = (event.clientY - rect.top) / scale
       const factorX = Math.abs(pointerX - action.anchor.x) / action.startBounds.width
       const factorY = Math.abs(pointerY - action.anchor.y) / action.startBounds.height
       const minimum = Math.max(...action.startLayers.map((item) => 60 / item.width))
-      const factor = snapGroupScale(action, Math.min(4, Math.max(minimum, Math.max(factorX, factorY))), scale)
+      const factor = Math.min(4, Math.max(minimum, Math.max(factorX, factorY)))
       const candidates = scaleLayers(action.startLayers, action.anchor, factor)
       setLayers((current) => {
         const stationary = current.filter((item) => !action.selectedIds.includes(item.id))
-        if (collides(candidates, stationary) || !withinCanvas(candidates, canvasSize)) return current
+        if (collides(candidates, stationary)) return current
         return current.map((item) => candidates.find((candidate) => candidate.id === item.id) ?? item)
       })
       return
@@ -230,7 +251,7 @@ export default function Editor() {
       })
       setGuides({ x: snapped.guideX, y: snapped.guideY })
     }
-    if (action.type === 'resize') {
+    if (action.type === 'resize' && !fixedSize) {
       const pointerX = (event.clientX - rect.left) / scale; const pointerY = (event.clientY - rect.top) / scale
       const angle = -layer.rotation * Math.PI / 180; const dx = pointerX - action.anchor.x; const dy = pointerY - action.anchor.y
       const localX = dx * Math.cos(angle) - dy * Math.sin(angle); const localY = dx * Math.sin(angle) + dy * Math.cos(angle)
@@ -238,39 +259,44 @@ export default function Editor() {
       setLayers((current) => {
         const stationary = current.filter((item) => item.id !== action.id)
         const candidate = snapResize(layer, action, width, scale, stationary)
-        if (collides([candidate], stationary) || !withinCanvas([candidate], canvasSize)) return current
+        if (collides([candidate], stationary)) return current
         return current.map((item) => item.id === action.id ? candidate : item)
       })
     }
     if (action.type === 'rotate') {
       const angle = Math.atan2(event.clientY - action.centerY, event.clientX - action.centerX)
       const rotation = quarterTurn(action.rotation + (angle - action.startAngle) * 180 / Math.PI)
-      setLayers((current) => {
-        const candidate = { ...layer, rotation }
-        const stationary = current.filter((item) => item.id !== action.id)
-        return collides([candidate], stationary) || !withinCanvas([candidate], canvasSize) ? current : current.map((item) => item.id === action.id ? candidate : item)
-      })
+      const candidate = { ...layer, rotation }
+      const stationary = layers.filter((item) => item.id !== action.id)
+      const placement = findNearbyOpenPlacement(candidate, stationary)
+      if (!placement) {
+        setMessage('회전할 공간이 부족해요. 작품 사이를 조금 더 벌려주세요.')
+        return
+      }
+      if (rotation !== layer.rotation) {
+        const fitted = fitWorkspace(layers.map((item) => item.id === action.id ? placement : item))
+        setLayers(fitted.layers); setCanvasSize(fitted.canvasSize)
+      }
     }
   }
 
-  function endAction() { actionRef.current = null; setGuides({ x: null, y: null }) }
-
-  function moveLayer(direction) {
-    if (!selectedIds.length) return
-    const selected = layers.filter((layer) => selectedIds.includes(layer.id)); const rest = layers.filter((layer) => !selectedIds.includes(layer.id))
-    setLayers(direction === 'up' ? [...rest, ...selected] : [...selected, ...rest])
+  function endAction() {
+    if (actionRef.current && layers.length) {
+      const fitted = fitWorkspace(layers)
+      setLayers(fitted.layers); setCanvasSize(fitted.canvasSize)
+    }
+    actionRef.current = null; setGuides({ x: null, y: null })
   }
 
-  function resizeCanvas(key, value) {
-    const next = { ...canvasSize, [key]: value }
-    if (!withinCanvas(layers, next)) return setMessage('작품이 있는 영역보다 캔버스를 더 줄일 수 없어요.')
-    setCanvasSize(next); setMessage('')
+  function changeMode(nextMode) {
+    if (layers.length) return setMessage('조합 모드는 빈 캔버스에서 선택해주세요.')
+    setMode(nextMode); setMessage('')
   }
 
   function compositionData() {
     const frame = compositionFrame(layers)
     return {
-      format: 'leesahm-composition', version: 1, createdAt: new Date().toISOString(),
+      format: 'leesahm-composition', version: 2, mode, createdAt: new Date().toISOString(),
       canvas: { width: frame.width, height: frame.height, background: BACKGROUND },
       layers: frame.layers.map((layer) => ({ artworkId: layer.id, title: layer.title, x: layer.x, y: layer.y, width: layer.width, ratio: layer.ratio, rotation: layer.rotation })),
     }
@@ -290,7 +316,9 @@ export default function Editor() {
     try {
       const data = JSON.parse(await file.text())
       const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
-      if (data.format !== 'leesahm-composition' || data.version !== 1 || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > 2000 || height < 1 || height > 2000 || !Array.isArray(data.layers)) throw new Error('Invalid composition')
+      if (data.format !== 'leesahm-composition' || ![1, 2].includes(data.version) || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.layers)) throw new Error('Invalid composition')
+      const restoredMode = data.version === 2 && MODES[data.mode] ? data.mode : 'free'
+      if (data.layers.length > MODES[restoredMode].limit) throw new Error('Invalid composition')
       const ids = new Set()
       const restored = data.layers.map((saved) => {
         const artwork = artworks.find((item) => item.id === Number(saved.artworkId))
@@ -300,7 +328,9 @@ export default function Editor() {
         return { ...artwork, x: values[0], y: values[1], width: values[2], ratio: values[3], rotation: values[4] }
       })
       if (restored.some((layer, index) => collides([layer], restored.slice(index + 1))) || !withinCanvas(restored, { width, height })) throw new Error('Invalid placement')
-      setCanvasSize({ width, height }); setLayers(restored); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
+      if (restoredMode !== 'free' && restored.some((layer) => Math.abs(Math.max(layer.width, layer.width * layer.ratio) - FIXED_ARTWORK_LONG_EDGE) > 1)) throw new Error('Invalid fixed size')
+      const fitted = fitWorkspace(restored)
+      setMode(restoredMode); setCanvasSize(fitted.canvasSize); setLayers(fitted.layers); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
     } catch { setMessage('올바른 LeeSahm 조합 파일이 아니거나 작품이 겹쳐 있어요.') }
     finally { event.target.value = '' }
   }
@@ -355,9 +385,9 @@ export default function Editor() {
       for (const layer of frame.layers) {
         let img
         try { img = await loadImage(layer.originalUrl, 3000) } catch { img = await loadImage(layer.previewUrl, 10000); fallbackCount += 1 }
-        const height = layer.width * img.naturalHeight / img.naturalWidth
+        const height = layer.width * layer.ratio
         ctx.save(); ctx.translate(layer.x + layer.width / 2, layer.y + height / 2); ctx.rotate(layer.rotation * Math.PI / 180)
-        ctx.drawImage(img, -layer.width / 2, -height / 2, layer.width, height); ctx.restore()
+        ctx.drawImage(img, ...sourceCrop(img, layer.ratio), -layer.width / 2, -height / 2, layer.width, height); ctx.restore()
       }
       const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click()
       setMessage(fallbackCount ? `다운로드 완료 · 원본이 없는 작품 ${fallbackCount}개는 고화질 미리보기를 사용했어요.` : '다운로드가 완료됐어요.')
@@ -382,7 +412,7 @@ export default function Editor() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     if (!postTitle.trim() || !postDescription.trim()) return setMessage('게시할 작품의 제목과 설명을 입력해주세요.')
     if (!isSupabaseReady) return setMessage('게시판 저장소 연결이 아직 필요해요.')
-    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, canvasSize, postTitle, postDescription })); navigate('/login'); return }
+    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, mode, postTitle, postDescription })); navigate('/login'); return }
     setPublishing(true); setMessage('게시용 이미지를 만드는 중...')
     const path = `${user.id}/${crypto.randomUUID()}.webp`
     try {
@@ -403,38 +433,39 @@ export default function Editor() {
     <div className="compose-page" onPointerMove={handlePointerMove} onPointerUp={endAction} onPointerCancel={endAction}>
       <header className="compose-header"><div><p className="eyebrow">Interactive studio</p><h1>Compose</h1></div><p>작품을 변형하지 않고, 위치와 크기만 조절해 새로운 관계를 만들어보세요.</p></header>
       <div className="studio">
-        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={layers.some((layer) => layer.id === art.id) ? 'picked' : ''} onClick={() => addLayer(art)} title={art.title}><img src={art.originalUrl} alt={art.title} loading="lazy" onError={(event) => { if (!event.currentTarget.src.endsWith(art.previewUrl)) event.currentTarget.src = art.previewUrl }} /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
+        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={layers.some((layer) => layer.id === art.id) ? 'picked' : ''} onClick={() => addLayer(art)} title={art.title}><img src={art.previewUrl} alt={art.title} loading="lazy" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
         <section className="stage-area">
           <div className="stage" ref={stageRef} style={{ backgroundColor: BACKGROUND, aspectRatio: canvasSize.width / canvasSize.height, width: `min(100%, ${72 * canvasSize.width / canvasSize.height}vh)` }} onPointerDown={() => { setActive(null); setSelectedIds([]) }}>
             {guides.x !== null && <span className="snap-guide vertical" style={{ left: `${guides.x / canvasSize.width * 100}%` }} />}
             {guides.y !== null && <span className="snap-guide horizontal" style={{ top: `${guides.y / canvasSize.height * 100}%` }} />}
-            {selectionBounds && <div className="selection-group" style={{ left: `${selectionBounds.left / canvasSize.width * 100}%`, top: `${selectionBounds.top / canvasSize.height * 100}%`, width: `${selectionBounds.width / canvasSize.width * 100}%`, height: `${selectionBounds.height / canvasSize.height * 100}%` }}><span>{selectedIds.length}개 선택됨</span>{['tl', 'tr', 'bl', 'br'].map((corner) => <button key={corner} className={`resize-handle ${corner}`} aria-label={`선택 그룹 ${corner} 모서리 크기 조절`} onPointerDown={(event) => beginGroupResize(event, corner)} />)}</div>}
+            {selectionBounds && <div className="selection-group" style={{ left: `${selectionBounds.left / canvasSize.width * 100}%`, top: `${selectionBounds.top / canvasSize.height * 100}%`, width: `${selectionBounds.width / canvasSize.width * 100}%`, height: `${selectionBounds.height / canvasSize.height * 100}%` }}><span>{selectedIds.length}개 선택됨</span>{!fixedSize && ['tl', 'tr', 'bl', 'br'].map((corner) => <button key={corner} className={`resize-handle ${corner}`} aria-label={`선택 그룹 ${corner} 모서리 크기 조절`} onPointerDown={(event) => beginGroupResize(event, corner)} />)}</div>}
             {layers.map((layer) => <div key={layer.id} className={`stage-item ${selectedIds.includes(layer.id) ? 'selected' : ''} ${selectedIds.length > 1 && selectedIds.includes(layer.id) ? 'multi-selected' : ''} ${active === layer.id ? 'active' : ''}`} onPointerDown={(event) => beginAction(event, 'move', layer)} style={{ left: `${layer.x / canvasSize.width * 100}%`, top: `${layer.y / canvasSize.height * 100}%`, width: `${layer.width / canvasSize.width * 100}%`, transform: `rotate(${layer.rotation}deg)`, zIndex: layers.indexOf(layer) + 1 }}>
               <img src={layer.previewUrl} alt={layer.title} draggable="false" />
               {selectedIds.includes(layer.id) && <span className="selection-check" aria-hidden="true">✓</span>}
-              {active === layer.id && selectedIds.length === 1 && <><button className="rotate-handle" aria-label="회전" onPointerDown={(event) => beginAction(event, 'rotate', layer)} />{['tl', 'tr', 'bl', 'br'].map((corner) => <button key={corner} className={`resize-handle ${corner}`} aria-label={`${corner} 모서리 크기 조절`} onPointerDown={(event) => beginAction(event, 'resize', layer, corner)} />)}</>}
+              {active === layer.id && selectedIds.length === 1 && <><button className="rotate-handle" aria-label="회전" onPointerDown={(event) => beginAction(event, 'rotate', layer)} />{!fixedSize && ['tl', 'tr', 'bl', 'br'].map((corner) => <button key={corner} className={`resize-handle ${corner}`} aria-label={`${corner} 모서리 크기 조절`} onPointerDown={(event) => beginAction(event, 'resize', layer, corner)} />)}</>}
             </div>)}
             {!layers.length && <div className="empty-stage"><span>+</span><p>왼쪽에서 작품을 선택하세요</p></div>}
           </div>
-          <p className="stage-help">작품은 서로 겹치지 않으며, 작품과 캔버스 가장자리 모두에 자석처럼 맞춰져요.</p>
+          <p className="stage-help">이곳은 작업 영역이에요. 최종 캔버스는 작품 전체의 바깥쪽 외곽선에 자동으로 맞춰져요.</p>
         </section>
         <aside className="controls">
           <div className="panel-title"><span>조합 설정</span></div>
-          <div className="canvas-control"><div className="canvas-control-title"><p>캔버스 크기</p><span>{canvasSize.width} × {canvasSize.height}</span></div><label>가로<input type="range" min="1" max="2000" step="10" value={canvasSize.width} onChange={(event) => resizeCanvas('width', Number(event.target.value))} /></label><label>세로<input type="range" min="1" max="2000" step="10" value={canvasSize.height} onChange={(event) => resizeCanvas('height', Number(event.target.value))} /></label></div>
+          <div className="mode-control"><p>조합 방식</p><div>{Object.entries(MODES).map(([value, option]) => <button key={value} className={mode === value ? 'selected' : ''} onClick={() => changeMode(value)}>{option.label}</button>)}</div><span>{fixedSize ? `50호 크기 고정 · 배치와 회전만 가능 · ${layers.length}/${MODES[mode].limit}점` : '작품 크기, 배치, 회전을 자유롭게 조절'}</span></div>
           <div className="composition-map-section">
-            <div className="canvas-control-title"><p>조합 설계도</p><span>좌상단 0, 0</span></div>
-            <div className="composition-map" style={{ backgroundColor: BACKGROUND, aspectRatio: exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height }}>
+            <div className="canvas-control-title"><p>최종 캔버스</p><span>{exportFrame ? `${exportFrame.width} × ${exportFrame.height}` : '자동 맞춤'}</span></div>
+            <div className="composition-map" style={{ backgroundColor: BACKGROUND, aspectRatio: exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height, width: `min(100%, ${300 * (exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height)}px)` }}>
               {exportFrame?.layers.map((layer, index) => <button key={layer.id} className={selectedIds.includes(layer.id) ? 'selected' : ''} onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }} style={{ left: `${layer.x / exportFrame.width * 100}%`, top: `${layer.y / exportFrame.height * 100}%`, width: `${layer.width / exportFrame.width * 100}%`, transform: `rotate(${layer.rotation}deg)` }} title={layer.title}><img src={layer.previewUrl} alt="" /><span>{index + 1}</span></button>)}
               {!layers.length && <p>작품을 추가하면 설계도가 표시돼요.</p>}
             </div>
             <ol className="composition-list">{exportFrame?.layers.map((layer, index) => { const topLeft = bounds(layer); return <li key={layer.id}><button onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }}><strong>{index + 1}. {layer.title}</strong><span>좌상단 {Math.round(topLeft.left)}, {Math.round(topLeft.top)}</span><span>크기 {Math.round(layer.width)} × {Math.round(layer.width * layer.ratio)} · {layer.rotation}°</span></button></li> })}</ol>
           </div>
-          {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">{selectedIds.length > 1 ? '선택 그룹의 네 모서리로 크기를 함께 조절할 수 있어요.' : '네 모서리는 크기 조절, 위쪽 원형 손잡이는 90도 회전이에요.'}</p><div className="layer-buttons"><button onClick={() => moveLayer('up')}>앞으로</button><button onClick={() => moveLayer('down')}>뒤로</button></div><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
+          {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">{fixedSize ? '크기는 50호로 고정돼요. 배치와 90도 회전만 가능해요.' : selectedIds.length > 1 ? '선택 그룹의 네 모서리로 크기를 함께 조절할 수 있어요.' : '네 모서리는 크기 조절, 위쪽 원형 손잡이는 90도 회전이에요.'}</p><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
           <div className="blueprint-actions"><button onClick={downloadBlueprint}>설계도 PNG</button><button onClick={saveComposition}>조합 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>조합 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
           <div className="publish-panel"><p>작품 게시하기</p><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing}>{publishing ? '게시 중...' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.</span></div>
-          <button className="download-button" onClick={download}>작품 PNG 다운로드</button><button className="clear-button" onClick={() => { setLayers([]); setActive(null); setSelectedIds([]); setMessage('') }}>캔버스 비우기</button>{message && <p className="studio-message">{message}</p>}<Link className="back-link" to="/gallery">← 작품 감상하기</Link>
+          <button className="download-button" onClick={download}>작품 PNG 다운로드</button><button className="clear-button" onClick={() => { setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setMessage('') }}>작업 영역 비우기</button><Link className="back-link" to="/gallery">← 작품 감상하기</Link>
         </aside>
       </div>
+      {message && <div className="studio-toast" role="status" aria-live="polite">{message}</div>}
     </div>
   )
 }

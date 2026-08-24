@@ -12,6 +12,20 @@ MANIFEST = ROOT / "drive-artworks.json"
 ORIGINALS = ROOT / "hostinger-upload" / "artworks" / "originals"
 PREVIEWS = ROOT / "public" / "artworks" / "previews"
 DATA = ROOT / "public" / "artworks" / "data.json"
+F50_RATIO = 116.8 / 91.0
+
+
+def normalize_f50(image):
+    """Remove small camera margins by cropping every work to the 50-ho ratio."""
+    ratio = F50_RATIO if image.width >= image.height else 1 / F50_RATIO
+    width, height = image.size
+    if width / height > ratio:
+        target_width = round(height * ratio)
+        left = (width - target_width) // 2
+        return image.crop((left, 0, left + target_width, height))
+    target_height = round(width / ratio)
+    top = (height - target_height) // 2
+    return image.crop((0, top, width, top + target_height))
 
 
 def color_tags(path):
@@ -71,11 +85,10 @@ def prepare(item):
                     raise
                 time.sleep(2 ** attempt)
 
-    if not preview.exists():
-        with Image.open(original) as image:
-            image = ImageOps.exif_transpose(image)
-            image.thumbnail((1400, 1400), Image.Resampling.LANCZOS)
-            image.convert("RGB").save(preview, "WEBP", quality=82, method=6)
+    with Image.open(original) as image:
+        image = normalize_f50(ImageOps.exif_transpose(image))
+        image.thumbnail((1400, 1400), Image.Resampling.LANCZOS)
+        image.convert("RGB").save(preview, "WEBP", quality=82, method=6)
 
     return {
         "id": order + 1,
