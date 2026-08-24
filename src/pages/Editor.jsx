@@ -73,6 +73,7 @@ export default function Editor() {
   const [postDescription, setPostDescription] = useState(initialDraft?.postDescription ?? '')
   const [publishing, setPublishing] = useState(false)
   const [message, setMessage] = useState('')
+  const [loadingArtworkIds, setLoadingArtworkIds] = useState([])
   const [guides, setGuides] = useState({ x: null, y: null })
   const stageRef = useRef(null)
   const actionRef = useRef(null)
@@ -113,6 +114,7 @@ export default function Editor() {
     if (loadingIdsRef.current.has(art.id)) return
     if (layers.length >= MODES[mode].limit) return setMessage(`${MODES[mode].label} 모드는 작품을 ${MODES[mode].limit}개까지 배치할 수 있어요.`)
     loadingIdsRef.current.add(art.id)
+    setLoadingArtworkIds((ids) => [...ids, art.id])
     try {
       const image = await loadImage(art.previewUrl, 10000)
       const ratio = image.naturalHeight / image.naturalWidth
@@ -123,7 +125,7 @@ export default function Editor() {
       const fitted = fitWorkspace([...layers, next])
       setLayers(fitted.layers); setCanvasSize(fitted.canvasSize); setActive(art.id); setSelectedIds([art.id]); setMessage('')
     } catch { setMessage('작품을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
-    finally { loadingIdsRef.current.delete(art.id) }
+    finally { loadingIdsRef.current.delete(art.id); setLoadingArtworkIds((ids) => ids.filter((id) => id !== art.id)) }
   }
 
   function beginAction(event, type, layer, corner = null) {
@@ -437,7 +439,7 @@ export default function Editor() {
     <div className="compose-page" onPointerMove={handlePointerMove} onPointerUp={endAction} onPointerCancel={endAction}>
       <header className="compose-header"><div><p className="eyebrow">Interactive studio</p><h1>Compose</h1></div><p>작품을 변형하지 않고, 위치와 크기만 조절해 새로운 관계를 만들어보세요.</p></header>
       <div className="studio">
-        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{visibleArtworks.map((art) => <button key={art.id} className={layers.some((layer) => layer.id === art.id) ? 'picked' : ''} onClick={() => addLayer(art)} title={art.title}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}{pickerLimit < filteredArtworks.length && <button className="picker-more" onClick={() => setPickerLimit((limit) => limit + PICKER_PAGE_SIZE)}>더 불러오기 <span>{visibleArtworks.length}/{filteredArtworks.length}</span></button>}</div></aside>
+        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{visibleArtworks.map((art) => <button key={art.id} className={`${layers.some((layer) => layer.id === art.id) ? 'picked' : ''} ${loadingArtworkIds.includes(art.id) ? 'loading' : ''}`} onClick={() => addLayer(art)} title={art.title} aria-busy={loadingArtworkIds.includes(art.id)}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}{pickerLimit < filteredArtworks.length && <button className="picker-more" onClick={() => setPickerLimit((limit) => limit + PICKER_PAGE_SIZE)}>더 불러오기 <span>{visibleArtworks.length}/{filteredArtworks.length}</span></button>}</div></aside>
         <section className="stage-area">
           <div className="stage" ref={stageRef} style={{ backgroundColor: BACKGROUND, aspectRatio: canvasSize.width / canvasSize.height, width: `min(100%, ${72 * canvasSize.width / canvasSize.height}vh)` }} onPointerDown={() => { setActive(null); setSelectedIds([]) }}>
             {guides.x !== null && <span className="snap-guide vertical" style={{ left: `${guides.x / canvasSize.width * 100}%` }} />}
@@ -449,6 +451,7 @@ export default function Editor() {
               {active === layer.id && selectedIds.length === 1 && <><button className="rotate-handle" aria-label="회전" onPointerDown={(event) => beginAction(event, 'rotate', layer)} />{!fixedSize && ['tl', 'tr', 'bl', 'br'].map((corner) => <button key={corner} className={`resize-handle ${corner}`} aria-label={`${corner} 모서리 크기 조절`} onPointerDown={(event) => beginAction(event, 'resize', layer, corner)} />)}</>}
             </div>)}
             {!layers.length && <div className="empty-stage"><span>+</span><p>왼쪽에서 작품을 선택하세요</p></div>}
+            {loadingArtworkIds.length > 0 && <div className="stage-loading" role="status" aria-live="polite"><i aria-hidden="true" /><span>작품 불러오는 중...</span></div>}
           </div>
           <p className="stage-help">이곳은 작업 영역이에요. 최종 캔버스는 작품 전체의 바깥쪽 외곽선에 자동으로 맞춰져요.</p>
         </section>

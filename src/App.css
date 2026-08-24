@@ -87,10 +87,11 @@
 .picker-grid { max-height:660px; overflow:auto; display:grid; grid-template-columns:1fr 1fr; gap:.45rem; padding-right:.3rem; }
 .picker-grid button { padding:0; cursor:pointer; border:2px solid transparent; background:#ddd; align-self:start; }
 .picker-grid button.picked { border-color:var(--red); opacity:.55; }
+.picker-grid button.loading { opacity:.45; cursor:wait; }
 .picker-grid img { display:block; width:100%; height:auto; }
 .picker-grid .picker-more { grid-column:1 / -1; padding:.75rem; color:var(--ink); background:#fff; border:1px solid var(--line); font-size:.72rem; }
 .picker-grid .picker-more span { margin-left:.35rem; color:var(--muted); font-size:.64rem; }
-.stage-area { padding:3vw; display:flex; flex-direction:column; justify-content:center; align-items:center; overflow:hidden; }
+.stage-area { padding:3vw; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; overflow:hidden; }
 .stage { width:100%; max-width:900px; aspect-ratio:4/3; position:relative; overflow:hidden; box-shadow:0 24px 70px rgba(30,25,18,.2); touch-action:none; }
 .stage-item { position:absolute; cursor:grab; user-select:none; transform-origin:center; border:0; touch-action:none; }
 .stage-item:active { cursor:grabbing; }
@@ -114,6 +115,9 @@
 .empty-stage { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#88837b; }
 .empty-stage span { font-family:'Playfair Display',serif; font-size:4rem; font-weight:300; }
 .empty-stage p { font-size:.75rem; }
+.stage-loading { position:absolute; inset:0; z-index:120; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:.8rem; pointer-events:none; color:#fff; background:rgba(35,32,28,.5); font-size:.82rem; font-weight:600; }
+.stage-loading i { width:32px; height:32px; border:3px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:stage-loading .8s linear infinite; }
+@keyframes stage-loading { to { transform:rotate(360deg); } }
 .stage-help { margin:.8rem 0 0; color:var(--muted); font-size:.68rem; }
 .mode-control,.composition-map-section { margin-bottom:1.8rem; padding-bottom:1.4rem; border-bottom:1px solid var(--line); }
 .mode-control>p { margin:0 0 .7rem; color:var(--muted); font-size:.88rem; }
@@ -154,7 +158,7 @@
 .controls .control-empty { color:var(--muted); font-size:.88rem; line-height:1.6; }
 .studio-toast { position:fixed; left:50%; top:50%; z-index:1000; max-width:min(440px,calc(100vw - 2rem)); padding:1rem 1.35rem; pointer-events:none; color:#fff; background:rgba(25,24,22,.94); border:1px solid rgba(255,255,255,.18); box-shadow:0 16px 45px rgba(0,0,0,.3); transform:translate(-50%,-50%); text-align:center; font-size:.78rem; line-height:1.55; animation:studio-toast 3s ease forwards; }
 @keyframes studio-toast { 0% { opacity:0; transform:translate(-50%,-42%); } 10%,82% { opacity:1; transform:translate(-50%,-50%); } 100% { opacity:0; transform:translate(-50%,-56%); } }
-@media (prefers-reduced-motion:reduce) { .studio-toast { animation:none; } }
+@media (prefers-reduced-motion:reduce) { .studio-toast,.stage-loading i { animation:none; } }
 .controls .back-link { display:inline-block; margin-top:1.5rem; font-size:.88rem; border-bottom:1px solid; }
 .account-page { width:min(560px,calc(100% - 2.5rem)); min-height:calc(100vh - 76px); margin:auto; padding:10vh 0; }
 .account-page h1 { margin:.3rem 0 1rem; font-family:'Playfair Display','Noto Sans KR',serif; font-size:clamp(3rem,8vw,6rem); font-weight:500; }
