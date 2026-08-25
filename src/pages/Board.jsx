@@ -10,6 +10,7 @@ export default function Board() {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(isSupabaseReady)
   const [error, setError] = useState('')
+  const [columns, setColumns] = useState(3)
 
   useEffect(() => {
     if (!supabase) return
@@ -24,7 +25,8 @@ export default function Board() {
       {loading && <p className="status">게시물을 불러오는 중...</p>}
       {error && <p className="status error">{error}</p>}
       {!loading && isSupabaseReady && !error && !posts.length && <p className="status">아직 게시된 조합이 없어. 첫 작품을 만들어봐.</p>}
-      <div className="post-grid">{posts.map((post) => <Link className="post-card" to={`/board/${post.id}`} key={post.id}><img src={thumbnailUrl(post.thumbnail_path)} alt={post.title} loading="lazy" /><div><p>{post.author_name}</p><h2>{post.title}</h2><span>{post.description}</span><time>{new Date(post.created_at).toLocaleDateString('ko-KR')}</time></div></Link>)}</div>
+      {!!posts.length && <div className="board-view-controls" aria-label="보기 밀도">{[3, 6, 10].map((count) => <button type="button" className={columns === count ? 'selected' : ''} aria-label={`한 행에 ${count}개 보기`} title={`한 행에 ${count}개 보기`} aria-pressed={columns === count} onClick={() => setColumns(count)} key={count}><span className={`density-icon density-${count}`} aria-hidden="true" /></button>)}</div>}
+      <div className={`post-grid columns-${columns}`}>{posts.map((post) => <Link className="post-card" to={`/board/${post.id}`} key={post.id}><img src={thumbnailUrl(post.thumbnail_path)} alt={post.title} loading="lazy" /><div><p>{post.author_name}</p><h2>{post.title}</h2><span>{post.description}</span><time>{new Date(post.created_at).toLocaleDateString('ko-KR')}</time></div></Link>)}</div>
     </div>
   )
 }
