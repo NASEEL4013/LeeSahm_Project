@@ -56,6 +56,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/compose" element={<Editor />} />
+          <Route path="/compose/:id" element={<Editor />} />
           <Route path="/editor" element={<Editor />} />
           <Route path="/board" element={<Board />} />
           <Route path="/board/:id" element={<PostDetail />} />

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { bounds, collides, compositionFrame, findLargestOpenPlacement, findNearbyOpenPlacement, quarterTurn, scaleLayers, withinCanvas } from '../editorGeometry.js'
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
@@ -10,7 +10,6 @@ const DRAFT_KEY = 'leesahm-compose-draft'
 const MAX_CANVAS_SIZE = 5000
 const FIXED_ARTWORK_LONG_EDGE = 420
 const WORKSPACE_PADDING = 120
-const PICKER_PAGE_SIZE = 30
 const MODES = {
   free: { label: '자유 조합', limit: Infinity },
   500: { label: '500호 · 10점', limit: 10 },
@@ -58,12 +57,29 @@ function readDraft() {
   } catch { return null }
 }
 
+function restoreComposition(data, artworks) {
+  const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
+  if (data.format !== 'leesahm-composition' || ![1, 2].includes(data.version) || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.layers)) throw new Error('Invalid composition')
+  const mode = data.version === 2 && MODES[data.mode] ? data.mode : 'free'
+  if (data.layers.length > MODES[mode].limit) throw new Error('Invalid composition')
+  const ids = new Set()
+  const layers = data.layers.map((saved) => {
+    const artwork = artworks.find((item) => item.id === Number(saved.artworkId))
+    const values = [saved.x, saved.y, saved.width, saved.ratio, saved.rotation].map(Number)
+    if (!artwork || ids.has(artwork.id) || values.some((value) => !Number.isFinite(value)) || values[2] <= 0 || values[3] <= 0 || values[2] > 10000 || values[4] % 90 !== 0) throw new Error('Invalid layer')
+    ids.add(artwork.id)
+    return { ...artwork, x: values[0], y: values[1], width: values[2], ratio: values[3], rotation: values[4] }
+  })
+  if (layers.some((layer, index) => collides([layer], layers.slice(index + 1))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
+  if (mode !== 'free' && layers.some((layer) => Math.abs(Math.max(layer.width, layer.width * layer.ratio) - FIXED_ARTWORK_LONG_EDGE) > 1)) throw new Error('Invalid fixed size')
+  return { mode, ...fitWorkspace(layers) }
+}
+
 export default function Editor() {
-  const navigate = useNavigate(); const { user } = useAuth(); const initialDraft = useRef(readDraft()).current
+  const navigate = useNavigate(); const { id: editingPostId } = useParams(); const { user } = useAuth(); const initialDraft = useRef(editingPostId ? null : readDraft()).current
   const [artworks, setArtworks] = useState([])
   const [pickerQuery, setPickerQuery] = useState('')
   const [colorFilter, setColorFilter] = useState('all')
-  const [pickerLimit, setPickerLimit] = useState(PICKER_PAGE_SIZE)
   const [layers, setLayers] = useState(initialDraft?.layers ?? [])
   const [active, setActive] = useState(null)
   const [selectedIds, setSelectedIds] = useState([])
@@ -72,6 +88,7 @@ export default function Editor() {
   const [postTitle, setPostTitle] = useState(initialDraft?.postTitle ?? '')
   const [postDescription, setPostDescription] = useState(initialDraft?.postDescription ?? '')
   const [publishing, setPublishing] = useState(false)
+  const [editingPost, setEditingPost] = useState(null)
   const [message, setMessage] = useState('')
   const [loadingArtworkIds, setLoadingArtworkIds] = useState([])
   const [guides, setGuides] = useState({ x: null, y: null })
@@ -82,9 +99,20 @@ export default function Editor() {
 
   useEffect(() => { fetch('/artworks/data.json').then((res) => res.json()).then(setArtworks).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
   useEffect(() => {
+    if (!editingPostId || !supabase || !artworks.length) return
+    supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
+      if (error || data.user_id !== user?.id) return setMessage('수정할 게시물을 불러오지 못했어.')
+      try {
+        const restored = restoreComposition(data.composition, artworks)
+        setEditingPost(data); setMode(restored.mode); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setMessage('기존 그림 조합을 불러왔어.')
+      } catch { setMessage('저장된 그림 조합을 불러오지 못했어.') }
+    })
+  }, [editingPostId, artworks, user?.id])
+  useEffect(() => {
+    if (editingPostId) return undefined
     const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, mode, postTitle, postDescription })), 400)
     return () => window.clearTimeout(timer)
-  }, [layers, canvasSize, mode, postTitle, postDescription])
+  }, [editingPostId, layers, canvasSize, mode, postTitle, postDescription])
   useEffect(() => {
     if (!message || message.endsWith('...')) return undefined
     const timer = window.setTimeout(() => setMessage(''), 3000)
@@ -106,8 +134,6 @@ export default function Editor() {
     const numberQuery = query.replace(/\D/g, '')
     return artworks.filter((art) => (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery))))
   }, [artworks, pickerQuery, colorFilter])
-  const visibleArtworks = filteredArtworks.slice(0, pickerLimit)
-  useEffect(() => { setPickerLimit(PICKER_PAGE_SIZE) }, [pickerQuery, colorFilter])
 
   async function addLayer(art) {
     if (layers.some((layer) => layer.id === art.id)) { setActive(art.id); setSelectedIds([art.id]); return }
@@ -321,22 +347,8 @@ export default function Editor() {
     if (!file) return
     try {
       const data = JSON.parse(await file.text())
-      const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
-      if (data.format !== 'leesahm-composition' || ![1, 2].includes(data.version) || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.layers)) throw new Error('Invalid composition')
-      const restoredMode = data.version === 2 && MODES[data.mode] ? data.mode : 'free'
-      if (data.layers.length > MODES[restoredMode].limit) throw new Error('Invalid composition')
-      const ids = new Set()
-      const restored = data.layers.map((saved) => {
-        const artwork = artworks.find((item) => item.id === Number(saved.artworkId))
-        const values = [saved.x, saved.y, saved.width, saved.ratio, saved.rotation].map(Number)
-        if (!artwork || ids.has(artwork.id) || values.some((value) => !Number.isFinite(value)) || values[2] <= 0 || values[3] <= 0 || values[2] > 10000 || values[4] % 90 !== 0) throw new Error('Invalid layer')
-        ids.add(artwork.id)
-        return { ...artwork, x: values[0], y: values[1], width: values[2], ratio: values[3], rotation: values[4] }
-      })
-      if (restored.some((layer, index) => collides([layer], restored.slice(index + 1))) || !withinCanvas(restored, { width, height })) throw new Error('Invalid placement')
-      if (restoredMode !== 'free' && restored.some((layer) => Math.abs(Math.max(layer.width, layer.width * layer.ratio) - FIXED_ARTWORK_LONG_EDGE) > 1)) throw new Error('Invalid fixed size')
-      const fitted = fitWorkspace(restored)
-      setMode(restoredMode); setCanvasSize(fitted.canvasSize); setLayers(fitted.layers); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
+      const restored = restoreComposition(data, artworks)
+      setMode(restored.mode); setCanvasSize(restored.canvasSize); setLayers(restored.layers); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
     } catch { setMessage('올바른 LeeSahm 조합 파일이 아니거나 작품이 겹쳐 있어요.') }
     finally { event.target.value = '' }
   }
@@ -425,12 +437,19 @@ export default function Editor() {
       const thumbnail = await makeThumbnail()
       const { error: uploadError } = await supabase.storage.from('composition-thumbnails').upload(path, thumbnail, { contentType: 'image/webp' })
       if (uploadError) throw uploadError
-      const { data, error: insertError } = await supabase.from('compositions').insert({
-        user_id: user.id, author_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Anonymous',
-        title: postTitle.trim(), description: postDescription.trim(), composition: compositionData(), thumbnail_path: path,
-      }).select('id').single()
-      if (insertError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw insertError }
-      localStorage.removeItem(DRAFT_KEY); navigate(`/board/${data.id}`)
+      if (editingPost) {
+        const { error: updateError } = await supabase.from('compositions').update({ title: postTitle.trim(), description: postDescription.trim(), composition: compositionData(), thumbnail_path: path, updated_at: new Date().toISOString() }).eq('id', editingPost.id)
+        if (updateError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw updateError }
+        await supabase.storage.from('composition-thumbnails').remove([editingPost.thumbnail_path])
+        navigate(`/board/${editingPost.id}`)
+      } else {
+        const { data, error: insertError } = await supabase.from('compositions').insert({
+          user_id: user.id, author_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Anonymous',
+          title: postTitle.trim(), description: postDescription.trim(), composition: compositionData(), thumbnail_path: path,
+        }).select('id').single()
+        if (insertError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw insertError }
+        localStorage.removeItem(DRAFT_KEY); navigate(`/board/${data.id}`)
+      }
     } catch { setMessage('게시하지 못했어. 저장소 설정을 확인해줘.') }
     finally { setPublishing(false) }
   }
@@ -439,7 +458,7 @@ export default function Editor() {
     <div className="compose-page" onPointerMove={handlePointerMove} onPointerUp={endAction} onPointerCancel={endAction}>
       <header className="compose-header"><div><p className="eyebrow">Interactive studio</p><h1>Compose</h1></div><p>작품을 변형하지 않고, 위치와 크기만 조절해 새로운 관계를 만들어보세요.</p></header>
       <div className="studio">
-        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{visibleArtworks.map((art) => <button key={art.id} className={`${layers.some((layer) => layer.id === art.id) ? 'picked' : ''} ${loadingArtworkIds.includes(art.id) ? 'loading' : ''}`} onClick={() => addLayer(art)} title={art.title} aria-busy={loadingArtworkIds.includes(art.id)}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}{pickerLimit < filteredArtworks.length && <button className="picker-more" onClick={() => setPickerLimit((limit) => limit + PICKER_PAGE_SIZE)}>더 불러오기 <span>{visibleArtworks.length}/{filteredArtworks.length}</span></button>}</div></aside>
+        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={`${layers.some((layer) => layer.id === art.id) ? 'picked' : ''} ${loadingArtworkIds.includes(art.id) ? 'loading' : ''}`} onClick={() => addLayer(art)} title={art.title} aria-busy={loadingArtworkIds.includes(art.id)}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
         <section className="stage-area">
           <div className="stage" ref={stageRef} style={{ backgroundColor: BACKGROUND, aspectRatio: canvasSize.width / canvasSize.height, width: `min(100%, ${72 * canvasSize.width / canvasSize.height}vh)` }} onPointerDown={() => { setActive(null); setSelectedIds([]) }}>
             {guides.x !== null && <span className="snap-guide vertical" style={{ left: `${guides.x / canvasSize.width * 100}%` }} />}
@@ -468,7 +487,7 @@ export default function Editor() {
           </div>
           {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">{fixedSize ? '크기는 50호로 고정돼요. 배치와 90도 회전만 가능해요.' : selectedIds.length > 1 ? '선택 그룹의 네 모서리로 크기를 함께 조절할 수 있어요.' : '네 모서리는 크기 조절, 위쪽 원형 손잡이는 90도 회전이에요.'}</p><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
           <div className="blueprint-actions"><button onClick={downloadBlueprint}>설계도 PNG</button><button onClick={saveComposition}>조합 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>조합 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
-          <div className="publish-panel"><p>작품 게시하기</p><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing}>{publishing ? '게시 중...' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.</span></div>
+          <div className="publish-panel"><p>{editingPost ? '게시 작품 수정' : '작품 게시하기'}</p><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing || Boolean(editingPostId && !editingPost)}>{publishing ? '저장 중...' : editingPost ? '수정 완료' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>{editingPost ? '그림 조합과 제목, 설명을 함께 수정해요.' : 'Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.'}</span></div>
           <button className="download-button" onClick={download}>작품 PNG 다운로드</button><button className="clear-button" onClick={() => { setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setMessage('') }}>작업 영역 비우기</button><Link className="back-link" to="/gallery">← 작품 감상하기</Link>
         </aside>
       </div>

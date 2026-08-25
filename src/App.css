@@ -89,8 +89,6 @@
 .picker-grid button.picked { border-color:var(--red); opacity:.55; }
 .picker-grid button.loading { opacity:.45; cursor:wait; }
 .picker-grid img { display:block; width:100%; height:auto; }
-.picker-grid .picker-more { grid-column:1 / -1; padding:.75rem; color:var(--ink); background:#fff; border:1px solid var(--line); font-size:.72rem; }
-.picker-grid .picker-more span { margin-left:.35rem; color:var(--muted); font-size:.64rem; }
 .stage-area { padding:3vw; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; overflow:hidden; }
 .stage { width:100%; max-width:900px; aspect-ratio:4/3; position:relative; overflow:hidden; box-shadow:0 24px 70px rgba(30,25,18,.2); touch-action:none; }
 .stage-item { position:absolute; cursor:grab; user-select:none; transform-origin:center; border:0; touch-action:none; }
@@ -200,7 +198,7 @@
 .used-artworks>p { margin-top:0; font-size:.72rem; font-weight:600; }
 .used-artworks ul { max-height:160px; margin:0; padding-left:1.2rem; overflow:auto; color:var(--muted); font-size:.72rem; line-height:1.8; }
 .owner-actions { margin-top:2rem; display:flex; gap:.5rem; }
-.owner-actions button { padding:.65rem .8rem; cursor:pointer; background:transparent; border:1px solid var(--line); font-size:.68rem; }
+.owner-actions button,.owner-actions a { padding:.65rem .8rem; cursor:pointer; background:transparent; border:1px solid var(--line); font-size:.68rem; }
 @media (max-width:1200px) {
   .studio { grid-template-columns:220px 1fr; }
   .controls { grid-column:1 / 3; border-left:0; border-top:1px solid var(--line); }

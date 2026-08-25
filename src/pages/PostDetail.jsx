@@ -46,7 +46,7 @@ export default function PostDetail() {
         {editing ? <><input className="post-title-input" maxLength="80" value={title} onChange={(event) => setTitle(event.target.value)} /><textarea maxLength="2000" value={description} onChange={(event) => setDescription(event.target.value)} /><button className="button button-dark" disabled={!title.trim() || !description.trim()} onClick={save}>수정 완료</button><button className="text-button" onClick={() => setEditing(false)}>취소</button></> : <><h1>{post.title}</h1><p className="post-description">{post.description}</p></>}
         <div className="used-artworks"><p>사용 작품</p><ul>{post.composition.layers.map((layer) => <li key={layer.artworkId}>{layer.title}</li>)}</ul></div>
         <button className="text-button" onClick={downloadMap}>재현용 조합 파일 다운로드</button>
-        {mine && !editing && <div className="owner-actions"><button onClick={() => setEditing(true)}>설명 수정</button><button onClick={remove}>게시물 삭제</button></div>}
+        {mine && !editing && <div className="owner-actions"><Link to={`/compose/${post.id}`}>그림 조합 수정</Link><button onClick={() => setEditing(true)}>설명 수정</button><button onClick={remove}>게시물 삭제</button></div>}
         {message && <p className="form-message">{message}</p>}
       </div></div>
     </article>
