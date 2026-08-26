@@ -35,7 +35,10 @@ with check ((select auth.uid()) = user_id);
 create policy "users delete their compositions"
 on public.compositions for delete
 to authenticated
-using ((select auth.uid()) = user_id);
+using (
+  (select auth.uid()) = user_id
+  or (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+);
 
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('composition-thumbnails', 'composition-thumbnails', true, 5242880, array['image/webp'])
@@ -54,4 +57,10 @@ with check (bucket_id = 'composition-thumbnails' and (storage.foldername(name))[
 create policy "users delete composition thumbnails"
 on storage.objects for delete
 to authenticated
-using (bucket_id = 'composition-thumbnails' and owner_id = (select auth.uid()::text));
+using (
+  bucket_id = 'composition-thumbnails'
+  and (
+    owner_id = (select auth.uid()::text)
+    or (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+  )
+);
