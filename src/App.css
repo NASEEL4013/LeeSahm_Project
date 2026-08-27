@@ -160,7 +160,6 @@
 .board-page .page-heading>div:last-child { width:min(390px,100%); }
 .board-page .page-heading .text-link { margin-top:1.2rem; }
 .board-view-controls { display:flex; justify-content:flex-end; margin:-3vw 0 2rem; }
-.board-load-more { display:block; margin:3rem auto 0; padding:.8rem 1.4rem; color:var(--ink); background:transparent; border:1px solid var(--line); cursor:pointer; }
 .board-view-controls button { width:44px; height:38px; display:grid; place-items:center; padding:0; cursor:pointer; color:var(--muted); background:transparent; border:0; border-bottom:1px solid var(--line); }
 .board-view-controls button:hover,.board-view-controls button.selected { color:var(--ink); border-color:var(--ink); }
 .density-icon { --density:3; width:24px; height:14px; display:block; border:1px solid currentColor; background:repeating-linear-gradient(to right,transparent 0 calc(100% / var(--density) - 1px),currentColor calc(100% / var(--density) - 1px) calc(100% / var(--density))),repeating-linear-gradient(to bottom,transparent 0 calc(50% - 1px),currentColor calc(50% - 1px) 50%); }

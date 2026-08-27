@@ -4,12 +4,6 @@ import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 
 const thumbnailUrl = (path) => supabase.storage.from('composition-thumbnails').getPublicUrl(path).data.publicUrl
-const PAGE_SIZE = 30
-
-const fetchPosts = (offset) => supabase.from('compositions')
-  .select('id,title,description,author_name,thumbnail_path,created_at')
-  .order('created_at', { ascending: false })
-  .range(offset, offset + PAGE_SIZE)
 
 export default function Board() {
   const { user } = useAuth()
@@ -17,24 +11,12 @@ export default function Board() {
   const [loading, setLoading] = useState(isSupabaseReady)
   const [error, setError] = useState('')
   const [columns, setColumns] = useState(3)
-  const [hasMore, setHasMore] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
 
   useEffect(() => {
     if (!supabase) return
-    fetchPosts(0).then(({ data, error: loadError }) => {
-      setPosts((data ?? []).slice(0, PAGE_SIZE)); setHasMore((data?.length ?? 0) > PAGE_SIZE)
-      setError(loadError ? '게시물을 불러오지 못했어.' : ''); setLoading(false)
-    })
+    supabase.from('compositions').select('id,title,description,author_name,thumbnail_path,created_at').order('created_at', { ascending: false })
+      .then(({ data, error: loadError }) => { setPosts(data ?? []); setError(loadError ? '게시물을 불러오지 못했어.' : ''); setLoading(false) })
   }, [])
-
-  async function loadMore() {
-    setLoadingMore(true)
-    const { data, error: loadError } = await fetchPosts(posts.length)
-    if (loadError) setError('게시물을 더 불러오지 못했어.')
-    else { const next = data ?? []; setPosts((current) => [...current, ...next.slice(0, PAGE_SIZE)]); setHasMore(next.length > PAGE_SIZE) }
-    setLoadingMore(false)
-  }
 
   return (
     <div className="page-shell board-page">
@@ -45,7 +27,6 @@ export default function Board() {
       {!loading && isSupabaseReady && !error && !posts.length && <p className="status">아직 게시된 조합이 없어. 첫 작품을 만들어봐.</p>}
       {!!posts.length && <div className="board-view-controls" aria-label="보기 밀도">{[3, 6, 10].map((count) => <button type="button" className={columns === count ? 'selected' : ''} aria-label={`한 행에 ${count}개 보기`} title={`한 행에 ${count}개 보기`} aria-pressed={columns === count} onClick={() => setColumns(count)} key={count}><span className={`density-icon density-${count}`} aria-hidden="true" /></button>)}</div>}
       <div className={`post-grid columns-${columns}`}>{posts.map((post) => <Link className="post-card" to={`/board/${post.id}`} key={post.id}><img src={thumbnailUrl(post.thumbnail_path)} alt={post.title} loading="lazy" /><div><p>{post.author_name}</p><h2>{post.title}</h2><span>{post.description}</span><time>{new Date(post.created_at).toLocaleDateString('ko-KR')}</time></div></Link>)}</div>
-      {hasMore && <button className="board-load-more" onClick={loadMore} disabled={loadingMore}>{loadingMore ? '불러오는 중...' : '게시물 더 보기'}</button>}
     </div>
   )
 }

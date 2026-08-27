@@ -12,8 +12,6 @@ create table if not exists public.compositions (
   updated_at timestamptz not null default now()
 );
 
-create index if not exists compositions_created_at_idx on public.compositions (created_at desc);
-
 alter table public.compositions enable row level security;
 grant select on public.compositions to anon, authenticated;
 grant insert, update, delete on public.compositions to authenticated;
