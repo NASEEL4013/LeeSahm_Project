@@ -27,8 +27,7 @@ function About() {
 
   return (
     <div className="page-shell about-page">
-      <p className="eyebrow">Artist</p>
-      <h1 className="display-title">Lee Sahm</h1>
+      <header className="page-heading"><div><p className="eyebrow">Artist</p><h1 className="display-title">Lee Sahm</h1></div><div><p>반복과 축적 속에서 생겨나는 미세한 차이와 파동의 흐름을 소개합니다.</p></div></header>
       <div className="about-grid">
         <div className="about-portrait">
           <div className="artist-slides">{slides.map((src, index) => <img key={src} className={slide === index ? 'visible' : ''} src={src} alt={`Lee Sahm 대표 작품 ${index + 1}`} />)}</div>

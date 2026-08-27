@@ -19,7 +19,7 @@ export default function Gallery() {
     <div className="page-shell gallery-page">
       <header className="page-heading">
         <div><p className="eyebrow">Archive · {artworks.length || '—'} works</p><h1 className="display-title">Works</h1></div>
-        <p>Lee Sahm의 작업에 축적된 선과 색, 화면을 가로지르는 리듬을 천천히 감상해보세요.</p>
+        <div><p>Lee Sahm의 작업에 축적된 선과 색, 화면을 가로지르는 리듬을 천천히 감상해보세요.</p></div>
       </header>
       <div className="gallery-tools">
         <label className="search"><span>작품 찾기</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="작품 번호나 제목을 입력하세요" /></label>
