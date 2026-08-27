@@ -92,6 +92,7 @@ export default function Editor() {
   const [canvasSize, setCanvasSize] = useState(initialDraft?.workspaceSize ?? { width: 1200, height: 900 })
   const [postTitle, setPostTitle] = useState(initialDraft?.postTitle ?? '')
   const [postDescription, setPostDescription] = useState(initialDraft?.postDescription ?? '')
+  const [postCategory, setPostCategory] = useState(initialDraft?.postCategory ?? 1)
   const [publishing, setPublishing] = useState(false)
   const [editingPost, setEditingPost] = useState(null)
   const [message, setMessage] = useState('')
@@ -106,18 +107,18 @@ export default function Editor() {
   useEffect(() => {
     if (!editingPostId || !supabase || !artworks.length) return
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
-      if (error || data.user_id !== user?.id) return setMessage('수정할 게시물을 불러오지 못했어.')
+      if (error || (data.user_id !== user?.id && user?.app_metadata?.role !== 'admin')) return setMessage('수정할 게시물을 불러오지 못했어.')
       try {
         const restored = restoreComposition(data.composition, artworks)
-        setEditingPost(data); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setMessage('기존 그림 조합을 불러왔어.')
+        setEditingPost(data); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
       } catch { setMessage('저장된 그림 조합을 불러오지 못했어.') }
     })
-  }, [editingPostId, artworks, user?.id])
+  }, [editingPostId, artworks, user?.id, user?.app_metadata?.role])
   useEffect(() => {
     if (editingPostId) return undefined
-    const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription })), 400)
+    const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory })), 400)
     return () => window.clearTimeout(timer)
-  }, [editingPostId, layers, canvasSize, postTitle, postDescription])
+  }, [editingPostId, layers, canvasSize, postTitle, postDescription, postCategory])
   useEffect(() => {
     if (!message || message.endsWith('...')) return undefined
     const timer = window.setTimeout(() => setMessage(''), 3000)
@@ -359,7 +360,7 @@ export default function Editor() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     if (!postTitle.trim() || !postDescription.trim()) return setMessage('게시할 작품의 제목과 설명을 입력해주세요.')
     if (!isSupabaseReady) return setMessage('게시판 저장소 연결이 아직 필요해요.')
-    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription })); navigate('/login'); return }
+    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory })); navigate('/login'); return }
     setPublishing(true); setMessage('게시용 이미지를 만드는 중...')
     const path = `${user.id}/${crypto.randomUUID()}.webp`
     try {
@@ -367,14 +368,14 @@ export default function Editor() {
       const { error: uploadError } = await supabase.storage.from('composition-thumbnails').upload(path, boardImage, { contentType: 'image/webp' })
       if (uploadError) throw uploadError
       if (editingPost) {
-        const { error: updateError } = await supabase.from('compositions').update({ title: postTitle.trim(), description: postDescription.trim(), composition: compositionData(), thumbnail_path: path, updated_at: new Date().toISOString() }).eq('id', editingPost.id)
+        const { error: updateError } = await supabase.from('compositions').update({ title: postTitle.trim(), description: postDescription.trim(), category: postCategory, composition: compositionData(), thumbnail_path: path, updated_at: new Date().toISOString() }).eq('id', editingPost.id)
         if (updateError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw updateError }
         await supabase.storage.from('composition-thumbnails').remove([editingPost.thumbnail_path])
         navigate(`/board/${editingPost.id}`)
       } else {
         const { data, error: insertError } = await supabase.from('compositions').insert({
           user_id: user.id, author_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Anonymous',
-          title: postTitle.trim(), description: postDescription.trim(), composition: compositionData(), thumbnail_path: path,
+          title: postTitle.trim(), description: postDescription.trim(), category: postCategory, composition: compositionData(), thumbnail_path: path,
         }).select('id').single()
         if (insertError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw insertError }
         localStorage.removeItem(DRAFT_KEY); navigate(`/board/${data.id}`)
@@ -416,7 +417,7 @@ export default function Editor() {
           </div>
           {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">작품을 이동하거나 위쪽 원형 손잡이로 90도 회전할 수 있어요.</p><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
           <div className="blueprint-actions"><button onClick={downloadBlueprint}>설계도 PNG</button><button onClick={saveComposition}>조합 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>조합 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
-          <div className="publish-panel"><p>{editingPost ? '게시 작품 수정' : '작품 게시하기'}</p><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing || Boolean(editingPostId && !editingPost)}>{publishing ? '저장 중...' : editingPost ? '수정 완료' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>{editingPost ? '그림 조합과 제목, 설명을 함께 수정해요.' : 'Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.'}</span></div>
+          <div className="publish-panel"><p>{editingPost ? '게시 작품 수정' : '작품 게시하기'}</p><label>카테고리<select value={postCategory} onChange={(event) => setPostCategory(Number(event.target.value))}>{[1, 2, 3, 4, 5].map((value) => <option value={value} key={value}>카테고리 {value}</option>)}</select></label><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing || Boolean(editingPostId && !editingPost)}>{publishing ? '저장 중...' : editingPost ? '수정 완료' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>{editingPost ? '그림 조합과 제목, 설명, 카테고리를 함께 수정해요.' : 'Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.'}</span></div>
           <button className="download-button" onClick={download}>작품 PNG 다운로드</button><button className="clear-button" onClick={() => { setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setMessage('') }}>작업 영역 비우기</button><Link className="back-link" to="/gallery">← 작품 감상하기</Link>
         </aside>
       </div>

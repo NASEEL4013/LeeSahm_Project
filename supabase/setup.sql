@@ -6,11 +6,14 @@ create table if not exists public.compositions (
   author_name text not null check (char_length(author_name) between 1 and 80),
   title text not null check (char_length(title) between 1 and 80),
   description text not null check (char_length(description) between 1 and 2000),
+  category smallint check (category between 1 and 5),
   composition jsonb not null,
   thumbnail_path text not null unique,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+alter table public.compositions add column if not exists category smallint check (category between 1 and 5);
 
 alter table public.compositions enable row level security;
 grant select on public.compositions to anon, authenticated;
@@ -29,8 +32,14 @@ with check ((select auth.uid()) = user_id);
 create policy "users update their compositions"
 on public.compositions for update
 to authenticated
-using ((select auth.uid()) = user_id)
-with check ((select auth.uid()) = user_id);
+using (
+  (select auth.uid()) = user_id
+  or (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+)
+with check (
+  (select auth.uid()) = user_id
+  or (select auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
+);
 
 create policy "users delete their compositions"
 on public.compositions for delete
