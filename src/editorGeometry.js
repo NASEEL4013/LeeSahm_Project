@@ -59,8 +59,8 @@ export function compositionFrame(layers) {
   return { left, top, width: right - left, height: bottom - top, layers: layers.map((layer) => ({ ...layer, x: layer.x - left, y: layer.y - top })) }
 }
 
-export function exportScale(frame, sourceScales, maxEdge = 16384) {
-  return Math.min(Math.max(...sourceScales), maxEdge / frame.width, maxEdge / frame.height)
+export function exportScale(frame, sourceScales, maxEdge = 16384, maxPixels = Infinity) {
+  return Math.min(Math.max(...sourceScales), maxEdge / frame.width, maxEdge / frame.height, Math.sqrt(maxPixels / (frame.width * frame.height)))
 }
 
 export function scaleLayers(layers, anchor, factor) {

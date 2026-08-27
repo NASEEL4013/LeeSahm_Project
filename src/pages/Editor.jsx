@@ -4,11 +4,12 @@ import { bounds, collides, compositionFrame, exportScale, findLargestOpenPlaceme
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 
-const SNAP_PX = 10
+const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
 const DRAFT_KEY = 'leesahm-compose-draft'
 const MAX_CANVAS_SIZE = 5000
 const MAX_EXPORT_EDGE = 16384
+const MAX_EXPORT_PIXELS = 64 * 1024 * 1024
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 const FIXED_ARTWORK_LONG_EDGE = 420
 const WORKSPACE_PADDING = 120
@@ -25,6 +26,14 @@ function loadImage(url, timeoutMs) {
     image.onerror = () => { window.clearTimeout(timer); reject(new Error('Image error')) }
     image.src = url
   })
+}
+
+async function loadArtworkImage(layer) {
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try { return await loadImage(layer.originalUrl, 30000) }
+    catch { /* retry the original once */ }
+  }
+  throw new Error(`${layer.title} 원본 이미지를 불러오지 못해서 다운로드를 중단했어.`)
 }
 
 function sourceCrop(image, ratio) {
@@ -307,33 +316,35 @@ export default function Editor() {
 
   async function renderComposition() {
     const frame = compositionFrame(layers)
-    let fallbackCount = 0
-    const images = await Promise.all(frame.layers.map(async (layer) => {
-      try { return await loadImage(layer.originalUrl, 10000) }
-      catch { fallbackCount += 1; return loadImage(layer.previewUrl, 10000) }
-    }))
-    const sourceScales = frame.layers.map((layer, index) => sourceCrop(images[index], layer.ratio)[2] / layer.width)
+    const sourceScales = []
+    for (const layer of frame.layers) {
+      const image = await loadArtworkImage(layer)
+      sourceScales.push(sourceCrop(image, layer.ratio)[2] / layer.width)
+      image.src = ''
+    }
     const sourceScale = Math.max(...sourceScales)
-    const scale = exportScale(frame, sourceScales, MAX_EXPORT_EDGE)
+    const scale = exportScale(frame, sourceScales, MAX_EXPORT_EDGE, MAX_EXPORT_PIXELS)
     const canvas = document.createElement('canvas'); canvas.width = Math.max(1, Math.round(frame.width * scale)); canvas.height = Math.max(1, Math.round(frame.height * scale))
     const ctx = canvas.getContext('2d'); ctx.fillStyle = BACKGROUND; ctx.fillRect(0, 0, canvas.width, canvas.height)
-    frame.layers.forEach((layer, index) => {
+    for (const layer of frame.layers) {
+      const image = await loadArtworkImage(layer)
       const width = layer.width * scale; const height = layer.width * layer.ratio * scale
       ctx.save(); ctx.translate((layer.x + layer.width / 2) * scale, (layer.y + layer.width * layer.ratio / 2) * scale); ctx.rotate(layer.rotation * Math.PI / 180)
-      ctx.drawImage(images[index], ...sourceCrop(images[index], layer.ratio), -width / 2, -height / 2, width, height); ctx.restore()
-    })
-    return { canvas, fallbackCount, limited: scale < sourceScale * .99 }
+      ctx.drawImage(image, ...sourceCrop(image, layer.ratio), -width / 2, -height / 2, width, height); ctx.restore()
+      image.src = ''
+    }
+    return { canvas, limited: scale < sourceScale * .99 }
   }
 
   async function download() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     setMessage('원본 해상도 이미지를 만드는 중...')
     try {
-      const { canvas, fallbackCount, limited } = await renderComposition()
+      const { canvas, limited } = await renderComposition()
       const blob = await canvasBlob(canvas, 'image/png')
       const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.png`; link.href = url; link.click(); URL.revokeObjectURL(url)
-      setMessage(limited ? '다운로드 완료 · 조합이 너무 커서 브라우저 최대 해상도에 맞췄어요.' : fallbackCount ? `다운로드 완료 · 원본이 없는 작품 ${fallbackCount}개는 고화질 미리보기를 사용했어요.` : '원본 해상도로 다운로드했어요.')
-    } catch { setMessage('이미지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
+      setMessage(limited ? '다운로드 완료 · 조합이 너무 커서 브라우저 최대 해상도에 맞췄어요.' : '원본 해상도로 다운로드했어요.')
+    } catch (error) { setMessage(error?.message || '이미지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
   }
 
   async function makeBoardImage() {
