@@ -9,7 +9,6 @@ const BACKGROUND = '#a9a59d'
 const DRAFT_KEY = 'leesahm-compose-draft'
 const MAX_CANVAS_SIZE = 5000
 const MAX_EXPORT_EDGE = 16384
-const MAX_EXPORT_PIXELS = 64 * 1024 * 1024
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 const FIXED_ARTWORK_LONG_EDGE = 420
 const WORKSPACE_PADDING = 120
@@ -323,7 +322,7 @@ export default function Editor() {
       image.src = ''
     }
     const sourceScale = Math.max(...sourceScales)
-    const scale = exportScale(frame, sourceScales, MAX_EXPORT_EDGE, MAX_EXPORT_PIXELS)
+    const scale = exportScale(frame, sourceScales, MAX_EXPORT_EDGE)
     const canvas = document.createElement('canvas'); canvas.width = Math.max(1, Math.round(frame.width * scale)); canvas.height = Math.max(1, Math.round(frame.height * scale))
     const ctx = canvas.getContext('2d'); ctx.fillStyle = BACKGROUND; ctx.fillRect(0, 0, canvas.width, canvas.height)
     for (const layer of frame.layers) {
