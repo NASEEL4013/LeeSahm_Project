@@ -59,6 +59,35 @@ export function compositionFrame(layers) {
   return { left, top, width: right - left, height: bottom - top, layers: layers.map((layer) => ({ ...layer, x: layer.x - left, y: layer.y - top })) }
 }
 
+const roundToHundredth = (value) => Math.round(value * 100) / 100
+
+export function physicalMapping(layers, centimetersPerPixel) {
+  if (!layers.length) return null
+  const boxes = layers.map(bounds)
+  const left = Math.min(...boxes.map((box) => box.left))
+  const top = Math.min(...boxes.map((box) => box.top))
+  const right = Math.max(...boxes.map((box) => box.right))
+  const bottom = Math.max(...boxes.map((box) => box.bottom))
+  return {
+    width: roundToHundredth((right - left) * centimetersPerPixel),
+    height: roundToHundredth((bottom - top) * centimetersPerPixel),
+    placements: layers.map((layer, index) => {
+      const box = boxes[index]
+      return {
+        title: layer.title,
+        x: roundToHundredth((box.left - left) * centimetersPerPixel),
+        y: roundToHundredth((box.top - top) * centimetersPerPixel),
+        rotation: ((layer.rotation % 360) + 360) % 360,
+      }
+    }),
+  }
+}
+
+export function placeByTopLeft(layer, left, top) {
+  const box = bounds({ ...layer, x: 0, y: 0 })
+  return { ...layer, x: left - box.left, y: top - box.top }
+}
+
 export function exportScale(frame, sourceScales, maxEdge = 16384) {
   return Math.min(Math.max(...sourceScales), maxEdge / frame.width, maxEdge / frame.height)
 }

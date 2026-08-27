@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { bounds, collides, compositionFrame, exportScale, findLargestOpenPlacement, findNearbyOpenPlacement, quarterTurn, withinCanvas } from '../editorGeometry.js'
+import { bounds, collides, compositionFrame, exportScale, findLargestOpenPlacement, findNearbyOpenPlacement, physicalMapping, placeByTopLeft, quarterTurn, withinCanvas } from '../editorGeometry.js'
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 
@@ -11,6 +11,9 @@ const MAX_CANVAS_SIZE = 5000
 const MAX_EXPORT_EDGE = 16384
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 const FIXED_ARTWORK_LONG_EDGE = 420
+const F50_LONG_EDGE_CM = 116.8
+const F50_SHORT_EDGE_CM = 91
+const CM_PER_PIXEL = F50_LONG_EDGE_CM / FIXED_ARTWORK_LONG_EDGE
 const WORKSPACE_PADDING = 120
 const COLOR_FILTERS = [
   ['all', '전체', '#d8d3c9'], ['red', '빨강·주황', '#b7442f'], ['yellow', '노랑·베이지', '#d4a43f'],
@@ -66,7 +69,25 @@ function readDraft() {
   } catch { return null }
 }
 
-function restoreComposition(data, artworks) {
+async function restoreComposition(data, artworks) {
+  if (data.format === 'leesahm-mapping' && data.version === 1) {
+    const width = Number(data.composition?.width) / CM_PER_PIXEL
+    const height = Number(data.composition?.height) / CM_PER_PIXEL
+    if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.placements)) throw new Error('Invalid mapping')
+    const titles = new Set()
+    const layers = await Promise.all(data.placements.map(async (saved) => {
+      const artwork = artworks.find((item) => item.title === saved.title)
+      const values = [saved.x, saved.y, saved.rotation].map(Number)
+      if (!artwork || titles.has(saved.title) || values.some((value) => !Number.isFinite(value)) || values[0] < 0 || values[1] < 0 || values[2] % 90 !== 0) throw new Error('Invalid placement')
+      titles.add(saved.title)
+      const image = await loadImage(artwork.previewUrl, 10000)
+      const ratio = image.naturalHeight / image.naturalWidth
+      const layer = { ...artwork, x: 0, y: 0, width: FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio), ratio, rotation: values[2] }
+      return placeByTopLeft(layer, values[0] / CM_PER_PIXEL, values[1] / CM_PER_PIXEL)
+    }))
+    if (layers.some((layer, index) => collides([layer], layers.slice(index + 1))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
+    return fitWorkspace(layers)
+  }
   const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
   if (data.format !== 'leesahm-composition' || ![1, 2, 3].includes(data.version) || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.layers)) throw new Error('Invalid composition')
   const ids = new Set()
@@ -109,8 +130,9 @@ export default function Editor() {
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
       if (error || (data.user_id !== user?.id && user?.app_metadata?.role !== 'admin')) return setMessage('수정할 게시물을 불러오지 못했어.')
       try {
-        const restored = restoreComposition(data.composition, artworks)
-        setEditingPost(data); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
+        restoreComposition(data.composition, artworks).then((restored) => {
+          setEditingPost(data); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
+        }).catch(() => setMessage('저장된 그림 조합을 불러오지 못했어.'))
       } catch { setMessage('저장된 그림 조합을 불러오지 못했어.') }
     })
   }, [editingPostId, artworks, user?.id, user?.app_metadata?.role])
@@ -126,6 +148,7 @@ export default function Editor() {
   }, [message])
   const activeLayer = layers.find((layer) => layer.id === active)
   const exportFrame = useMemo(() => compositionFrame(layers), [layers])
+  const offlineMapping = useMemo(() => physicalMapping(layers, CM_PER_PIXEL), [layers])
   const selectionBounds = useMemo(() => {
     const selected = layers.filter((layer) => selectedIds.includes(layer.id))
     if (selected.length < 2) return null
@@ -248,11 +271,13 @@ export default function Editor() {
   }
 
   function compositionData() {
-    const frame = compositionFrame(layers)
+    const mapping = physicalMapping(layers, CM_PER_PIXEL)
     return {
-      format: 'leesahm-composition', version: 3, createdAt: new Date().toISOString(),
-      canvas: { width: frame.width, height: frame.height, background: BACKGROUND },
-      layers: frame.layers.map((layer) => ({ artworkId: layer.id, title: layer.title, x: layer.x, y: layer.y, width: layer.width, ratio: layer.ratio, rotation: layer.rotation })),
+      format: 'leesahm-mapping', version: 1, createdAt: new Date().toISOString(), unit: 'cm',
+      origin: '완성된 조합의 왼쪽 위 (0, 0), X는 오른쪽, Y는 아래쪽',
+      artwork: { canvas: '50호 F형', longEdge: F50_LONG_EDGE_CM, shortEdge: F50_SHORT_EDGE_CM, scale: '고정', rotations: [0, 90, 180, 270] },
+      composition: { width: mapping.width, height: mapping.height },
+      placements: mapping.placements,
     }
   }
 
@@ -260,8 +285,8 @@ export default function Editor() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     const data = compositionData()
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
-    const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.json`; link.href = url; link.click(); URL.revokeObjectURL(url)
-    setMessage('조합 파일을 저장했어요.')
+    const link = document.createElement('a'); link.download = `leesahm-mapping-${Date.now()}.json`; link.href = url; link.click(); URL.revokeObjectURL(url)
+    setMessage('오프라인 매핑 파일을 저장했어요.')
   }
 
   async function importComposition(event) {
@@ -269,7 +294,7 @@ export default function Editor() {
     if (!file) return
     try {
       const data = JSON.parse(await file.text())
-      const restored = restoreComposition(data, artworks)
+      const restored = await restoreComposition(data, artworks)
       setCanvasSize(restored.canvasSize); setLayers(restored.layers); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
     } catch { setMessage('올바른 LeeSahm 조합 파일이 아니거나 작품이 겹쳐 있어요.') }
     finally { event.target.value = '' }
@@ -284,8 +309,9 @@ export default function Editor() {
       const mapWidth = frame.width * mapScale; const mapHeight = frame.height * mapScale; const lineHeight = 62
       const canvas = document.createElement('canvas'); canvas.width = Math.ceil(mapWidth + legendWidth + padding * 3); canvas.height = Math.ceil(Math.max(mapHeight + 180, layers.length * lineHeight + 180))
       const ctx = canvas.getContext('2d'); ctx.fillStyle = '#f4f1ea'; ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.fillStyle = '#191816'; ctx.font = 'bold 30px Arial'; ctx.fillText('LeeSahm Composition Blueprint', padding, 48)
-      ctx.font = '16px Arial'; ctx.fillStyle = '#676159'; ctx.fillText(`Canvas ${frame.width} × ${frame.height}px · Origin (0, 0) = top left`, padding, 76)
+      const mapping = physicalMapping(layers, CM_PER_PIXEL)
+      ctx.fillStyle = '#191816'; ctx.font = 'bold 30px Arial'; ctx.fillText('LeeSahm 오프라인 배치도', padding, 48)
+      ctx.font = '16px Arial'; ctx.fillStyle = '#676159'; ctx.fillText(`전체 ${mapping.width} × ${mapping.height}cm · 왼쪽 위 (0, 0) 기준`, padding, 76)
       const mapX = padding; const mapY = 110
       ctx.fillStyle = BACKGROUND; ctx.fillRect(mapX, mapY, mapWidth, mapHeight)
       ctx.strokeStyle = 'rgba(50,45,40,.18)'; ctx.lineWidth = 1
@@ -304,13 +330,13 @@ export default function Editor() {
         ctx.fillStyle = '#fff'; ctx.font = 'bold 15px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(String(index + 1), centerX, centerY)
       })
       ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic'; const legendX = mapX + mapWidth + padding
-      ctx.fillStyle = '#191816'; ctx.font = 'bold 20px Arial'; ctx.fillText('Artwork placement', legendX, 116)
+      ctx.fillStyle = '#191816'; ctx.font = 'bold 20px Arial'; ctx.fillText('작품 배치 (단위: cm)', legendX, 116)
       frame.layers.forEach((layer, index) => {
-        const y = 155 + index * lineHeight; const topLeft = bounds(layer)
+        const y = 155 + index * lineHeight; const placement = mapping.placements[index]
         ctx.fillStyle = '#b33b28'; ctx.font = 'bold 17px Arial'; ctx.fillText(`${index + 1}. ${layer.title}`, legendX, y)
-        ctx.fillStyle = '#514d47'; ctx.font = '15px Arial'; ctx.fillText(`Top left ${Math.round(topLeft.left)}, ${Math.round(topLeft.top)} · Size ${Math.round(layer.width)} × ${Math.round(layer.width * layer.ratio)} · Rotate ${layer.rotation}°`, legendX, y + 25)
+        ctx.fillStyle = '#514d47'; ctx.font = '15px Arial'; ctx.fillText(`왼쪽 위 X ${placement.x} · Y ${placement.y} · 회전 ${placement.rotation}°`, legendX, y + 25)
       })
-      const link = document.createElement('a'); link.download = `leesahm-blueprint-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); setMessage('조합 설계도를 저장했어요.')
+      const link = document.createElement('a'); link.download = `leesahm-mapping-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); setMessage('오프라인 배치도를 저장했어요.')
     } catch { setMessage('조합 설계도를 만들지 못했습니다. 잠시 후 다시 시도해주세요.') }
   }
 
@@ -408,15 +434,15 @@ export default function Editor() {
           <div className="panel-title"><span>조합 설정</span></div>
           <p className="control-empty">작품 크기는 고정돼요. 배치와 90도 회전만 조절할 수 있어요.</p>
           <div className="composition-map-section">
-            <div className="canvas-control-title"><p>최종 캔버스</p><span>{exportFrame ? `${exportFrame.width} × ${exportFrame.height}` : '자동 맞춤'}</span></div>
+            <div className="canvas-control-title"><p>오프라인 배치도</p><span>{offlineMapping ? `${offlineMapping.width} × ${offlineMapping.height}cm` : '자동 맞춤'}</span></div>
             <div className="composition-map" style={{ backgroundColor: BACKGROUND, aspectRatio: exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height, width: `min(100%, ${300 * (exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height)}px)` }}>
               {exportFrame?.layers.map((layer, index) => <button key={layer.id} className={selectedIds.includes(layer.id) ? 'selected' : ''} onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }} style={{ left: `${layer.x / exportFrame.width * 100}%`, top: `${layer.y / exportFrame.height * 100}%`, width: `${layer.width / exportFrame.width * 100}%`, transform: `rotate(${layer.rotation}deg)` }} title={layer.title}><img src={layer.previewUrl} alt="" /><span>{index + 1}</span></button>)}
               {!layers.length && <p>작품을 추가하면 설계도가 표시돼요.</p>}
             </div>
-            <ol className="composition-list">{exportFrame?.layers.map((layer, index) => { const topLeft = bounds(layer); return <li key={layer.id}><button onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }}><strong>{index + 1}. {layer.title}</strong><span>좌상단 {Math.round(topLeft.left)}, {Math.round(topLeft.top)}</span><span>크기 {Math.round(layer.width)} × {Math.round(layer.width * layer.ratio)} · {layer.rotation}°</span></button></li> })}</ol>
+            <ol className="composition-list">{exportFrame?.layers.map((layer, index) => { const placement = offlineMapping.placements[index]; return <li key={layer.id}><button onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }}><strong>{index + 1}. {layer.title}</strong><span>왼쪽 위 X {placement.x}cm · Y {placement.y}cm</span><span>회전 {placement.rotation}°</span></button></li> })}</ol>
           </div>
           {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">작품을 이동하거나 위쪽 원형 손잡이로 90도 회전할 수 있어요.</p><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
-          <div className="blueprint-actions"><button onClick={downloadBlueprint}>설계도 PNG</button><button onClick={saveComposition}>조합 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>조합 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
+          <div className="blueprint-actions"><button onClick={downloadBlueprint}>배치도 PNG</button><button onClick={saveComposition}>매핑 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>매핑 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
           <div className="publish-panel"><p>{editingPost ? '게시 작품 수정' : '작품 게시하기'}</p><label>카테고리<select value={postCategory} onChange={(event) => setPostCategory(Number(event.target.value))}>{[1, 2, 3, 4, 5].map((value) => <option value={value} key={value}>카테고리 {value}</option>)}</select></label><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing || Boolean(editingPostId && !editingPost)}>{publishing ? '저장 중...' : editingPost ? '수정 완료' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>{editingPost ? '그림 조합과 제목, 설명, 카테고리를 함께 수정해요.' : 'Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.'}</span></div>
           <button className="download-button" onClick={download}>작품 PNG 다운로드</button><button className="clear-button" onClick={() => { setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setMessage('') }}>작업 영역 비우기</button><Link className="back-link" to="/gallery">← 작품 감상하기</Link>
         </aside>

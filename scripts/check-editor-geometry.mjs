@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { compositionFrame, exportScale, findLargestOpenPlacement, findNearbyOpenPlacement, findOpenPosition, overlaps, quarterTurn, scaleLayers, withinCanvas } from '../src/editorGeometry.js'
+import { bounds, compositionFrame, exportScale, findLargestOpenPlacement, findNearbyOpenPlacement, findOpenPosition, overlaps, physicalMapping, placeByTopLeft, quarterTurn, scaleLayers, withinCanvas } from '../src/editorGeometry.js'
 
 const square = { x: 0, y: 0, width: 100, ratio: 1, rotation: 0 }
 assert.equal(overlaps(square, { ...square, x: 100 }), false, '맞닿은 작품은 겹침이 아니다')
@@ -15,6 +15,9 @@ assert.deepEqual(scaleLayers([{ ...square, x: 100 }], { x: 0, y: 0 }, 2)[0], { .
 assert.equal(withinCanvas([square], { width: 100, height: 100 }), true)
 assert.equal(withinCanvas([{ ...square, x: -1 }], { width: 100, height: 100 }), false)
 assert.deepEqual(compositionFrame([{ ...square, x: 20, y: 30 }]), { left: 20, top: 30, width: 100, height: 100, layers: [{ ...square, x: 0, y: 0 }] })
+const mapped = physicalMapping([{ ...square, title: 'wave-001', x: 20, y: 30 }], 0.25)
+assert.deepEqual(mapped, { width: 25, height: 25, placements: [{ title: 'wave-001', x: 0, y: 0, rotation: 0 }] })
+assert.deepEqual(bounds(placeByTopLeft({ ...square, rotation: 90 }, 25, 50)), { left: 25, right: 125, top: 50, bottom: 150 })
 assert.equal(exportScale({ width: 1000, height: 500 }, [3, 4]), 4, '가장 높은 원본 배율을 유지해야 한다')
 assert.equal(exportScale({ width: 5000, height: 1000 }, [4], 10000), 2, '브라우저 캔버스 한계를 넘으면 최대 변 길이에 맞춰야 한다')
 console.log('editor geometry check passed')
