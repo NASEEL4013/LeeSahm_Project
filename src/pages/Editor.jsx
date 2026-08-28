@@ -1,14 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { bounds, collides, compositionFrame, exportScale, findLargestOpenPlacement, findNearbyOpenPlacement, physicalMapping, placeByTopLeft, quarterTurn, withinCanvas } from '../editorGeometry.js'
+import { boundedExportScale, bounds, collides, compositionFrame, findLargestOpenPlacement, findNearbyOpenPlacement, physicalMapping, placeByTopLeft, quarterTurn, withinCanvas } from '../editorGeometry.js'
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
+import { downloadBlob } from '../download.js'
 
 const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
 const DRAFT_KEY = 'leesahm-compose-draft'
 const MAX_CANVAS_SIZE = 5000
 const MAX_EXPORT_EDGE = 16384
+const MAX_EXPORT_PIXELS = 48 * 1024 * 1024
+const MAX_BOARD_EDGE = 3000
+const MAX_BOARD_PIXELS = 12 * 1024 * 1024
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 const FIXED_ARTWORK_LONG_EDGE = 420
 const F50_LONG_EDGE_CM = 116.8
@@ -292,8 +296,7 @@ export default function Editor() {
   function saveComposition() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     const data = compositionData()
-    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
-    const link = document.createElement('a'); link.download = `leesahm-mapping-${Date.now()}.json`; link.href = url; link.click(); URL.revokeObjectURL(url)
+    downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `leesahm-mapping-${Date.now()}.json`)
     setMessage('오프라인 매핑 파일을 저장했어요.')
   }
 
@@ -344,29 +347,33 @@ export default function Editor() {
         ctx.fillStyle = '#b33b28'; ctx.font = 'bold 17px Arial'; ctx.fillText(`${index + 1}. ${layer.title}`, legendX, y)
         ctx.fillStyle = '#514d47'; ctx.font = '15px Arial'; ctx.fillText(`왼쪽 위 X ${placement.x} · Y ${placement.y} · 회전 ${placement.rotation}°`, legendX, y + 25)
       })
-      const link = document.createElement('a'); link.download = `leesahm-mapping-${Date.now()}.png`; link.href = canvas.toDataURL('image/png'); link.click(); setMessage('오프라인 배치도를 저장했어요.')
+      downloadBlob(await canvasBlob(canvas, 'image/png'), `leesahm-mapping-${Date.now()}.png`); setMessage('오프라인 배치도를 저장했어요.')
     } catch { setMessage('조합 설계도를 만들지 못했습니다. 잠시 후 다시 시도해주세요.') }
   }
 
-  async function renderComposition() {
+  async function renderComposition({ maxEdge = MAX_EXPORT_EDGE, maxPixels = MAX_EXPORT_PIXELS } = {}) {
     const frame = compositionFrame(layers)
-    const sourceScales = []
-    for (const layer of frame.layers) {
-      const image = await loadArtworkImage(layer)
-      sourceScales.push(sourceCrop(image, layer.ratio)[2] / layer.width)
-      image.src = ''
+    const images = []
+    try {
+      for (const layer of frame.layers) images.push(await loadArtworkImage(layer))
+    } catch (error) {
+      images.forEach((image) => { image.src = '' })
+      throw error
     }
+    const sourceScales = frame.layers.map((layer, index) => sourceCrop(images[index], layer.ratio)[2] / layer.width)
     const sourceScale = Math.max(...sourceScales)
-    const scale = exportScale(frame, sourceScales, MAX_EXPORT_EDGE)
+    const scale = boundedExportScale(frame, sourceScales, maxEdge, maxPixels)
     const canvas = document.createElement('canvas'); canvas.width = Math.max(1, Math.round(frame.width * scale)); canvas.height = Math.max(1, Math.round(frame.height * scale))
-    const ctx = canvas.getContext('2d'); ctx.fillStyle = BACKGROUND; ctx.fillRect(0, 0, canvas.width, canvas.height)
-    for (const layer of frame.layers) {
-      const image = await loadArtworkImage(layer)
+    const ctx = canvas.getContext('2d')
+    if (!ctx) throw new Error('브라우저에서 이미지 작업 공간을 만들지 못했어.')
+    ctx.fillStyle = BACKGROUND; ctx.fillRect(0, 0, canvas.width, canvas.height)
+    frame.layers.forEach((layer, index) => {
+      const image = images[index]
       const width = layer.width * scale; const height = layer.width * layer.ratio * scale
       ctx.save(); ctx.translate((layer.x + layer.width / 2) * scale, (layer.y + layer.width * layer.ratio / 2) * scale); ctx.rotate(layer.rotation * Math.PI / 180)
       ctx.drawImage(image, ...sourceCrop(image, layer.ratio), -width / 2, -height / 2, width, height); ctx.restore()
-      image.src = ''
-    }
+    })
+    images.forEach((image) => { image.src = '' })
     return { canvas, limited: scale < sourceScale * .99 }
   }
 
@@ -376,13 +383,13 @@ export default function Editor() {
     try {
       const { canvas, limited } = await renderComposition()
       const blob = await canvasBlob(canvas, 'image/png')
-      const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.download = `leesahm-composition-${Date.now()}.png`; link.href = url; link.click(); URL.revokeObjectURL(url)
+      downloadBlob(blob, `leesahm-composition-${Date.now()}.png`)
       setMessage(limited ? '다운로드 완료 · 조합이 너무 커서 브라우저 최대 해상도에 맞췄어요.' : '원본 해상도로 다운로드했어요.')
     } catch (error) { setMessage(error?.message || '이미지를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.') }
   }
 
   async function makeBoardImage() {
-    const { canvas } = await renderComposition()
+    const { canvas } = await renderComposition({ maxEdge: MAX_BOARD_EDGE, maxPixels: MAX_BOARD_PIXELS })
     for (const quality of [.9, .8, .7, .6, .5, .4, .3, .2, .1]) {
       const blob = await canvasBlob(canvas, 'image/webp', quality)
       if (blob.size <= MAX_UPLOAD_BYTES) return blob
@@ -400,10 +407,10 @@ export default function Editor() {
     try {
       const boardImage = await makeBoardImage()
       const { error: uploadError } = await supabase.storage.from('composition-thumbnails').upload(path, boardImage, { contentType: 'image/webp' })
-      if (uploadError) throw uploadError
+      if (uploadError) throw new Error('게시용 이미지를 서버에 올리지 못했어. 잠시 후 다시 시도해줘.')
       if (editingPost) {
-        const { error: updateError } = await supabase.from('compositions').update({ title: postTitle.trim(), description: postDescription.trim(), category: postCategory, composition: compositionData(), thumbnail_path: path, updated_at: new Date().toISOString() }).eq('id', editingPost.id)
-        if (updateError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw updateError }
+        const { error: updateError } = await supabase.from('compositions').update({ title: postTitle.trim(), description: postDescription.trim(), category: postCategory, composition: compositionData(), thumbnail_path: path, updated_at: new Date().toISOString() }).eq('id', editingPost.id).select('id').single()
+        if (updateError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw new Error('COMBI 수정 내용을 저장하지 못했어. 다시 로그인한 뒤 시도해줘.') }
         await supabase.storage.from('composition-thumbnails').remove([editingPost.thumbnail_path])
         navigate(`/board/${editingPost.id}`)
       } else {
@@ -411,10 +418,10 @@ export default function Editor() {
           user_id: user.id, author_name: user.user_metadata?.display_name || user.email?.split('@')[0] || 'Anonymous',
           title: postTitle.trim(), description: postDescription.trim(), category: postCategory, composition: compositionData(), thumbnail_path: path,
         }).select('id').single()
-        if (insertError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw insertError }
+        if (insertError) { await supabase.storage.from('composition-thumbnails').remove([path]); throw new Error('COMBI를 게시하지 못했어. 다시 로그인한 뒤 시도해줘.') }
         localStorage.removeItem(DRAFT_KEY); navigate(`/board/${data.id}`)
       }
-    } catch { setMessage('게시하지 못했어. 저장소 설정을 확인해줘.') }
+    } catch (error) { setMessage(error?.message || '게시하지 못했어. 잠시 후 다시 시도해줘.') }
     finally { setPublishing(false) }
   }
 

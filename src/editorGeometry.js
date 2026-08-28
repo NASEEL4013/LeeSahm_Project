@@ -92,6 +92,10 @@ export function exportScale(frame, sourceScales, maxEdge = 16384) {
   return Math.min(Math.max(...sourceScales), maxEdge / frame.width, maxEdge / frame.height)
 }
 
+export function boundedExportScale(frame, sourceScales, maxEdge, maxPixels) {
+  return Math.min(exportScale(frame, sourceScales, maxEdge), Math.sqrt(maxPixels / (frame.width * frame.height)))
+}
+
 export function scaleLayers(layers, anchor, factor) {
   return layers.map((layer) => {
     const width = layer.width * factor

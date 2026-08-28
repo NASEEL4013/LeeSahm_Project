@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 import { supabase } from '../supabase.js'
+import { downloadBlob } from '../download.js'
 
 export default function PostDetail() {
   const { id } = useParams(); const navigate = useNavigate(); const { user } = useAuth()
@@ -17,22 +18,21 @@ export default function PostDetail() {
   }, [id])
 
   async function save() {
-    const { error } = await supabase.from('compositions').update({ title: title.trim(), description: description.trim(), category, updated_at: new Date().toISOString() }).eq('id', id)
-    if (error) return setMessage('수정하지 못했어.')
+    const { error } = await supabase.from('compositions').update({ title: title.trim(), description: description.trim(), category, updated_at: new Date().toISOString() }).eq('id', id).select('id').single()
+    if (error) return setMessage('수정하지 못했어. 다시 로그인한 뒤 시도해줘.')
     setPost({ ...post, title: title.trim(), description: description.trim(), category }); setEditing(false); setMessage('수정했어.')
   }
 
   async function remove() {
     if (!window.confirm('이 게시물을 삭제할까?')) return
-    const { error } = await supabase.from('compositions').delete().eq('id', id)
-    if (error) return setMessage('삭제하지 못했어.')
+    const { error } = await supabase.from('compositions').delete().eq('id', id).select('id').single()
+    if (error) return setMessage('삭제하지 못했어. 다시 로그인한 뒤 시도해줘.')
     await supabase.storage.from('composition-thumbnails').remove([post.thumbnail_path])
     navigate('/board')
   }
 
   function downloadMap() {
-    const url = URL.createObjectURL(new Blob([JSON.stringify(post.composition, null, 2)], { type: 'application/json' }))
-    const link = document.createElement('a'); link.href = url; link.download = `leesahm-${post.id}.json`; link.click(); URL.revokeObjectURL(url)
+    downloadBlob(new Blob([JSON.stringify(post.composition, null, 2)], { type: 'application/json' }), `leesahm-${post.id}.json`)
   }
 
   if (!post) return <div className="page-shell"><p className={message ? 'status error' : 'status'}>{message || '게시물을 불러오는 중...'}</p></div>

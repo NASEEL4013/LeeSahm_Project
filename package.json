@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "test": "node --test",
     "preview": "vite preview",
+    "audit:live": "node scripts/audit-live-compositions.mjs",
+    "audit:assets": "node scripts/audit-live-compositions.mjs --all-assets",
     "prepare-artworks": "python scripts/prepare-artworks.py",
     "prepare-notes": "python scripts/prepare-artworks.py --series notes"
   },
