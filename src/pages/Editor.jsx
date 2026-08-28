@@ -19,6 +19,7 @@ const COLOR_FILTERS = [
   ['all', '전체', '#d8d3c9'], ['red', '빨강·주황', '#b7442f'], ['yellow', '노랑·베이지', '#d4a43f'],
   ['green', '초록', '#557b5a'], ['blue', '파랑·남색', '#385b83'], ['purple', '보라·분홍', '#885d80'], ['neutral', '흑백·회색', '#77736d'],
 ]
+const SERIES = [['wave', 'Wave'], ['notes', 'Notes']]
 
 function loadImage(url, timeoutMs) {
   return new Promise((resolve, reject) => {
@@ -105,6 +106,7 @@ async function restoreComposition(data, artworks) {
 export default function Editor() {
   const navigate = useNavigate(); const { id: editingPostId } = useParams(); const { user } = useAuth(); const initialDraft = useRef(editingPostId ? null : readDraft()).current
   const [artworks, setArtworks] = useState([])
+  const [artworkSeries, setArtworkSeries] = useState(initialDraft?.artworkSeries ?? initialDraft?.layers?.[0]?.series ?? 'wave')
   const [pickerQuery, setPickerQuery] = useState('')
   const [colorFilter, setColorFilter] = useState('all')
   const [layers, setLayers] = useState(initialDraft?.layers ?? [])
@@ -124,23 +126,23 @@ export default function Editor() {
   const loadingIdsRef = useRef(new Set())
   const fileInputRef = useRef(null)
 
-  useEffect(() => { fetch('/artworks/data.json').then((res) => res.json()).then(setArtworks).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
+  useEffect(() => { Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url).then((res) => { if (!res.ok) throw new Error(); return res.json() }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
   useEffect(() => {
     if (!editingPostId || !supabase || !artworks.length) return
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
       if (error || (data.user_id !== user?.id && user?.app_metadata?.role !== 'admin')) return setMessage('수정할 게시물을 불러오지 못했어.')
       try {
         restoreComposition(data.composition, artworks).then((restored) => {
-          setEditingPost(data); setLayers(restored.layers); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
+          setEditingPost(data); setLayers(restored.layers); setArtworkSeries(restored.layers[0]?.series ?? 'wave'); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
         }).catch(() => setMessage('저장된 그림 조합을 불러오지 못했어.'))
       } catch { setMessage('저장된 그림 조합을 불러오지 못했어.') }
     })
   }, [editingPostId, artworks, user?.id, user?.app_metadata?.role])
   useEffect(() => {
     if (editingPostId) return undefined
-    const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory })), 400)
+    const timer = window.setTimeout(() => localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory, artworkSeries })), 400)
     return () => window.clearTimeout(timer)
-  }, [editingPostId, layers, canvasSize, postTitle, postDescription, postCategory])
+  }, [editingPostId, layers, canvasSize, postTitle, postDescription, postCategory, artworkSeries])
   useEffect(() => {
     if (!message || message.endsWith('...')) return undefined
     const timer = window.setTimeout(() => setMessage(''), 3000)
@@ -160,8 +162,14 @@ export default function Editor() {
   const filteredArtworks = useMemo(() => {
     const query = pickerQuery.trim().toLowerCase()
     const numberQuery = query.replace(/\D/g, '')
-    return artworks.filter((art) => (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery))))
-  }, [artworks, pickerQuery, colorFilter])
+    return artworks.filter((art) => art.series === artworkSeries && (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery))))
+  }, [artworks, artworkSeries, pickerQuery, colorFilter])
+
+  function changeSeries(series) {
+    if (series === artworkSeries) return
+    if (layers.length && !window.confirm('시리즈를 바꾸면 현재 작업 영역이 비워져요. 바꿀까요?')) return
+    setArtworkSeries(series); setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setPickerQuery(''); setColorFilter('all')
+  }
 
   async function addLayer(art) {
     if (layers.some((layer) => layer.id === art.id)) { setActive(art.id); setSelectedIds([art.id]); return }
@@ -386,7 +394,7 @@ export default function Editor() {
     if (!layers.length) return setMessage('먼저 작품을 하나 이상 추가해주세요.')
     if (!postTitle.trim() || !postDescription.trim()) return setMessage('게시할 작품의 제목과 설명을 입력해주세요.')
     if (!isSupabaseReady) return setMessage('게시판 저장소 연결이 아직 필요해요.')
-    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory })); navigate('/login'); return }
+    if (!user) { localStorage.setItem(DRAFT_KEY, JSON.stringify({ layers, workspaceSize: canvasSize, postTitle, postDescription, postCategory, artworkSeries })); navigate('/login'); return }
     setPublishing(true); setMessage('게시용 이미지를 만드는 중...')
     const path = `${user.id}/${crypto.randomUUID()}.webp`
     try {
@@ -414,7 +422,7 @@ export default function Editor() {
     <div className="compose-page" onPointerMove={handlePointerMove} onPointerUp={endAction} onPointerCancel={endAction}>
       <header className="page-heading compose-header"><div><p className="eyebrow">Interactive studio</p><h1 className="display-title">Compose</h1></div><div><p>작품의 크기는 유지하고, 위치와 방향을 바꿔 새로운 관계를 만들어보세요.</p></div></header>
       <div className="studio">
-        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={`${layers.some((layer) => layer.id === art.id) ? 'picked' : ''} ${loadingArtworkIds.includes(art.id) ? 'loading' : ''}`} onClick={() => addLayer(art)} title={art.title} aria-busy={loadingArtworkIds.includes(art.id)}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
+        <aside className="art-picker"><div className="panel-title"><span>작품 선택</span><span>{layers.length}개</span></div><div className="series-tabs" aria-label="작품 시리즈">{SERIES.map(([value, label]) => <button key={value} className={artworkSeries === value ? 'selected' : ''} aria-pressed={artworkSeries === value} onClick={() => changeSeries(value)}>{label}</button>)}</div><label className="picker-search"><span className="sr-only">작품 검색</span><input value={pickerQuery} onChange={(event) => setPickerQuery(event.target.value)} placeholder="작품 번호 검색" /></label><div className="color-filters">{COLOR_FILTERS.map(([value, label, color]) => <button key={value} className={colorFilter === value ? 'selected' : ''} aria-pressed={colorFilter === value} onClick={() => setColorFilter(value)}><i aria-hidden="true" style={{ backgroundColor: color }} />{label}</button>)}</div><div className="picker-grid">{filteredArtworks.map((art) => <button key={art.id} className={`${layers.some((layer) => layer.id === art.id) ? 'picked' : ''} ${loadingArtworkIds.includes(art.id) ? 'loading' : ''}`} onClick={() => addLayer(art)} title={art.title} aria-busy={loadingArtworkIds.includes(art.id)}><img src={art.pickerUrl ?? art.previewUrl} srcSet={art.pickerLargeUrl ? `${art.pickerUrl} 600w, ${art.pickerLargeUrl} 1000w` : undefined} sizes="(max-width: 900px) 50vw, 200px" alt={art.title} loading="lazy" decoding="async" /></button>)}{artworks.length > 0 && filteredArtworks.length === 0 && <p className="picker-empty">검색 결과가 없어요.</p>}</div></aside>
         <section className="stage-area">
           <div className="stage" ref={stageRef} style={{ backgroundColor: BACKGROUND, aspectRatio: canvasSize.width / canvasSize.height, width: `min(100%, ${72 * canvasSize.width / canvasSize.height}vh)` }} onPointerDown={() => { setActive(null); setSelectedIds([]) }}>
             {guides.x !== null && <span className="snap-guide vertical" style={{ left: `${guides.x / canvasSize.width * 100}%` }} />}

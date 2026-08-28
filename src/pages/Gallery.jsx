@@ -1,27 +1,32 @@
 import { useEffect, useMemo, useState } from 'react'
 
+const SERIES = [['wave', 'Wave'], ['notes', 'Notes']]
+
 export default function Gallery() {
   const [artworks, setArtworks] = useState([])
   const [query, setQuery] = useState('')
+  const [series, setSeries] = useState('wave')
   const [error, setError] = useState('')
   const [viewing, setViewing] = useState(null)
 
   useEffect(() => {
-    fetch('/artworks/data.json').then((res) => {
+    Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url).then((res) => {
       if (!res.ok) throw new Error('작품 목록을 불러오지 못했습니다.')
       return res.json()
-    }).then(setArtworks).catch((err) => setError(err.message))
+    }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch((err) => setError(err.message))
   }, [])
 
-  const filtered = useMemo(() => artworks.filter((art) => art.title.toLowerCase().includes(query.toLowerCase())), [artworks, query])
+  const seriesArtworks = useMemo(() => artworks.filter((art) => art.series === series), [artworks, series])
+  const filtered = useMemo(() => seriesArtworks.filter((art) => art.title.toLowerCase().includes(query.toLowerCase())), [seriesArtworks, query])
 
   return (
     <div className="page-shell gallery-page">
       <header className="page-heading">
-        <div><p className="eyebrow">Archive · {artworks.length || '—'} works</p><h1 className="display-title">Works</h1></div>
+        <div><p className="eyebrow">Archive · {seriesArtworks.length || '—'} works</p><h1 className="display-title">Works</h1></div>
         <div><p>Lee Sahm의 작업에 축적된 선과 색, 화면을 가로지르는 리듬을 천천히 감상해보세요.</p></div>
       </header>
       <div className="gallery-tools">
+        <div className="series-tabs" aria-label="작품 시리즈">{SERIES.map(([value, label]) => <button key={value} className={series === value ? 'selected' : ''} aria-pressed={series === value} onClick={() => { setSeries(value); setQuery('') }}>{label}</button>)}</div>
         <label className="search"><span>작품 찾기</span><input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="작품 번호나 제목을 입력하세요" /></label>
         <span className="result-count">{filtered.length} works</span>
       </div>

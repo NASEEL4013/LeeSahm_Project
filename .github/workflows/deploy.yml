@@ -33,6 +33,14 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Check Notes series changes
+        id: notes_changes
+        run: |
+          if git diff --quiet HEAD^ HEAD -- public/artworks/notes/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Install SFTP client
         run: |
           sudo apt-get update -qq
@@ -43,6 +51,22 @@ jobs:
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
             mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
+            bye
+          "
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
+      - name: Upload Notes series
+        if: steps.notes_changes.outputs.changed == 'true'
+        run: |
+          python -m pip install --quiet pillow
+          python scripts/prepare-artworks.py --series notes
+          lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
+            set sftp:auto-confirm yes;
+            mirror --reverse --only-missing dist/artworks/notes/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/previews/;
+            mirror --reverse --only-missing hostinger-upload/artworks/notes/originals/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/originals/;
+            put dist/artworks/notes/data.json -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/data.json;
             bye
           "
         env:

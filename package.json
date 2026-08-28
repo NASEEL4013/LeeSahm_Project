@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare-artworks": "python scripts/prepare-artworks.py"
+    "prepare-artworks": "python scripts/prepare-artworks.py",
+    "prepare-notes": "python scripts/prepare-artworks.py --series notes"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

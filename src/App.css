@@ -75,6 +75,9 @@
 .controls .panel-title { font-size:.9rem; }
 .panel-title { display:flex; justify-content:space-between; margin-bottom:1.2rem; padding-bottom:.8rem; font-size:.72rem; font-weight:600; letter-spacing:.08em; border-bottom:1px solid var(--line); }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.series-tabs { display:grid; grid-template-columns:1fr 1fr; gap:.35rem; margin-bottom:.8rem; }
+.series-tabs button { padding:.6rem; cursor:pointer; color:var(--muted); background:#fff; border:1px solid var(--line); font-size:.66rem; letter-spacing:.08em; }
+.series-tabs button.selected { color:#fff; background:var(--ink); border-color:var(--ink); }
 .picker-search { display:block; margin-bottom:.8rem; }
 .picker-search input { width:100%; padding:.65rem .7rem; color:var(--ink); background:#fff; border:1px solid var(--line); outline:0; font-size:.7rem; }
 .picker-search input:focus { border-color:var(--red); box-shadow:0 0 0 2px rgba(179,59,40,.12); }

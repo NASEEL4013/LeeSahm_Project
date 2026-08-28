@@ -1,5 +1,7 @@
 import concurrent.futures
+import argparse
 import json
+import re
 import time
 import urllib.request
 from collections import defaultdict
@@ -8,12 +10,12 @@ from pathlib import Path
 from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "drive-artworks.json"
-ORIGINALS = ROOT / "hostinger-upload" / "artworks" / "originals"
-PREVIEWS = ROOT / "public" / "artworks" / "previews"
-DATA = ROOT / "public" / "artworks" / "data.json"
 F50_RATIO = 116.8 / 91.0
 PICKER_SIZES = (600, 1000)
+SERIES = {
+    "wave": {"manifest": "drive-artworks.json", "prefix": "", "id_start": 1},
+    "notes": {"manifest": "drive-notes.json", "prefix": "notes/", "id_start": 10001},
+}
 
 
 def normalize_f50(image):
@@ -60,18 +62,16 @@ def color_tags(path):
 
 
 def number(title):
-    try:
-        return int(title.lower().split("wave-", 1)[1].split(".", 1)[0].split("확대", 1)[0])
-    except (IndexError, ValueError):
-        return 999999
+    match = re.search(r"(?:wave-|SAHMLEE)(\d+)", title, re.IGNORECASE)
+    return int(match.group(1)) if match else 999999
 
 
-def prepare(item):
+def prepare(item, series, originals, previews):
     order, file = item
     base = f"{number(file['title']):03d}-{file['id'][:8]}"
-    original = ORIGINALS / f"{base}.jpg"
-    preview = PREVIEWS / f"{base}.webp"
-    picker_previews = {size: PREVIEWS / f"{base}-{size}.webp" for size in PICKER_SIZES}
+    original = originals / f"{base}.jpg"
+    preview = previews / f"{base}.webp"
+    picker_previews = {size: previews / f"{base}-{size}.webp" for size in PICKER_SIZES}
 
     if not original.exists() or original.stat().st_size != file["size"]:
         url = f"https://drive.usercontent.google.com/download?id={file['id']}&export=download&confirm=t"
@@ -88,7 +88,9 @@ def prepare(item):
                 time.sleep(2 ** attempt)
 
     with Image.open(original) as image:
-        image = normalize_f50(ImageOps.exif_transpose(image))
+        image = ImageOps.exif_transpose(image)
+        if series == "wave":
+            image = normalize_f50(image)
         for size, path in picker_previews.items():
             picker_image = image.copy()
             picker_image.thumbnail((size, size), Image.Resampling.LANCZOS)
@@ -97,29 +99,39 @@ def prepare(item):
         image.convert("RGB").save(preview, "WEBP", quality=82, method=6)
 
     return {
-        "id": order + 1,
+        "id": SERIES[series]["id_start"] + order,
+        "series": series,
         "title": file["title"].rsplit(".", 1)[0],
-        "pickerUrl": f"/artworks/previews/{picker_previews[600].name}",
-        "pickerLargeUrl": f"/artworks/previews/{picker_previews[1000].name}",
-        "previewUrl": f"/artworks/previews/{preview.name}",
-        "originalUrl": f"/artworks/originals/{original.name}",
+        "pickerUrl": f"/artworks/{SERIES[series]['prefix']}previews/{picker_previews[600].name}",
+        "pickerLargeUrl": f"/artworks/{SERIES[series]['prefix']}previews/{picker_previews[1000].name}",
+        "previewUrl": f"/artworks/{SERIES[series]['prefix']}previews/{preview.name}",
+        "originalUrl": f"/artworks/{SERIES[series]['prefix']}originals/{original.name}",
         "colors": color_tags(preview),
     }
 
 
 def main():
-    files = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--series", choices=SERIES, default="wave")
+    series = parser.parse_args().series
+    config = SERIES[series]
+    manifest = ROOT / config["manifest"]
+    originals = ROOT / "hostinger-upload" / "artworks" / config["prefix"] / "originals"
+    previews = ROOT / "public" / "artworks" / config["prefix"] / "previews"
+    data = ROOT / "public" / "artworks" / config["prefix"] / "data.json"
+    files = json.loads(manifest.read_text(encoding="utf-8"))
     files = [file for file in files if "확대" not in file["title"]]
     files.sort(key=lambda file: (number(file["title"]), file["title"], file["id"]))
     files = list({file["title"].rsplit(".", 1)[0]: file for file in reversed(files)}.values())[::-1]
-    ORIGINALS.mkdir(parents=True, exist_ok=True)
-    PREVIEWS.mkdir(parents=True, exist_ok=True)
+    originals.mkdir(parents=True, exist_ok=True)
+    previews.mkdir(parents=True, exist_ok=True)
+    data.parent.mkdir(parents=True, exist_ok=True)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
-        artworks = list(pool.map(prepare, enumerate(files)))
+        artworks = list(pool.map(lambda item: prepare(item, series, originals, previews), enumerate(files)))
 
-    DATA.write_text(json.dumps(artworks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Prepared {len(artworks)} originals and previews")
+    data.write_text(json.dumps(artworks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Prepared {len(artworks)} {series} originals and previews")
 
 
 if __name__ == "__main__":
