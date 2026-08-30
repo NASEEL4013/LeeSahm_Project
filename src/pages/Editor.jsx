@@ -74,7 +74,7 @@ function readDraft() {
   } catch { return null }
 }
 
-async function restoreComposition(data, artworks) {
+async function restoreComposition(data, artworks, { allowOverlap = false } = {}) {
   if (data.format === 'leesahm-mapping' && data.version === 1) {
     const width = Number(data.composition?.width) / CM_PER_PIXEL
     const height = Number(data.composition?.height) / CM_PER_PIXEL
@@ -90,7 +90,7 @@ async function restoreComposition(data, artworks) {
       const layer = { ...artwork, x: 0, y: 0, width: FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio), ratio, rotation: values[2] }
       return placeByTopLeft(layer, values[0] / CM_PER_PIXEL, values[1] / CM_PER_PIXEL)
     }))
-    if (layers.some((layer, index) => collides([layer], layers.slice(index + 1))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
+    if ((!allowOverlap && layers.some((layer, index) => collides([layer], layers.slice(index + 1)))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
     return fitWorkspace(layers)
   }
   const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
@@ -136,7 +136,7 @@ export default function Editor() {
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
       if (error || (data.user_id !== user?.id && user?.app_metadata?.role !== 'admin')) return setMessage('수정할 게시물을 불러오지 못했어.')
       try {
-        restoreComposition(data.composition, artworks).then((restored) => {
+        restoreComposition(data.composition, artworks, { allowOverlap: true }).then((restored) => {
           setEditingPost(data); setLayers(restored.layers); setArtworkSeries(restored.layers[0]?.series ?? 'wave'); setCanvasSize(restored.canvasSize); setPostTitle(data.title); setPostDescription(data.description); setPostCategory(data.category ?? 1); setMessage('기존 그림 조합을 불러왔어.')
         }).catch(() => setMessage('저장된 그림 조합을 불러오지 못했어.'))
       } catch { setMessage('저장된 그림 조합을 불러오지 못했어.') }
