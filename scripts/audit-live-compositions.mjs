@@ -25,7 +25,6 @@ const posts = await response.json()
 const wave = JSON.parse(fs.readFileSync('public/artworks/data.json', 'utf8'))
 const notes = JSON.parse(fs.readFileSync('public/artworks/notes/data.json', 'utf8'))
 const artworkIds = new Set([...wave, ...notes].map((artwork) => Number(artwork.id)))
-const artworkTitles = new Set([...wave, ...notes].map((artwork) => artwork.title))
 const artworkById = new Map([...wave, ...notes].map((artwork) => [Number(artwork.id), artwork]))
 const artworkByTitle = new Map([...wave, ...notes].map((artwork) => [artwork.title, artwork]))
 const usedArtworks = new Map()
@@ -39,8 +38,10 @@ for (const post of posts) {
       continue
     }
     for (const placement of composition.placements) {
-      if (!artworkTitles.has(placement.title)) issues.push(`${post.id}: artwork title is missing (${placement.title})`)
-      else usedArtworks.set(placement.title, artworkByTitle.get(placement.title))
+      const artwork = artworkById.get(Number(placement.artworkId)) ?? artworkByTitle.get(placement.title)
+      if (!artwork) issues.push(`${post.id}: artwork is missing (${placement.artworkId ?? placement.title})`)
+      else usedArtworks.set(artwork.id, artwork)
+      if (placement.artworkId != null && (!Number.isFinite(Number(placement.ratio)) || Number(placement.ratio) <= 0)) issues.push(`${post.id}: artwork ratio is invalid (${placement.artworkId})`)
     }
     continue
   }

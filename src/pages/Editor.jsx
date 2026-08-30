@@ -43,6 +43,14 @@ async function loadArtworkImage(layer) {
   throw new Error(`${layer.title} 원본 이미지를 불러오지 못해서 다운로드를 중단했어.`)
 }
 
+async function loadArtworkPreview(artwork) {
+  for (const url of [...new Set([artwork.previewUrl, artwork.pickerLargeUrl, artwork.pickerUrl, artwork.originalUrl].filter(Boolean))]) {
+    try { return await loadImage(url, 10000) }
+    catch { /* try the next available artwork image */ }
+  }
+  throw new Error(`${artwork.title} 이미지를 불러오지 못했어.`)
+}
+
 function sourceCrop(image, ratio) {
   const sourceRatio = image.naturalWidth / image.naturalHeight
   if (sourceRatio > 1 / ratio) {
@@ -79,14 +87,14 @@ async function restoreComposition(data, artworks) {
     const width = Number(data.composition?.width) / CM_PER_PIXEL
     const height = Number(data.composition?.height) / CM_PER_PIXEL
     if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.placements)) throw new Error('Invalid mapping')
-    const titles = new Set()
+    const artworkIds = new Set()
     const layers = await Promise.all(data.placements.map(async (saved) => {
       const artwork = artworks.find((item) => item.id === Number(saved.artworkId)) ?? artworks.find((item) => item.title === saved.title)
       const values = [saved.x, saved.y, saved.rotation].map(Number)
-      if (!artwork || titles.has(saved.title) || values.some((value) => !Number.isFinite(value)) || values[0] < 0 || values[1] < 0 || values[2] % 90 !== 0) throw new Error('Invalid placement')
-      titles.add(saved.title)
+      if (!artwork || artworkIds.has(artwork.id) || values.some((value) => !Number.isFinite(value)) || values[0] < 0 || values[1] < 0 || values[2] % 90 !== 0) throw new Error('Invalid placement')
+      artworkIds.add(artwork.id)
       const savedRatio = Number(saved.ratio)
-      const ratio = Number.isFinite(savedRatio) && savedRatio > 0 ? savedRatio : await loadImage(artwork.previewUrl, 10000).then((image) => image.naturalHeight / image.naturalWidth)
+      const ratio = Number.isFinite(savedRatio) && savedRatio > 0 ? savedRatio : await loadArtworkPreview(artwork).then((image) => image.naturalHeight / image.naturalWidth)
       const layer = { ...artwork, x: 0, y: 0, width: FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio), ratio, rotation: values[2] }
       return placeByTopLeft(layer, values[0] / CM_PER_PIXEL, values[1] / CM_PER_PIXEL)
     }))
@@ -181,7 +189,7 @@ export default function Editor() {
     loadingIdsRef.current.add(art.id)
     setLoadingArtworkIds((ids) => [...ids, art.id])
     try {
-      const image = await loadImage(art.previewUrl, 10000)
+      const image = await loadArtworkPreview(art)
       const ratio = image.naturalHeight / image.naturalWidth
       const width = FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio)
       const next = findLargestOpenPlacement({ ...art, x: 0, y: 0, width, ratio, rotation: 0 }, layers, { width: MAX_CANVAS_SIZE, height: MAX_CANVAS_SIZE }, width)
@@ -331,7 +339,7 @@ export default function Editor() {
         ctx.beginPath(); ctx.moveTo(x, mapY); ctx.lineTo(x, mapY + mapHeight); ctx.stroke()
         ctx.beginPath(); ctx.moveTo(mapX, y); ctx.lineTo(mapX + mapWidth, y); ctx.stroke()
       }
-      const images = await Promise.all(layers.map((layer) => loadImage(layer.previewUrl, 10000)))
+      const images = await Promise.all(layers.map(loadArtworkPreview))
       frame.layers.forEach((layer, index) => {
         const height = layer.width * layer.ratio; const centerX = mapX + (layer.x + layer.width / 2) * mapScale; const centerY = mapY + (layer.y + height / 2) * mapScale
         ctx.save(); ctx.translate(centerX, centerY); ctx.rotate(layer.rotation * Math.PI / 180)
