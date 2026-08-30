@@ -74,7 +74,9 @@ export function physicalMapping(layers, centimetersPerPixel) {
     placements: layers.map((layer, index) => {
       const box = boxes[index]
       return {
+        artworkId: layer.id,
         title: layer.title,
+        ratio: layer.ratio,
         x: roundToHundredth((box.left - left) * centimetersPerPixel),
         y: roundToHundredth((box.top - top) * centimetersPerPixel),
         rotation: ((layer.rotation % 360) + 360) % 360,

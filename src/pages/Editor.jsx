@@ -81,12 +81,12 @@ async function restoreComposition(data, artworks) {
     if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.placements)) throw new Error('Invalid mapping')
     const titles = new Set()
     const layers = await Promise.all(data.placements.map(async (saved) => {
-      const artwork = artworks.find((item) => item.title === saved.title)
+      const artwork = artworks.find((item) => item.id === Number(saved.artworkId)) ?? artworks.find((item) => item.title === saved.title)
       const values = [saved.x, saved.y, saved.rotation].map(Number)
       if (!artwork || titles.has(saved.title) || values.some((value) => !Number.isFinite(value)) || values[0] < 0 || values[1] < 0 || values[2] % 90 !== 0) throw new Error('Invalid placement')
       titles.add(saved.title)
-      const image = await loadImage(artwork.previewUrl, 10000)
-      const ratio = image.naturalHeight / image.naturalWidth
+      const savedRatio = Number(saved.ratio)
+      const ratio = Number.isFinite(savedRatio) && savedRatio > 0 ? savedRatio : await loadImage(artwork.previewUrl, 10000).then((image) => image.naturalHeight / image.naturalWidth)
       const layer = { ...artwork, x: 0, y: 0, width: FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio), ratio, rotation: values[2] }
       return placeByTopLeft(layer, values[0] / CM_PER_PIXEL, values[1] / CM_PER_PIXEL)
     }))
