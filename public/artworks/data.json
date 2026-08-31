@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "series": "wave",
     "title": "wave-001",
     "pickerUrl": "/artworks/previews/001-1riNwZli-600.webp",
     "pickerLargeUrl": "/artworks/previews/001-1riNwZli-1000.webp",
@@ -12,6 +13,7 @@
   },
   {
     "id": 2,
+    "series": "wave",
     "title": "wave-002",
     "pickerUrl": "/artworks/previews/002-17O9W5h3-600.webp",
     "pickerLargeUrl": "/artworks/previews/002-17O9W5h3-1000.webp",
@@ -24,6 +26,7 @@
   },
   {
     "id": 3,
+    "series": "wave",
     "title": "wave-003",
     "pickerUrl": "/artworks/previews/003-1OdfYa9s-600.webp",
     "pickerLargeUrl": "/artworks/previews/003-1OdfYa9s-1000.webp",
@@ -35,6 +38,7 @@
   },
   {
     "id": 4,
+    "series": "wave",
     "title": "wave-004",
     "pickerUrl": "/artworks/previews/004-1GmDXSV2-600.webp",
     "pickerLargeUrl": "/artworks/previews/004-1GmDXSV2-1000.webp",
@@ -47,6 +51,7 @@
   },
   {
     "id": 5,
+    "series": "wave",
     "title": "wave-005",
     "pickerUrl": "/artworks/previews/005-1MEUrJ9T-600.webp",
     "pickerLargeUrl": "/artworks/previews/005-1MEUrJ9T-1000.webp",
@@ -59,6 +64,7 @@
   },
   {
     "id": 6,
+    "series": "wave",
     "title": "wave-006",
     "pickerUrl": "/artworks/previews/006-1XAXa3_r-600.webp",
     "pickerLargeUrl": "/artworks/previews/006-1XAXa3_r-1000.webp",
@@ -71,6 +77,7 @@
   },
   {
     "id": 7,
+    "series": "wave",
     "title": "wave-007",
     "pickerUrl": "/artworks/previews/007-1DtuwUF7-600.webp",
     "pickerLargeUrl": "/artworks/previews/007-1DtuwUF7-1000.webp",
@@ -83,6 +90,7 @@
   },
   {
     "id": 8,
+    "series": "wave",
     "title": "wave-008",
     "pickerUrl": "/artworks/previews/008-1NInjx7Z-600.webp",
     "pickerLargeUrl": "/artworks/previews/008-1NInjx7Z-1000.webp",
@@ -94,6 +102,7 @@
   },
   {
     "id": 9,
+    "series": "wave",
     "title": "wave-009",
     "pickerUrl": "/artworks/previews/009-197-CHxQ-600.webp",
     "pickerLargeUrl": "/artworks/previews/009-197-CHxQ-1000.webp",
@@ -105,6 +114,7 @@
   },
   {
     "id": 10,
+    "series": "wave",
     "title": "wave-010",
     "pickerUrl": "/artworks/previews/010-1g3CNObR-600.webp",
     "pickerLargeUrl": "/artworks/previews/010-1g3CNObR-1000.webp",
@@ -116,6 +126,7 @@
   },
   {
     "id": 11,
+    "series": "wave",
     "title": "wave-011",
     "pickerUrl": "/artworks/previews/011-1bE896_0-600.webp",
     "pickerLargeUrl": "/artworks/previews/011-1bE896_0-1000.webp",
@@ -128,6 +139,7 @@
   },
   {
     "id": 12,
+    "series": "wave",
     "title": "wave-012",
     "pickerUrl": "/artworks/previews/012-1YW7Coh--600.webp",
     "pickerLargeUrl": "/artworks/previews/012-1YW7Coh--1000.webp",
@@ -140,6 +152,7 @@
   },
   {
     "id": 13,
+    "series": "wave",
     "title": "wave-013",
     "pickerUrl": "/artworks/previews/013-1gUIM4zW-600.webp",
     "pickerLargeUrl": "/artworks/previews/013-1gUIM4zW-1000.webp",
@@ -151,6 +164,7 @@
   },
   {
     "id": 14,
+    "series": "wave",
     "title": "wave-014",
     "pickerUrl": "/artworks/previews/014-1v5qfLY0-600.webp",
     "pickerLargeUrl": "/artworks/previews/014-1v5qfLY0-1000.webp",
@@ -163,6 +177,7 @@
   },
   {
     "id": 15,
+    "series": "wave",
     "title": "wave-015",
     "pickerUrl": "/artworks/previews/015-1nxye1zW-600.webp",
     "pickerLargeUrl": "/artworks/previews/015-1nxye1zW-1000.webp",
@@ -175,6 +190,7 @@
   },
   {
     "id": 16,
+    "series": "wave",
     "title": "wave-016",
     "pickerUrl": "/artworks/previews/016-1SwenIfp-600.webp",
     "pickerLargeUrl": "/artworks/previews/016-1SwenIfp-1000.webp",
@@ -187,6 +203,7 @@
   },
   {
     "id": 17,
+    "series": "wave",
     "title": "wave-017",
     "pickerUrl": "/artworks/previews/017-15cKKEe4-600.webp",
     "pickerLargeUrl": "/artworks/previews/017-15cKKEe4-1000.webp",
@@ -198,6 +215,7 @@
   },
   {
     "id": 18,
+    "series": "wave",
     "title": "wave-018",
     "pickerUrl": "/artworks/previews/018-1Gqqu_FC-600.webp",
     "pickerLargeUrl": "/artworks/previews/018-1Gqqu_FC-1000.webp",
@@ -210,6 +228,7 @@
   },
   {
     "id": 19,
+    "series": "wave",
     "title": "wave-019",
     "pickerUrl": "/artworks/previews/019-1z3yaKyh-600.webp",
     "pickerLargeUrl": "/artworks/previews/019-1z3yaKyh-1000.webp",
@@ -222,6 +241,7 @@
   },
   {
     "id": 20,
+    "series": "wave",
     "title": "wave-020",
     "pickerUrl": "/artworks/previews/020-1WOLnjYq-600.webp",
     "pickerLargeUrl": "/artworks/previews/020-1WOLnjYq-1000.webp",
@@ -233,6 +253,7 @@
   },
   {
     "id": 21,
+    "series": "wave",
     "title": "wave-021",
     "pickerUrl": "/artworks/previews/021-1c1zsOYx-600.webp",
     "pickerLargeUrl": "/artworks/previews/021-1c1zsOYx-1000.webp",
@@ -244,6 +265,7 @@
   },
   {
     "id": 22,
+    "series": "wave",
     "title": "wave-022",
     "pickerUrl": "/artworks/previews/022-1y-xANhp-600.webp",
     "pickerLargeUrl": "/artworks/previews/022-1y-xANhp-1000.webp",
@@ -256,6 +278,7 @@
   },
   {
     "id": 23,
+    "series": "wave",
     "title": "wave-023",
     "pickerUrl": "/artworks/previews/023-1blZRe40-600.webp",
     "pickerLargeUrl": "/artworks/previews/023-1blZRe40-1000.webp",
@@ -268,6 +291,7 @@
   },
   {
     "id": 24,
+    "series": "wave",
     "title": "wave-24",
     "pickerUrl": "/artworks/previews/024-1SraAqJw-600.webp",
     "pickerLargeUrl": "/artworks/previews/024-1SraAqJw-1000.webp",
@@ -279,6 +303,7 @@
   },
   {
     "id": 25,
+    "series": "wave",
     "title": "wave-025",
     "pickerUrl": "/artworks/previews/025-1hcm6cer-600.webp",
     "pickerLargeUrl": "/artworks/previews/025-1hcm6cer-1000.webp",
@@ -291,6 +316,7 @@
   },
   {
     "id": 26,
+    "series": "wave",
     "title": "wave-026",
     "pickerUrl": "/artworks/previews/026-1EbLQmxO-600.webp",
     "pickerLargeUrl": "/artworks/previews/026-1EbLQmxO-1000.webp",
@@ -303,6 +329,7 @@
   },
   {
     "id": 27,
+    "series": "wave",
     "title": "wave-027",
     "pickerUrl": "/artworks/previews/027-1P1qP6dq-600.webp",
     "pickerLargeUrl": "/artworks/previews/027-1P1qP6dq-1000.webp",
@@ -315,6 +342,7 @@
   },
   {
     "id": 28,
+    "series": "wave",
     "title": "wave-28",
     "pickerUrl": "/artworks/previews/028-1hGsKRPm-600.webp",
     "pickerLargeUrl": "/artworks/previews/028-1hGsKRPm-1000.webp",
@@ -326,6 +354,7 @@
   },
   {
     "id": 29,
+    "series": "wave",
     "title": "wave-029",
     "pickerUrl": "/artworks/previews/029-1tPSXwJx-600.webp",
     "pickerLargeUrl": "/artworks/previews/029-1tPSXwJx-1000.webp",
@@ -338,6 +367,7 @@
   },
   {
     "id": 30,
+    "series": "wave",
     "title": "wave-030",
     "pickerUrl": "/artworks/previews/030-150s6Whw-600.webp",
     "pickerLargeUrl": "/artworks/previews/030-150s6Whw-1000.webp",
@@ -350,6 +380,7 @@
   },
   {
     "id": 31,
+    "series": "wave",
     "title": "wave-031",
     "pickerUrl": "/artworks/previews/031-16BkdTIm-600.webp",
     "pickerLargeUrl": "/artworks/previews/031-16BkdTIm-1000.webp",
@@ -361,6 +392,7 @@
   },
   {
     "id": 32,
+    "series": "wave",
     "title": "wave-32",
     "pickerUrl": "/artworks/previews/032-1w9n6B2s-600.webp",
     "pickerLargeUrl": "/artworks/previews/032-1w9n6B2s-1000.webp",
@@ -372,6 +404,7 @@
   },
   {
     "id": 33,
+    "series": "wave",
     "title": "wave-033",
     "pickerUrl": "/artworks/previews/033-1RweZhoB-600.webp",
     "pickerLargeUrl": "/artworks/previews/033-1RweZhoB-1000.webp",
@@ -383,6 +416,7 @@
   },
   {
     "id": 34,
+    "series": "wave",
     "title": "wave-034",
     "pickerUrl": "/artworks/previews/034-1AFeTREE-600.webp",
     "pickerLargeUrl": "/artworks/previews/034-1AFeTREE-1000.webp",
@@ -394,6 +428,7 @@
   },
   {
     "id": 35,
+    "series": "wave",
     "title": "wave-035",
     "pickerUrl": "/artworks/previews/035-1BZ-RgLP-600.webp",
     "pickerLargeUrl": "/artworks/previews/035-1BZ-RgLP-1000.webp",
@@ -406,6 +441,7 @@
   },
   {
     "id": 36,
+    "series": "wave",
     "title": "wave-036",
     "pickerUrl": "/artworks/previews/036-1Wa9oF_p-600.webp",
     "pickerLargeUrl": "/artworks/previews/036-1Wa9oF_p-1000.webp",
@@ -417,6 +453,7 @@
   },
   {
     "id": 37,
+    "series": "wave",
     "title": "wave-037",
     "pickerUrl": "/artworks/previews/037-1L8Fe1m7-600.webp",
     "pickerLargeUrl": "/artworks/previews/037-1L8Fe1m7-1000.webp",
@@ -429,6 +466,7 @@
   },
   {
     "id": 38,
+    "series": "wave",
     "title": "wave-038",
     "pickerUrl": "/artworks/previews/038-1nVimLAW-600.webp",
     "pickerLargeUrl": "/artworks/previews/038-1nVimLAW-1000.webp",
@@ -441,6 +479,7 @@
   },
   {
     "id": 39,
+    "series": "wave",
     "title": "wave-039",
     "pickerUrl": "/artworks/previews/039-1jUBm-cL-600.webp",
     "pickerLargeUrl": "/artworks/previews/039-1jUBm-cL-1000.webp",
@@ -453,6 +492,7 @@
   },
   {
     "id": 40,
+    "series": "wave",
     "title": "wave-040",
     "pickerUrl": "/artworks/previews/040-1cwrJxsg-600.webp",
     "pickerLargeUrl": "/artworks/previews/040-1cwrJxsg-1000.webp",
@@ -465,6 +505,7 @@
   },
   {
     "id": 41,
+    "series": "wave",
     "title": "wave-041",
     "pickerUrl": "/artworks/previews/041-1ogTHEeF-600.webp",
     "pickerLargeUrl": "/artworks/previews/041-1ogTHEeF-1000.webp",
@@ -476,6 +517,7 @@
   },
   {
     "id": 42,
+    "series": "wave",
     "title": "wave-042",
     "pickerUrl": "/artworks/previews/042-15HSLznH-600.webp",
     "pickerLargeUrl": "/artworks/previews/042-15HSLznH-1000.webp",
@@ -487,6 +529,7 @@
   },
   {
     "id": 43,
+    "series": "wave",
     "title": "wave-043",
     "pickerUrl": "/artworks/previews/043-1lAOLyA0-600.webp",
     "pickerLargeUrl": "/artworks/previews/043-1lAOLyA0-1000.webp",
@@ -498,6 +541,7 @@
   },
   {
     "id": 44,
+    "series": "wave",
     "title": "wave-044",
     "pickerUrl": "/artworks/previews/044-1Jh64AEw-600.webp",
     "pickerLargeUrl": "/artworks/previews/044-1Jh64AEw-1000.webp",
@@ -509,6 +553,7 @@
   },
   {
     "id": 45,
+    "series": "wave",
     "title": "wave-045",
     "pickerUrl": "/artworks/previews/045-1DZmYXWV-600.webp",
     "pickerLargeUrl": "/artworks/previews/045-1DZmYXWV-1000.webp",
@@ -521,6 +566,7 @@
   },
   {
     "id": 46,
+    "series": "wave",
     "title": "wave-046",
     "pickerUrl": "/artworks/previews/046-1Rs9JkNh-600.webp",
     "pickerLargeUrl": "/artworks/previews/046-1Rs9JkNh-1000.webp",
@@ -532,6 +578,7 @@
   },
   {
     "id": 47,
+    "series": "wave",
     "title": "wave-047",
     "pickerUrl": "/artworks/previews/047-1w1-gSG_-600.webp",
     "pickerLargeUrl": "/artworks/previews/047-1w1-gSG_-1000.webp",
@@ -544,6 +591,7 @@
   },
   {
     "id": 48,
+    "series": "wave",
     "title": "wave-048",
     "pickerUrl": "/artworks/previews/048-1iuFGNBn-600.webp",
     "pickerLargeUrl": "/artworks/previews/048-1iuFGNBn-1000.webp",
@@ -555,6 +603,7 @@
   },
   {
     "id": 49,
+    "series": "wave",
     "title": "wave-049",
     "pickerUrl": "/artworks/previews/049-183TVUYF-600.webp",
     "pickerLargeUrl": "/artworks/previews/049-183TVUYF-1000.webp",
@@ -567,6 +616,7 @@
   },
   {
     "id": 50,
+    "series": "wave",
     "title": "wave-050",
     "pickerUrl": "/artworks/previews/050-1_wHwxf9-600.webp",
     "pickerLargeUrl": "/artworks/previews/050-1_wHwxf9-1000.webp",
@@ -579,6 +629,7 @@
   },
   {
     "id": 51,
+    "series": "wave",
     "title": "wave-051",
     "pickerUrl": "/artworks/previews/051-1OvCTdv2-600.webp",
     "pickerLargeUrl": "/artworks/previews/051-1OvCTdv2-1000.webp",
@@ -591,6 +642,7 @@
   },
   {
     "id": 52,
+    "series": "wave",
     "title": "wave-052",
     "pickerUrl": "/artworks/previews/052-1VncFHXI-600.webp",
     "pickerLargeUrl": "/artworks/previews/052-1VncFHXI-1000.webp",
@@ -602,6 +654,7 @@
   },
   {
     "id": 53,
+    "series": "wave",
     "title": "wave-053",
     "pickerUrl": "/artworks/previews/053-1xFBHN02-600.webp",
     "pickerLargeUrl": "/artworks/previews/053-1xFBHN02-1000.webp",
@@ -614,6 +667,7 @@
   },
   {
     "id": 54,
+    "series": "wave",
     "title": "wave-054",
     "pickerUrl": "/artworks/previews/054-1cfnoMuP-600.webp",
     "pickerLargeUrl": "/artworks/previews/054-1cfnoMuP-1000.webp",
@@ -625,6 +679,7 @@
   },
   {
     "id": 55,
+    "series": "wave",
     "title": "wave-055",
     "pickerUrl": "/artworks/previews/055-11ERoYby-600.webp",
     "pickerLargeUrl": "/artworks/previews/055-11ERoYby-1000.webp",
@@ -637,6 +692,7 @@
   },
   {
     "id": 56,
+    "series": "wave",
     "title": "wave-056",
     "pickerUrl": "/artworks/previews/056-1DcM3aec-600.webp",
     "pickerLargeUrl": "/artworks/previews/056-1DcM3aec-1000.webp",
@@ -648,6 +704,7 @@
   },
   {
     "id": 57,
+    "series": "wave",
     "title": "wave-057",
     "pickerUrl": "/artworks/previews/057-1Wxpe0Cm-600.webp",
     "pickerLargeUrl": "/artworks/previews/057-1Wxpe0Cm-1000.webp",
@@ -659,6 +716,7 @@
   },
   {
     "id": 58,
+    "series": "wave",
     "title": "wave-058",
     "pickerUrl": "/artworks/previews/058-1GMeBZ6Q-600.webp",
     "pickerLargeUrl": "/artworks/previews/058-1GMeBZ6Q-1000.webp",
@@ -671,6 +729,7 @@
   },
   {
     "id": 59,
+    "series": "wave",
     "title": "wave-059",
     "pickerUrl": "/artworks/previews/059-1R47VCVq-600.webp",
     "pickerLargeUrl": "/artworks/previews/059-1R47VCVq-1000.webp",
@@ -682,6 +741,7 @@
   },
   {
     "id": 60,
+    "series": "wave",
     "title": "wave-060",
     "pickerUrl": "/artworks/previews/060-1K_7Qqzp-600.webp",
     "pickerLargeUrl": "/artworks/previews/060-1K_7Qqzp-1000.webp",
@@ -694,6 +754,7 @@
   },
   {
     "id": 61,
+    "series": "wave",
     "title": "wave-061",
     "pickerUrl": "/artworks/previews/061-1P6Oi2xA-600.webp",
     "pickerLargeUrl": "/artworks/previews/061-1P6Oi2xA-1000.webp",
@@ -705,6 +766,7 @@
   },
   {
     "id": 62,
+    "series": "wave",
     "title": "wave-062",
     "pickerUrl": "/artworks/previews/062-12ezn_5S-600.webp",
     "pickerLargeUrl": "/artworks/previews/062-12ezn_5S-1000.webp",
@@ -717,6 +779,7 @@
   },
   {
     "id": 63,
+    "series": "wave",
     "title": "wave-063",
     "pickerUrl": "/artworks/previews/063-1Mdv3y3P-600.webp",
     "pickerLargeUrl": "/artworks/previews/063-1Mdv3y3P-1000.webp",
@@ -729,6 +792,7 @@
   },
   {
     "id": 64,
+    "series": "wave",
     "title": "wave-064",
     "pickerUrl": "/artworks/previews/064-14M-nclF-600.webp",
     "pickerLargeUrl": "/artworks/previews/064-14M-nclF-1000.webp",
@@ -740,6 +804,7 @@
   },
   {
     "id": 65,
+    "series": "wave",
     "title": "wave-065",
     "pickerUrl": "/artworks/previews/065-1aQqGza--600.webp",
     "pickerLargeUrl": "/artworks/previews/065-1aQqGza--1000.webp",
@@ -752,6 +817,7 @@
   },
   {
     "id": 66,
+    "series": "wave",
     "title": "wave-066",
     "pickerUrl": "/artworks/previews/066-18UjD5_h-600.webp",
     "pickerLargeUrl": "/artworks/previews/066-18UjD5_h-1000.webp",
@@ -764,6 +830,7 @@
   },
   {
     "id": 67,
+    "series": "wave",
     "title": "wave-067",
     "pickerUrl": "/artworks/previews/067-1aL-3qVe-600.webp",
     "pickerLargeUrl": "/artworks/previews/067-1aL-3qVe-1000.webp",
@@ -776,6 +843,7 @@
   },
   {
     "id": 68,
+    "series": "wave",
     "title": "wave-068",
     "pickerUrl": "/artworks/previews/068-1tV23Xco-600.webp",
     "pickerLargeUrl": "/artworks/previews/068-1tV23Xco-1000.webp",
@@ -788,6 +856,7 @@
   },
   {
     "id": 69,
+    "series": "wave",
     "title": "wave-069",
     "pickerUrl": "/artworks/previews/069-1lccqLTn-600.webp",
     "pickerLargeUrl": "/artworks/previews/069-1lccqLTn-1000.webp",
@@ -800,6 +869,7 @@
   },
   {
     "id": 70,
+    "series": "wave",
     "title": "wave-070",
     "pickerUrl": "/artworks/previews/070-1GCdcjGX-600.webp",
     "pickerLargeUrl": "/artworks/previews/070-1GCdcjGX-1000.webp",
@@ -812,6 +882,7 @@
   },
   {
     "id": 71,
+    "series": "wave",
     "title": "wave-071",
     "pickerUrl": "/artworks/previews/071-1vIVbOGM-600.webp",
     "pickerLargeUrl": "/artworks/previews/071-1vIVbOGM-1000.webp",
@@ -824,6 +895,7 @@
   },
   {
     "id": 72,
+    "series": "wave",
     "title": "wave-072",
     "pickerUrl": "/artworks/previews/072-1WuSv_rY-600.webp",
     "pickerLargeUrl": "/artworks/previews/072-1WuSv_rY-1000.webp",
@@ -836,6 +908,7 @@
   },
   {
     "id": 73,
+    "series": "wave",
     "title": "wave-073",
     "pickerUrl": "/artworks/previews/073-1dKle6DV-600.webp",
     "pickerLargeUrl": "/artworks/previews/073-1dKle6DV-1000.webp",
@@ -847,6 +920,7 @@
   },
   {
     "id": 74,
+    "series": "wave",
     "title": "wave-074",
     "pickerUrl": "/artworks/previews/074-1xUoJldk-600.webp",
     "pickerLargeUrl": "/artworks/previews/074-1xUoJldk-1000.webp",
@@ -859,6 +933,7 @@
   },
   {
     "id": 75,
+    "series": "wave",
     "title": "wave-075",
     "pickerUrl": "/artworks/previews/075-14ze9-ej-600.webp",
     "pickerLargeUrl": "/artworks/previews/075-14ze9-ej-1000.webp",
@@ -871,6 +946,7 @@
   },
   {
     "id": 76,
+    "series": "wave",
     "title": "wave-076",
     "pickerUrl": "/artworks/previews/076-1O_4cN41-600.webp",
     "pickerLargeUrl": "/artworks/previews/076-1O_4cN41-1000.webp",
@@ -883,6 +959,7 @@
   },
   {
     "id": 77,
+    "series": "wave",
     "title": "wave-077",
     "pickerUrl": "/artworks/previews/077-1tNTVscG-600.webp",
     "pickerLargeUrl": "/artworks/previews/077-1tNTVscG-1000.webp",
@@ -895,6 +972,7 @@
   },
   {
     "id": 78,
+    "series": "wave",
     "title": "wave-078",
     "pickerUrl": "/artworks/previews/078-1TmAT3GY-600.webp",
     "pickerLargeUrl": "/artworks/previews/078-1TmAT3GY-1000.webp",
@@ -907,6 +985,7 @@
   },
   {
     "id": 79,
+    "series": "wave",
     "title": "wave-079",
     "pickerUrl": "/artworks/previews/079-1Y7ZVkKj-600.webp",
     "pickerLargeUrl": "/artworks/previews/079-1Y7ZVkKj-1000.webp",
@@ -918,6 +997,7 @@
   },
   {
     "id": 80,
+    "series": "wave",
     "title": "wave-080",
     "pickerUrl": "/artworks/previews/080-1MRRme0a-600.webp",
     "pickerLargeUrl": "/artworks/previews/080-1MRRme0a-1000.webp",
@@ -930,6 +1010,7 @@
   },
   {
     "id": 81,
+    "series": "wave",
     "title": "wave-081",
     "pickerUrl": "/artworks/previews/081-1wxkCvgY-600.webp",
     "pickerLargeUrl": "/artworks/previews/081-1wxkCvgY-1000.webp",
@@ -942,6 +1023,7 @@
   },
   {
     "id": 82,
+    "series": "wave",
     "title": "wave-082",
     "pickerUrl": "/artworks/previews/082-1F8cVvX_-600.webp",
     "pickerLargeUrl": "/artworks/previews/082-1F8cVvX_-1000.webp",
@@ -954,6 +1036,7 @@
   },
   {
     "id": 83,
+    "series": "wave",
     "title": "wave-083",
     "pickerUrl": "/artworks/previews/083-13j9THAj-600.webp",
     "pickerLargeUrl": "/artworks/previews/083-13j9THAj-1000.webp",
@@ -965,6 +1048,7 @@
   },
   {
     "id": 84,
+    "series": "wave",
     "title": "wave-084",
     "pickerUrl": "/artworks/previews/084-1G_zOYkR-600.webp",
     "pickerLargeUrl": "/artworks/previews/084-1G_zOYkR-1000.webp",
@@ -976,6 +1060,7 @@
   },
   {
     "id": 85,
+    "series": "wave",
     "title": "wave-085",
     "pickerUrl": "/artworks/previews/085-1KBi3rjY-600.webp",
     "pickerLargeUrl": "/artworks/previews/085-1KBi3rjY-1000.webp",
@@ -987,6 +1072,7 @@
   },
   {
     "id": 86,
+    "series": "wave",
     "title": "wave-086",
     "pickerUrl": "/artworks/previews/086-1PoABpew-600.webp",
     "pickerLargeUrl": "/artworks/previews/086-1PoABpew-1000.webp",
@@ -998,6 +1084,7 @@
   },
   {
     "id": 87,
+    "series": "wave",
     "title": "wave-087",
     "pickerUrl": "/artworks/previews/087-1AfLJ3Vq-600.webp",
     "pickerLargeUrl": "/artworks/previews/087-1AfLJ3Vq-1000.webp",
@@ -1010,6 +1097,7 @@
   },
   {
     "id": 88,
+    "series": "wave",
     "title": "wave-088",
     "pickerUrl": "/artworks/previews/088-1ncM7dg7-600.webp",
     "pickerLargeUrl": "/artworks/previews/088-1ncM7dg7-1000.webp",
@@ -1021,6 +1109,7 @@
   },
   {
     "id": 89,
+    "series": "wave",
     "title": "wave-089",
     "pickerUrl": "/artworks/previews/089-1MMTU4JF-600.webp",
     "pickerLargeUrl": "/artworks/previews/089-1MMTU4JF-1000.webp",
@@ -1032,6 +1121,7 @@
   },
   {
     "id": 90,
+    "series": "wave",
     "title": "wave-090",
     "pickerUrl": "/artworks/previews/090-1cp1vu7K-600.webp",
     "pickerLargeUrl": "/artworks/previews/090-1cp1vu7K-1000.webp",
@@ -1044,6 +1134,7 @@
   },
   {
     "id": 91,
+    "series": "wave",
     "title": "wave-091",
     "pickerUrl": "/artworks/previews/091-1lZrjzDR-600.webp",
     "pickerLargeUrl": "/artworks/previews/091-1lZrjzDR-1000.webp",
@@ -1055,6 +1146,7 @@
   },
   {
     "id": 92,
+    "series": "wave",
     "title": "wave-092",
     "pickerUrl": "/artworks/previews/092-1l9HQpo9-600.webp",
     "pickerLargeUrl": "/artworks/previews/092-1l9HQpo9-1000.webp",
@@ -1066,6 +1158,7 @@
   },
   {
     "id": 93,
+    "series": "wave",
     "title": "wave-093",
     "pickerUrl": "/artworks/previews/093-1csrkrOn-600.webp",
     "pickerLargeUrl": "/artworks/previews/093-1csrkrOn-1000.webp",
@@ -1078,6 +1171,7 @@
   },
   {
     "id": 94,
+    "series": "wave",
     "title": "wave-094",
     "pickerUrl": "/artworks/previews/094-1d15wM_c-600.webp",
     "pickerLargeUrl": "/artworks/previews/094-1d15wM_c-1000.webp",
@@ -1090,6 +1184,7 @@
   },
   {
     "id": 95,
+    "series": "wave",
     "title": "wave-095",
     "pickerUrl": "/artworks/previews/095-11ZhiIvX-600.webp",
     "pickerLargeUrl": "/artworks/previews/095-11ZhiIvX-1000.webp",
@@ -1101,6 +1196,7 @@
   },
   {
     "id": 96,
+    "series": "wave",
     "title": "wave-096",
     "pickerUrl": "/artworks/previews/096-1KaWFv3T-600.webp",
     "pickerLargeUrl": "/artworks/previews/096-1KaWFv3T-1000.webp",
@@ -1112,6 +1208,7 @@
   },
   {
     "id": 97,
+    "series": "wave",
     "title": "wave-097",
     "pickerUrl": "/artworks/previews/097-1bpxfhpD-600.webp",
     "pickerLargeUrl": "/artworks/previews/097-1bpxfhpD-1000.webp",
@@ -1123,6 +1220,7 @@
   },
   {
     "id": 98,
+    "series": "wave",
     "title": "wave-098",
     "pickerUrl": "/artworks/previews/098-1yZuqFhH-600.webp",
     "pickerLargeUrl": "/artworks/previews/098-1yZuqFhH-1000.webp",
@@ -1134,6 +1232,7 @@
   },
   {
     "id": 99,
+    "series": "wave",
     "title": "wave-099",
     "pickerUrl": "/artworks/previews/099-15NQV5d5-600.webp",
     "pickerLargeUrl": "/artworks/previews/099-15NQV5d5-1000.webp",
@@ -1145,6 +1244,7 @@
   },
   {
     "id": 100,
+    "series": "wave",
     "title": "wave-100",
     "pickerUrl": "/artworks/previews/100-1oHahCWe-600.webp",
     "pickerLargeUrl": "/artworks/previews/100-1oHahCWe-1000.webp",
@@ -1156,6 +1256,7 @@
   },
   {
     "id": 101,
+    "series": "wave",
     "title": "wave-101",
     "pickerUrl": "/artworks/previews/101-1Dvx-j5Q-600.webp",
     "pickerLargeUrl": "/artworks/previews/101-1Dvx-j5Q-1000.webp",
@@ -1168,6 +1269,7 @@
   },
   {
     "id": 102,
+    "series": "wave",
     "title": "wave-102",
     "pickerUrl": "/artworks/previews/102-1ztkmvnZ-600.webp",
     "pickerLargeUrl": "/artworks/previews/102-1ztkmvnZ-1000.webp",
@@ -1179,6 +1281,7 @@
   },
   {
     "id": 103,
+    "series": "wave",
     "title": "wave-103",
     "pickerUrl": "/artworks/previews/103-1lCHlC_N-600.webp",
     "pickerLargeUrl": "/artworks/previews/103-1lCHlC_N-1000.webp",
@@ -1191,6 +1294,7 @@
   },
   {
     "id": 104,
+    "series": "wave",
     "title": "wave-104",
     "pickerUrl": "/artworks/previews/104-1dv7JF3U-600.webp",
     "pickerLargeUrl": "/artworks/previews/104-1dv7JF3U-1000.webp",
@@ -1202,6 +1306,7 @@
   },
   {
     "id": 105,
+    "series": "wave",
     "title": "wave-105",
     "pickerUrl": "/artworks/previews/105-1-NAq8oa-600.webp",
     "pickerLargeUrl": "/artworks/previews/105-1-NAq8oa-1000.webp",
@@ -1214,6 +1319,7 @@
   },
   {
     "id": 106,
+    "series": "wave",
     "title": "wave-106",
     "pickerUrl": "/artworks/previews/106-1X_OQERk-600.webp",
     "pickerLargeUrl": "/artworks/previews/106-1X_OQERk-1000.webp",
@@ -1225,6 +1331,7 @@
   },
   {
     "id": 107,
+    "series": "wave",
     "title": "wave-107",
     "pickerUrl": "/artworks/previews/107-16UeTP_P-600.webp",
     "pickerLargeUrl": "/artworks/previews/107-16UeTP_P-1000.webp",
@@ -1236,6 +1343,7 @@
   },
   {
     "id": 108,
+    "series": "wave",
     "title": "wave-108",
     "pickerUrl": "/artworks/previews/108-1K7UUJ6j-600.webp",
     "pickerLargeUrl": "/artworks/previews/108-1K7UUJ6j-1000.webp",
@@ -1248,6 +1356,7 @@
   },
   {
     "id": 109,
+    "series": "wave",
     "title": "wave-109",
     "pickerUrl": "/artworks/previews/109-1HTCP1W7-600.webp",
     "pickerLargeUrl": "/artworks/previews/109-1HTCP1W7-1000.webp",
@@ -1260,6 +1369,7 @@
   },
   {
     "id": 110,
+    "series": "wave",
     "title": "wave-110",
     "pickerUrl": "/artworks/previews/110-1E2bjXNa-600.webp",
     "pickerLargeUrl": "/artworks/previews/110-1E2bjXNa-1000.webp",
@@ -1272,6 +1382,7 @@
   },
   {
     "id": 111,
+    "series": "wave",
     "title": "wave-111",
     "pickerUrl": "/artworks/previews/111-1-G0FfuP-600.webp",
     "pickerLargeUrl": "/artworks/previews/111-1-G0FfuP-1000.webp",
@@ -1284,6 +1395,7 @@
   },
   {
     "id": 112,
+    "series": "wave",
     "title": "wave-112",
     "pickerUrl": "/artworks/previews/112-1dL8CiXZ-600.webp",
     "pickerLargeUrl": "/artworks/previews/112-1dL8CiXZ-1000.webp",
@@ -1295,6 +1407,7 @@
   },
   {
     "id": 113,
+    "series": "wave",
     "title": "wave-113",
     "pickerUrl": "/artworks/previews/113-14h9iIwK-600.webp",
     "pickerLargeUrl": "/artworks/previews/113-14h9iIwK-1000.webp",
@@ -1306,6 +1419,7 @@
   },
   {
     "id": 114,
+    "series": "wave",
     "title": "wave-114",
     "pickerUrl": "/artworks/previews/114-1-JDIhuv-600.webp",
     "pickerLargeUrl": "/artworks/previews/114-1-JDIhuv-1000.webp",
@@ -1317,6 +1431,7 @@
   },
   {
     "id": 115,
+    "series": "wave",
     "title": "wave-115",
     "pickerUrl": "/artworks/previews/115-1tijmTP_-600.webp",
     "pickerLargeUrl": "/artworks/previews/115-1tijmTP_-1000.webp",
@@ -1328,6 +1443,7 @@
   },
   {
     "id": 116,
+    "series": "wave",
     "title": "wave-116",
     "pickerUrl": "/artworks/previews/116-1pRai7UX-600.webp",
     "pickerLargeUrl": "/artworks/previews/116-1pRai7UX-1000.webp",
@@ -1340,6 +1456,7 @@
   },
   {
     "id": 117,
+    "series": "wave",
     "title": "wave-117",
     "pickerUrl": "/artworks/previews/117-1spM2jjk-600.webp",
     "pickerLargeUrl": "/artworks/previews/117-1spM2jjk-1000.webp",
@@ -1351,6 +1468,7 @@
   },
   {
     "id": 118,
+    "series": "wave",
     "title": "wave-118",
     "pickerUrl": "/artworks/previews/118-102eHYFl-600.webp",
     "pickerLargeUrl": "/artworks/previews/118-102eHYFl-1000.webp",
@@ -1362,6 +1480,7 @@
   },
   {
     "id": 119,
+    "series": "wave",
     "title": "wave-119",
     "pickerUrl": "/artworks/previews/119-18MmKnIM-600.webp",
     "pickerLargeUrl": "/artworks/previews/119-18MmKnIM-1000.webp",
@@ -1374,6 +1493,7 @@
   },
   {
     "id": 120,
+    "series": "wave",
     "title": "wave-120",
     "pickerUrl": "/artworks/previews/120-1ewyeyw1-600.webp",
     "pickerLargeUrl": "/artworks/previews/120-1ewyeyw1-1000.webp",
@@ -1385,6 +1505,7 @@
   },
   {
     "id": 121,
+    "series": "wave",
     "title": "wave-121",
     "pickerUrl": "/artworks/previews/121-1UjhnF3k-600.webp",
     "pickerLargeUrl": "/artworks/previews/121-1UjhnF3k-1000.webp",
@@ -1396,6 +1517,7 @@
   },
   {
     "id": 122,
+    "series": "wave",
     "title": "wave-122",
     "pickerUrl": "/artworks/previews/122-1shuCIfO-600.webp",
     "pickerLargeUrl": "/artworks/previews/122-1shuCIfO-1000.webp",
@@ -1408,6 +1530,7 @@
   },
   {
     "id": 123,
+    "series": "wave",
     "title": "wave-123",
     "pickerUrl": "/artworks/previews/123-1JZXny9A-600.webp",
     "pickerLargeUrl": "/artworks/previews/123-1JZXny9A-1000.webp",
@@ -1419,6 +1542,7 @@
   },
   {
     "id": 124,
+    "series": "wave",
     "title": "wave-124",
     "pickerUrl": "/artworks/previews/124-1f8Z2ex_-600.webp",
     "pickerLargeUrl": "/artworks/previews/124-1f8Z2ex_-1000.webp",
@@ -1430,6 +1554,7 @@
   },
   {
     "id": 125,
+    "series": "wave",
     "title": "wave-125",
     "pickerUrl": "/artworks/previews/125-1JSmclp0-600.webp",
     "pickerLargeUrl": "/artworks/previews/125-1JSmclp0-1000.webp",
@@ -1441,6 +1566,7 @@
   },
   {
     "id": 126,
+    "series": "wave",
     "title": "wave-126",
     "pickerUrl": "/artworks/previews/126-1_qaQXAq-600.webp",
     "pickerLargeUrl": "/artworks/previews/126-1_qaQXAq-1000.webp",
@@ -1453,6 +1579,7 @@
   },
   {
     "id": 127,
+    "series": "wave",
     "title": "wave-127",
     "pickerUrl": "/artworks/previews/127-10f7qPOs-600.webp",
     "pickerLargeUrl": "/artworks/previews/127-10f7qPOs-1000.webp",
@@ -1465,6 +1592,7 @@
   },
   {
     "id": 128,
+    "series": "wave",
     "title": "wave-128",
     "pickerUrl": "/artworks/previews/128-1mz2aMxA-600.webp",
     "pickerLargeUrl": "/artworks/previews/128-1mz2aMxA-1000.webp",
@@ -1476,6 +1604,7 @@
   },
   {
     "id": 129,
+    "series": "wave",
     "title": "wave-129",
     "pickerUrl": "/artworks/previews/129-1WD0FKRK-600.webp",
     "pickerLargeUrl": "/artworks/previews/129-1WD0FKRK-1000.webp",
@@ -1487,6 +1616,7 @@
   },
   {
     "id": 130,
+    "series": "wave",
     "title": "wave-130",
     "pickerUrl": "/artworks/previews/130-1Hncz885-600.webp",
     "pickerLargeUrl": "/artworks/previews/130-1Hncz885-1000.webp",
@@ -1499,6 +1629,7 @@
   },
   {
     "id": 131,
+    "series": "wave",
     "title": "wave-131",
     "pickerUrl": "/artworks/previews/131-1KeWN-n3-600.webp",
     "pickerLargeUrl": "/artworks/previews/131-1KeWN-n3-1000.webp",
@@ -1510,6 +1641,7 @@
   },
   {
     "id": 132,
+    "series": "wave",
     "title": "wave-132",
     "pickerUrl": "/artworks/previews/132-1lyBtQm1-600.webp",
     "pickerLargeUrl": "/artworks/previews/132-1lyBtQm1-1000.webp",
@@ -1522,6 +1654,7 @@
   },
   {
     "id": 133,
+    "series": "wave",
     "title": "wave-133",
     "pickerUrl": "/artworks/previews/133-1kltieNJ-600.webp",
     "pickerLargeUrl": "/artworks/previews/133-1kltieNJ-1000.webp",
@@ -1534,6 +1667,7 @@
   },
   {
     "id": 134,
+    "series": "wave",
     "title": "wave-134",
     "pickerUrl": "/artworks/previews/134-1JxUXxML-600.webp",
     "pickerLargeUrl": "/artworks/previews/134-1JxUXxML-1000.webp",
@@ -1546,6 +1680,7 @@
   },
   {
     "id": 135,
+    "series": "wave",
     "title": "wave-135",
     "pickerUrl": "/artworks/previews/135-1FaWoKj0-600.webp",
     "pickerLargeUrl": "/artworks/previews/135-1FaWoKj0-1000.webp",
@@ -1558,6 +1693,7 @@
   },
   {
     "id": 136,
+    "series": "wave",
     "title": "wave-136",
     "pickerUrl": "/artworks/previews/136-191kXLjm-600.webp",
     "pickerLargeUrl": "/artworks/previews/136-191kXLjm-1000.webp",
@@ -1570,6 +1706,7 @@
   },
   {
     "id": 137,
+    "series": "wave",
     "title": "wave-137",
     "pickerUrl": "/artworks/previews/137-1wyQKyk0-600.webp",
     "pickerLargeUrl": "/artworks/previews/137-1wyQKyk0-1000.webp",
@@ -1582,6 +1719,7 @@
   },
   {
     "id": 138,
+    "series": "wave",
     "title": "wave-138",
     "pickerUrl": "/artworks/previews/138-1saXbygq-600.webp",
     "pickerLargeUrl": "/artworks/previews/138-1saXbygq-1000.webp",
@@ -1594,6 +1732,7 @@
   },
   {
     "id": 139,
+    "series": "wave",
     "title": "wave-139",
     "pickerUrl": "/artworks/previews/139-1VSqNhqO-600.webp",
     "pickerLargeUrl": "/artworks/previews/139-1VSqNhqO-1000.webp",
@@ -1606,6 +1745,7 @@
   },
   {
     "id": 140,
+    "series": "wave",
     "title": "wave-140",
     "pickerUrl": "/artworks/previews/140-1Gjp8Qsu-600.webp",
     "pickerLargeUrl": "/artworks/previews/140-1Gjp8Qsu-1000.webp",
@@ -1617,6 +1757,7 @@
   },
   {
     "id": 141,
+    "series": "wave",
     "title": "wave-141",
     "pickerUrl": "/artworks/previews/141-1bNqHwJI-600.webp",
     "pickerLargeUrl": "/artworks/previews/141-1bNqHwJI-1000.webp",
@@ -1628,6 +1769,7 @@
   },
   {
     "id": 142,
+    "series": "wave",
     "title": "wave-142",
     "pickerUrl": "/artworks/previews/142-1lecp6ZR-600.webp",
     "pickerLargeUrl": "/artworks/previews/142-1lecp6ZR-1000.webp",
@@ -1640,6 +1782,7 @@
   },
   {
     "id": 143,
+    "series": "wave",
     "title": "wave-143",
     "pickerUrl": "/artworks/previews/143-11qof3cG-600.webp",
     "pickerLargeUrl": "/artworks/previews/143-11qof3cG-1000.webp",
@@ -1651,6 +1794,7 @@
   },
   {
     "id": 144,
+    "series": "wave",
     "title": "wave-144",
     "pickerUrl": "/artworks/previews/144-1Cmc8KdK-600.webp",
     "pickerLargeUrl": "/artworks/previews/144-1Cmc8KdK-1000.webp",
@@ -1662,6 +1806,7 @@
   },
   {
     "id": 145,
+    "series": "wave",
     "title": "wave-145",
     "pickerUrl": "/artworks/previews/145-14AcD3Wh-600.webp",
     "pickerLargeUrl": "/artworks/previews/145-14AcD3Wh-1000.webp",
@@ -1673,6 +1818,7 @@
   },
   {
     "id": 146,
+    "series": "wave",
     "title": "wave-146",
     "pickerUrl": "/artworks/previews/146-1yz9CaJ1-600.webp",
     "pickerLargeUrl": "/artworks/previews/146-1yz9CaJ1-1000.webp",
@@ -1685,6 +1831,7 @@
   },
   {
     "id": 147,
+    "series": "wave",
     "title": "wave-147",
     "pickerUrl": "/artworks/previews/147-1RlCXaR9-600.webp",
     "pickerLargeUrl": "/artworks/previews/147-1RlCXaR9-1000.webp",
@@ -1696,6 +1843,7 @@
   },
   {
     "id": 148,
+    "series": "wave",
     "title": "wave-148",
     "pickerUrl": "/artworks/previews/148-1LfegreY-600.webp",
     "pickerLargeUrl": "/artworks/previews/148-1LfegreY-1000.webp",
@@ -1708,6 +1856,7 @@
   },
   {
     "id": 149,
+    "series": "wave",
     "title": "wave-149",
     "pickerUrl": "/artworks/previews/149-1-Xp57pv-600.webp",
     "pickerLargeUrl": "/artworks/previews/149-1-Xp57pv-1000.webp",
@@ -1719,6 +1868,7 @@
   },
   {
     "id": 150,
+    "series": "wave",
     "title": "wave-150",
     "pickerUrl": "/artworks/previews/150-1tKNib4d-600.webp",
     "pickerLargeUrl": "/artworks/previews/150-1tKNib4d-1000.webp",
@@ -1731,6 +1881,7 @@
   },
   {
     "id": 151,
+    "series": "wave",
     "title": "wave-151",
     "pickerUrl": "/artworks/previews/151-1Z12Pf1o-600.webp",
     "pickerLargeUrl": "/artworks/previews/151-1Z12Pf1o-1000.webp",
@@ -1742,6 +1893,7 @@
   },
   {
     "id": 152,
+    "series": "wave",
     "title": "wave-152",
     "pickerUrl": "/artworks/previews/152-1HfCDm_c-600.webp",
     "pickerLargeUrl": "/artworks/previews/152-1HfCDm_c-1000.webp",
@@ -1753,6 +1905,7 @@
   },
   {
     "id": 153,
+    "series": "wave",
     "title": "wave-153",
     "pickerUrl": "/artworks/previews/153-1syYEwqj-600.webp",
     "pickerLargeUrl": "/artworks/previews/153-1syYEwqj-1000.webp",
@@ -1765,6 +1918,7 @@
   },
   {
     "id": 154,
+    "series": "wave",
     "title": "wave-154",
     "pickerUrl": "/artworks/previews/154-1ZVvDcVn-600.webp",
     "pickerLargeUrl": "/artworks/previews/154-1ZVvDcVn-1000.webp",
@@ -1776,6 +1930,7 @@
   },
   {
     "id": 155,
+    "series": "wave",
     "title": "wave-155",
     "pickerUrl": "/artworks/previews/155-1CtGk6QK-600.webp",
     "pickerLargeUrl": "/artworks/previews/155-1CtGk6QK-1000.webp",
@@ -1788,6 +1943,7 @@
   },
   {
     "id": 156,
+    "series": "wave",
     "title": "wave-156",
     "pickerUrl": "/artworks/previews/156-1NTYbeAL-600.webp",
     "pickerLargeUrl": "/artworks/previews/156-1NTYbeAL-1000.webp",
@@ -1800,6 +1956,7 @@
   },
   {
     "id": 157,
+    "series": "wave",
     "title": "wave-157",
     "pickerUrl": "/artworks/previews/157-1Xr0X4JG-600.webp",
     "pickerLargeUrl": "/artworks/previews/157-1Xr0X4JG-1000.webp",
@@ -1812,6 +1969,7 @@
   },
   {
     "id": 158,
+    "series": "wave",
     "title": "wave-158",
     "pickerUrl": "/artworks/previews/158-1OjP-wew-600.webp",
     "pickerLargeUrl": "/artworks/previews/158-1OjP-wew-1000.webp",
@@ -1823,6 +1981,7 @@
   },
   {
     "id": 159,
+    "series": "wave",
     "title": "wave-159",
     "pickerUrl": "/artworks/previews/159-1xQDpfDK-600.webp",
     "pickerLargeUrl": "/artworks/previews/159-1xQDpfDK-1000.webp",
@@ -1834,6 +1993,7 @@
   },
   {
     "id": 160,
+    "series": "wave",
     "title": "wave-160",
     "pickerUrl": "/artworks/previews/160-16tM6Kjz-600.webp",
     "pickerLargeUrl": "/artworks/previews/160-16tM6Kjz-1000.webp",
@@ -1845,6 +2005,7 @@
   },
   {
     "id": 161,
+    "series": "wave",
     "title": "wave-161",
     "pickerUrl": "/artworks/previews/161-1PNeFWwp-600.webp",
     "pickerLargeUrl": "/artworks/previews/161-1PNeFWwp-1000.webp",
@@ -1856,6 +2017,7 @@
   },
   {
     "id": 162,
+    "series": "wave",
     "title": "wave-162",
     "pickerUrl": "/artworks/previews/162-19zdTiIv-600.webp",
     "pickerLargeUrl": "/artworks/previews/162-19zdTiIv-1000.webp",
@@ -1868,6 +2030,7 @@
   },
   {
     "id": 163,
+    "series": "wave",
     "title": "wave-163",
     "pickerUrl": "/artworks/previews/163-1GDwvWpC-600.webp",
     "pickerLargeUrl": "/artworks/previews/163-1GDwvWpC-1000.webp",
@@ -1879,6 +2042,7 @@
   },
   {
     "id": 164,
+    "series": "wave",
     "title": "wave-164",
     "pickerUrl": "/artworks/previews/164-1QOkmjCn-600.webp",
     "pickerLargeUrl": "/artworks/previews/164-1QOkmjCn-1000.webp",
@@ -1891,6 +2055,7 @@
   },
   {
     "id": 165,
+    "series": "wave",
     "title": "wave-165",
     "pickerUrl": "/artworks/previews/165-1QwLHX_f-600.webp",
     "pickerLargeUrl": "/artworks/previews/165-1QwLHX_f-1000.webp",
@@ -1902,6 +2067,7 @@
   },
   {
     "id": 166,
+    "series": "wave",
     "title": "wave-166",
     "pickerUrl": "/artworks/previews/166-1M_7-Ilo-600.webp",
     "pickerLargeUrl": "/artworks/previews/166-1M_7-Ilo-1000.webp",
@@ -1914,6 +2080,7 @@
   },
   {
     "id": 167,
+    "series": "wave",
     "title": "wave-167",
     "pickerUrl": "/artworks/previews/167-1nqtiuS1-600.webp",
     "pickerLargeUrl": "/artworks/previews/167-1nqtiuS1-1000.webp",
@@ -1925,6 +2092,7 @@
   },
   {
     "id": 168,
+    "series": "wave",
     "title": "wave-168",
     "pickerUrl": "/artworks/previews/168-1zsdAX22-600.webp",
     "pickerLargeUrl": "/artworks/previews/168-1zsdAX22-1000.webp",
@@ -1937,6 +2105,7 @@
   },
   {
     "id": 169,
+    "series": "wave",
     "title": "wave-169",
     "pickerUrl": "/artworks/previews/169-1dI-8tYI-600.webp",
     "pickerLargeUrl": "/artworks/previews/169-1dI-8tYI-1000.webp",
@@ -1948,6 +2117,7 @@
   },
   {
     "id": 170,
+    "series": "wave",
     "title": "wave-170",
     "pickerUrl": "/artworks/previews/170-1MoT75es-600.webp",
     "pickerLargeUrl": "/artworks/previews/170-1MoT75es-1000.webp",
@@ -1960,6 +2130,7 @@
   },
   {
     "id": 171,
+    "series": "wave",
     "title": "wave-171",
     "pickerUrl": "/artworks/previews/171-1tur2Wwn-600.webp",
     "pickerLargeUrl": "/artworks/previews/171-1tur2Wwn-1000.webp",
@@ -1972,6 +2143,7 @@
   },
   {
     "id": 172,
+    "series": "wave",
     "title": "wave-172",
     "pickerUrl": "/artworks/previews/172-1Z1L5IZ9-600.webp",
     "pickerLargeUrl": "/artworks/previews/172-1Z1L5IZ9-1000.webp",
@@ -1983,6 +2155,7 @@
   },
   {
     "id": 173,
+    "series": "wave",
     "title": "wave-173",
     "pickerUrl": "/artworks/previews/173-1O-7zgS--600.webp",
     "pickerLargeUrl": "/artworks/previews/173-1O-7zgS--1000.webp",
@@ -1995,6 +2168,7 @@
   },
   {
     "id": 174,
+    "series": "wave",
     "title": "wave-174",
     "pickerUrl": "/artworks/previews/174-1cMX5DS_-600.webp",
     "pickerLargeUrl": "/artworks/previews/174-1cMX5DS_-1000.webp",
@@ -2006,6 +2180,7 @@
   },
   {
     "id": 175,
+    "series": "wave",
     "title": "wave-175",
     "pickerUrl": "/artworks/previews/175-17RZQ_NG-600.webp",
     "pickerLargeUrl": "/artworks/previews/175-17RZQ_NG-1000.webp",
@@ -2018,6 +2193,7 @@
   },
   {
     "id": 176,
+    "series": "wave",
     "title": "wave-176",
     "pickerUrl": "/artworks/previews/176-1C2hbmik-600.webp",
     "pickerLargeUrl": "/artworks/previews/176-1C2hbmik-1000.webp",
@@ -2029,6 +2205,7 @@
   },
   {
     "id": 177,
+    "series": "wave",
     "title": "wave-177",
     "pickerUrl": "/artworks/previews/177-1_gDEbV2-600.webp",
     "pickerLargeUrl": "/artworks/previews/177-1_gDEbV2-1000.webp",
@@ -2040,6 +2217,7 @@
   },
   {
     "id": 178,
+    "series": "wave",
     "title": "wave-178",
     "pickerUrl": "/artworks/previews/178-1y4k7rAs-600.webp",
     "pickerLargeUrl": "/artworks/previews/178-1y4k7rAs-1000.webp",
@@ -2051,6 +2229,7 @@
   },
   {
     "id": 179,
+    "series": "wave",
     "title": "wave-179",
     "pickerUrl": "/artworks/previews/179-1E0K7T6d-600.webp",
     "pickerLargeUrl": "/artworks/previews/179-1E0K7T6d-1000.webp",
@@ -2062,6 +2241,7 @@
   },
   {
     "id": 180,
+    "series": "wave",
     "title": "wave-180",
     "pickerUrl": "/artworks/previews/180-1GYG-c0B-600.webp",
     "pickerLargeUrl": "/artworks/previews/180-1GYG-c0B-1000.webp",
@@ -2073,6 +2253,7 @@
   },
   {
     "id": 181,
+    "series": "wave",
     "title": "wave-181",
     "pickerUrl": "/artworks/previews/181-1k0fzRta-600.webp",
     "pickerLargeUrl": "/artworks/previews/181-1k0fzRta-1000.webp",
@@ -2085,6 +2266,7 @@
   },
   {
     "id": 182,
+    "series": "wave",
     "title": "wave-182",
     "pickerUrl": "/artworks/previews/182-1WlcAe1o-600.webp",
     "pickerLargeUrl": "/artworks/previews/182-1WlcAe1o-1000.webp",
@@ -2096,6 +2278,7 @@
   },
   {
     "id": 183,
+    "series": "wave",
     "title": "wave-183",
     "pickerUrl": "/artworks/previews/183-19bYSZRh-600.webp",
     "pickerLargeUrl": "/artworks/previews/183-19bYSZRh-1000.webp",
@@ -2107,6 +2290,7 @@
   },
   {
     "id": 184,
+    "series": "wave",
     "title": "wave-184",
     "pickerUrl": "/artworks/previews/184-1zox5sfV-600.webp",
     "pickerLargeUrl": "/artworks/previews/184-1zox5sfV-1000.webp",
@@ -2119,6 +2303,7 @@
   },
   {
     "id": 185,
+    "series": "wave",
     "title": "wave-185",
     "pickerUrl": "/artworks/previews/185-1myasFmN-600.webp",
     "pickerLargeUrl": "/artworks/previews/185-1myasFmN-1000.webp",
@@ -2130,6 +2315,7 @@
   },
   {
     "id": 186,
+    "series": "wave",
     "title": "wave-186",
     "pickerUrl": "/artworks/previews/186-16p9hX30-600.webp",
     "pickerLargeUrl": "/artworks/previews/186-16p9hX30-1000.webp",
@@ -2142,6 +2328,7 @@
   },
   {
     "id": 187,
+    "series": "wave",
     "title": "wave-187",
     "pickerUrl": "/artworks/previews/187-1q3XUG9S-600.webp",
     "pickerLargeUrl": "/artworks/previews/187-1q3XUG9S-1000.webp",
@@ -2153,6 +2340,7 @@
   },
   {
     "id": 188,
+    "series": "wave",
     "title": "wave-188",
     "pickerUrl": "/artworks/previews/188-1VnDkWux-600.webp",
     "pickerLargeUrl": "/artworks/previews/188-1VnDkWux-1000.webp",
@@ -2165,6 +2353,7 @@
   },
   {
     "id": 189,
+    "series": "wave",
     "title": "wave-189",
     "pickerUrl": "/artworks/previews/189-1h_PR9vH-600.webp",
     "pickerLargeUrl": "/artworks/previews/189-1h_PR9vH-1000.webp",
@@ -2177,6 +2366,7 @@
   },
   {
     "id": 190,
+    "series": "wave",
     "title": "wave-190",
     "pickerUrl": "/artworks/previews/190-1nemOGIk-600.webp",
     "pickerLargeUrl": "/artworks/previews/190-1nemOGIk-1000.webp",
@@ -2188,6 +2378,7 @@
   },
   {
     "id": 191,
+    "series": "wave",
     "title": "wave-191",
     "pickerUrl": "/artworks/previews/191-1UDcIYUV-600.webp",
     "pickerLargeUrl": "/artworks/previews/191-1UDcIYUV-1000.webp",
@@ -2200,6 +2391,7 @@
   },
   {
     "id": 192,
+    "series": "wave",
     "title": "wave-192",
     "pickerUrl": "/artworks/previews/192-19r1WxfJ-600.webp",
     "pickerLargeUrl": "/artworks/previews/192-19r1WxfJ-1000.webp",
@@ -2212,6 +2404,7 @@
   },
   {
     "id": 193,
+    "series": "wave",
     "title": "wave-193",
     "pickerUrl": "/artworks/previews/193-1-xCO8lQ-600.webp",
     "pickerLargeUrl": "/artworks/previews/193-1-xCO8lQ-1000.webp",
@@ -2223,6 +2416,7 @@
   },
   {
     "id": 194,
+    "series": "wave",
     "title": "wave-194",
     "pickerUrl": "/artworks/previews/194-1ybHlvKs-600.webp",
     "pickerLargeUrl": "/artworks/previews/194-1ybHlvKs-1000.webp",
@@ -2235,6 +2429,7 @@
   },
   {
     "id": 195,
+    "series": "wave",
     "title": "wave-195",
     "pickerUrl": "/artworks/previews/195-1Gb_kpqE-600.webp",
     "pickerLargeUrl": "/artworks/previews/195-1Gb_kpqE-1000.webp",
@@ -2246,6 +2441,7 @@
   },
   {
     "id": 196,
+    "series": "wave",
     "title": "wave-196",
     "pickerUrl": "/artworks/previews/196-1N7wOb-m-600.webp",
     "pickerLargeUrl": "/artworks/previews/196-1N7wOb-m-1000.webp",
@@ -2258,6 +2454,7 @@
   },
   {
     "id": 197,
+    "series": "wave",
     "title": "wave-197",
     "pickerUrl": "/artworks/previews/197-1XvCM9_e-600.webp",
     "pickerLargeUrl": "/artworks/previews/197-1XvCM9_e-1000.webp",
@@ -2269,6 +2466,7 @@
   },
   {
     "id": 198,
+    "series": "wave",
     "title": "wave-198",
     "pickerUrl": "/artworks/previews/198-1QM0a6J3-600.webp",
     "pickerLargeUrl": "/artworks/previews/198-1QM0a6J3-1000.webp",
@@ -2281,6 +2479,7 @@
   },
   {
     "id": 199,
+    "series": "wave",
     "title": "wave-199",
     "pickerUrl": "/artworks/previews/199-1s2hnzI4-600.webp",
     "pickerLargeUrl": "/artworks/previews/199-1s2hnzI4-1000.webp",
@@ -2292,6 +2491,7 @@
   },
   {
     "id": 200,
+    "series": "wave",
     "title": "wave-200",
     "pickerUrl": "/artworks/previews/200-16NpL5Si-600.webp",
     "pickerLargeUrl": "/artworks/previews/200-16NpL5Si-1000.webp",
@@ -2303,6 +2503,7 @@
   },
   {
     "id": 201,
+    "series": "wave",
     "title": "wave-201",
     "pickerUrl": "/artworks/previews/201-1hUj_mIf-600.webp",
     "pickerLargeUrl": "/artworks/previews/201-1hUj_mIf-1000.webp",
@@ -2314,6 +2515,7 @@
   },
   {
     "id": 202,
+    "series": "wave",
     "title": "wave-202",
     "pickerUrl": "/artworks/previews/202-1KmC3mId-600.webp",
     "pickerLargeUrl": "/artworks/previews/202-1KmC3mId-1000.webp",
@@ -2326,6 +2528,7 @@
   },
   {
     "id": 203,
+    "series": "wave",
     "title": "wave-203",
     "pickerUrl": "/artworks/previews/203-1-n0rZ6g-600.webp",
     "pickerLargeUrl": "/artworks/previews/203-1-n0rZ6g-1000.webp",
@@ -2337,6 +2540,7 @@
   },
   {
     "id": 204,
+    "series": "wave",
     "title": "wave-204",
     "pickerUrl": "/artworks/previews/204-1SbTz0pW-600.webp",
     "pickerLargeUrl": "/artworks/previews/204-1SbTz0pW-1000.webp",
@@ -2349,6 +2553,7 @@
   },
   {
     "id": 205,
+    "series": "wave",
     "title": "wave-205",
     "pickerUrl": "/artworks/previews/205-1vpuo7PL-600.webp",
     "pickerLargeUrl": "/artworks/previews/205-1vpuo7PL-1000.webp",
@@ -2361,6 +2566,7 @@
   },
   {
     "id": 206,
+    "series": "wave",
     "title": "wave-206",
     "pickerUrl": "/artworks/previews/206-1fL6D2LY-600.webp",
     "pickerLargeUrl": "/artworks/previews/206-1fL6D2LY-1000.webp",
@@ -2373,6 +2579,7 @@
   },
   {
     "id": 207,
+    "series": "wave",
     "title": "wave-207",
     "pickerUrl": "/artworks/previews/207-1P01r6nV-600.webp",
     "pickerLargeUrl": "/artworks/previews/207-1P01r6nV-1000.webp",
@@ -2384,6 +2591,7 @@
   },
   {
     "id": 208,
+    "series": "wave",
     "title": "wave-208",
     "pickerUrl": "/artworks/previews/208-1xb3qVEJ-600.webp",
     "pickerLargeUrl": "/artworks/previews/208-1xb3qVEJ-1000.webp",
@@ -2396,6 +2604,7 @@
   },
   {
     "id": 209,
+    "series": "wave",
     "title": "wave-209",
     "pickerUrl": "/artworks/previews/209-1GM9x_Cl-600.webp",
     "pickerLargeUrl": "/artworks/previews/209-1GM9x_Cl-1000.webp",
@@ -2407,6 +2616,7 @@
   },
   {
     "id": 210,
+    "series": "wave",
     "title": "wave-210",
     "pickerUrl": "/artworks/previews/210-1Wx2GIae-600.webp",
     "pickerLargeUrl": "/artworks/previews/210-1Wx2GIae-1000.webp",
@@ -2418,6 +2628,7 @@
   },
   {
     "id": 211,
+    "series": "wave",
     "title": "wave-211",
     "pickerUrl": "/artworks/previews/211-1-LzYTt0-600.webp",
     "pickerLargeUrl": "/artworks/previews/211-1-LzYTt0-1000.webp",
@@ -2430,6 +2641,7 @@
   },
   {
     "id": 212,
+    "series": "wave",
     "title": "wave-212",
     "pickerUrl": "/artworks/previews/212-1i7WqDRq-600.webp",
     "pickerLargeUrl": "/artworks/previews/212-1i7WqDRq-1000.webp",
@@ -2441,6 +2653,7 @@
   },
   {
     "id": 213,
+    "series": "wave",
     "title": "wave-213",
     "pickerUrl": "/artworks/previews/213-1pEYY_at-600.webp",
     "pickerLargeUrl": "/artworks/previews/213-1pEYY_at-1000.webp",
@@ -2452,6 +2665,7 @@
   },
   {
     "id": 214,
+    "series": "wave",
     "title": "wave-214",
     "pickerUrl": "/artworks/previews/214-1dcBD0ze-600.webp",
     "pickerLargeUrl": "/artworks/previews/214-1dcBD0ze-1000.webp",
@@ -2464,6 +2678,7 @@
   },
   {
     "id": 215,
+    "series": "wave",
     "title": "wave-215",
     "pickerUrl": "/artworks/previews/215-1WMk_BIR-600.webp",
     "pickerLargeUrl": "/artworks/previews/215-1WMk_BIR-1000.webp",
@@ -2475,6 +2690,7 @@
   },
   {
     "id": 216,
+    "series": "wave",
     "title": "wave-216",
     "pickerUrl": "/artworks/previews/216-17Q0vxdj-600.webp",
     "pickerLargeUrl": "/artworks/previews/216-17Q0vxdj-1000.webp",
@@ -2486,6 +2702,7 @@
   },
   {
     "id": 217,
+    "series": "wave",
     "title": "wave-217",
     "pickerUrl": "/artworks/previews/217-1OpRyEn7-600.webp",
     "pickerLargeUrl": "/artworks/previews/217-1OpRyEn7-1000.webp",
@@ -2498,6 +2715,7 @@
   },
   {
     "id": 218,
+    "series": "wave",
     "title": "wave-218",
     "pickerUrl": "/artworks/previews/218-1RqUP61A-600.webp",
     "pickerLargeUrl": "/artworks/previews/218-1RqUP61A-1000.webp",
@@ -2510,6 +2728,7 @@
   },
   {
     "id": 219,
+    "series": "wave",
     "title": "wave-219",
     "pickerUrl": "/artworks/previews/219-1GYLw1qz-600.webp",
     "pickerLargeUrl": "/artworks/previews/219-1GYLw1qz-1000.webp",
@@ -2522,6 +2741,7 @@
   },
   {
     "id": 220,
+    "series": "wave",
     "title": "wave-220",
     "pickerUrl": "/artworks/previews/220-1AP8m7Co-600.webp",
     "pickerLargeUrl": "/artworks/previews/220-1AP8m7Co-1000.webp",
@@ -2534,6 +2754,7 @@
   },
   {
     "id": 221,
+    "series": "wave",
     "title": "wave-221",
     "pickerUrl": "/artworks/previews/221-1cpfCifa-600.webp",
     "pickerLargeUrl": "/artworks/previews/221-1cpfCifa-1000.webp",
@@ -2545,6 +2766,7 @@
   },
   {
     "id": 222,
+    "series": "wave",
     "title": "wave-222",
     "pickerUrl": "/artworks/previews/222-1tiSdp9O-600.webp",
     "pickerLargeUrl": "/artworks/previews/222-1tiSdp9O-1000.webp",
@@ -2556,6 +2778,7 @@
   },
   {
     "id": 223,
+    "series": "wave",
     "title": "wave-223",
     "pickerUrl": "/artworks/previews/223-1XAVIcQt-600.webp",
     "pickerLargeUrl": "/artworks/previews/223-1XAVIcQt-1000.webp",
@@ -2567,6 +2790,7 @@
   },
   {
     "id": 224,
+    "series": "wave",
     "title": "wave-224",
     "pickerUrl": "/artworks/previews/224-17PYZ6Tw-600.webp",
     "pickerLargeUrl": "/artworks/previews/224-17PYZ6Tw-1000.webp",
@@ -2579,6 +2803,7 @@
   },
   {
     "id": 225,
+    "series": "wave",
     "title": "wave-225",
     "pickerUrl": "/artworks/previews/225-1si-fK18-600.webp",
     "pickerLargeUrl": "/artworks/previews/225-1si-fK18-1000.webp",
@@ -2590,6 +2815,7 @@
   },
   {
     "id": 226,
+    "series": "wave",
     "title": "wave-226",
     "pickerUrl": "/artworks/previews/226-1-Fi9o9e-600.webp",
     "pickerLargeUrl": "/artworks/previews/226-1-Fi9o9e-1000.webp",
@@ -2601,6 +2827,7 @@
   },
   {
     "id": 227,
+    "series": "wave",
     "title": "wave-227",
     "pickerUrl": "/artworks/previews/227-1sUSWKq2-600.webp",
     "pickerLargeUrl": "/artworks/previews/227-1sUSWKq2-1000.webp",
@@ -2612,6 +2839,7 @@
   },
   {
     "id": 228,
+    "series": "wave",
     "title": "wave-228",
     "pickerUrl": "/artworks/previews/228-1kUD6rd0-600.webp",
     "pickerLargeUrl": "/artworks/previews/228-1kUD6rd0-1000.webp",
@@ -2624,6 +2852,7 @@
   },
   {
     "id": 229,
+    "series": "wave",
     "title": "wave-229",
     "pickerUrl": "/artworks/previews/229-1i2q3Krn-600.webp",
     "pickerLargeUrl": "/artworks/previews/229-1i2q3Krn-1000.webp",
@@ -2635,6 +2864,7 @@
   },
   {
     "id": 230,
+    "series": "wave",
     "title": "wave-230",
     "pickerUrl": "/artworks/previews/230-1rOf0R3L-600.webp",
     "pickerLargeUrl": "/artworks/previews/230-1rOf0R3L-1000.webp",
@@ -2646,6 +2876,7 @@
   },
   {
     "id": 231,
+    "series": "wave",
     "title": "wave-231",
     "pickerUrl": "/artworks/previews/231-1fok2F9_-600.webp",
     "pickerLargeUrl": "/artworks/previews/231-1fok2F9_-1000.webp",
@@ -2658,6 +2889,7 @@
   },
   {
     "id": 232,
+    "series": "wave",
     "title": "wave-232",
     "pickerUrl": "/artworks/previews/232-1J6e06NC-600.webp",
     "pickerLargeUrl": "/artworks/previews/232-1J6e06NC-1000.webp",
@@ -2670,6 +2902,7 @@
   },
   {
     "id": 233,
+    "series": "wave",
     "title": "wave-233",
     "pickerUrl": "/artworks/previews/233-1NkDPsNo-600.webp",
     "pickerLargeUrl": "/artworks/previews/233-1NkDPsNo-1000.webp",
@@ -2682,6 +2915,7 @@
   },
   {
     "id": 234,
+    "series": "wave",
     "title": "wave-234",
     "pickerUrl": "/artworks/previews/234-1AbaR5U6-600.webp",
     "pickerLargeUrl": "/artworks/previews/234-1AbaR5U6-1000.webp",
@@ -2693,6 +2927,7 @@
   },
   {
     "id": 235,
+    "series": "wave",
     "title": "wave-235",
     "pickerUrl": "/artworks/previews/235-1lrrPDvq-600.webp",
     "pickerLargeUrl": "/artworks/previews/235-1lrrPDvq-1000.webp",
@@ -2705,6 +2940,7 @@
   },
   {
     "id": 236,
+    "series": "wave",
     "title": "wave-236",
     "pickerUrl": "/artworks/previews/236-19Gbo8Cd-600.webp",
     "pickerLargeUrl": "/artworks/previews/236-19Gbo8Cd-1000.webp",
@@ -2717,6 +2953,7 @@
   },
   {
     "id": 237,
+    "series": "wave",
     "title": "wave-237",
     "pickerUrl": "/artworks/previews/237-158CrJSI-600.webp",
     "pickerLargeUrl": "/artworks/previews/237-158CrJSI-1000.webp",
@@ -2728,6 +2965,7 @@
   },
   {
     "id": 238,
+    "series": "wave",
     "title": "wave-238",
     "pickerUrl": "/artworks/previews/238-1infp91F-600.webp",
     "pickerLargeUrl": "/artworks/previews/238-1infp91F-1000.webp",
@@ -2740,6 +2978,7 @@
   },
   {
     "id": 239,
+    "series": "wave",
     "title": "wave-239",
     "pickerUrl": "/artworks/previews/239-1bPuBQh6-600.webp",
     "pickerLargeUrl": "/artworks/previews/239-1bPuBQh6-1000.webp",
@@ -2751,6 +2990,7 @@
   },
   {
     "id": 240,
+    "series": "wave",
     "title": "wave-240",
     "pickerUrl": "/artworks/previews/240-12_7k1b0-600.webp",
     "pickerLargeUrl": "/artworks/previews/240-12_7k1b0-1000.webp",
@@ -2762,6 +3002,7 @@
   },
   {
     "id": 241,
+    "series": "wave",
     "title": "wave-241",
     "pickerUrl": "/artworks/previews/241-1TMkEoSb-600.webp",
     "pickerLargeUrl": "/artworks/previews/241-1TMkEoSb-1000.webp",
@@ -2773,6 +3014,7 @@
   },
   {
     "id": 242,
+    "series": "wave",
     "title": "wave-242",
     "pickerUrl": "/artworks/previews/242-1uGhZ2rt-600.webp",
     "pickerLargeUrl": "/artworks/previews/242-1uGhZ2rt-1000.webp",
@@ -2785,6 +3027,7 @@
   },
   {
     "id": 243,
+    "series": "wave",
     "title": "wave-243",
     "pickerUrl": "/artworks/previews/243-144FiPL9-600.webp",
     "pickerLargeUrl": "/artworks/previews/243-144FiPL9-1000.webp",
@@ -2796,6 +3039,7 @@
   },
   {
     "id": 244,
+    "series": "wave",
     "title": "wave-244",
     "pickerUrl": "/artworks/previews/244-1FsW1RlQ-600.webp",
     "pickerLargeUrl": "/artworks/previews/244-1FsW1RlQ-1000.webp",
@@ -2807,6 +3051,7 @@
   },
   {
     "id": 245,
+    "series": "wave",
     "title": "wave-245",
     "pickerUrl": "/artworks/previews/245-11rnG_Sp-600.webp",
     "pickerLargeUrl": "/artworks/previews/245-11rnG_Sp-1000.webp",
@@ -2819,6 +3064,7 @@
   },
   {
     "id": 246,
+    "series": "wave",
     "title": "wave-246",
     "pickerUrl": "/artworks/previews/246-1tTSyaSB-600.webp",
     "pickerLargeUrl": "/artworks/previews/246-1tTSyaSB-1000.webp",
@@ -2831,6 +3077,7 @@
   },
   {
     "id": 247,
+    "series": "wave",
     "title": "wave-247",
     "pickerUrl": "/artworks/previews/247-12LWixq5-600.webp",
     "pickerLargeUrl": "/artworks/previews/247-12LWixq5-1000.webp",
@@ -2842,6 +3089,7 @@
   },
   {
     "id": 248,
+    "series": "wave",
     "title": "wave-248",
     "pickerUrl": "/artworks/previews/248-1RwLzJo3-600.webp",
     "pickerLargeUrl": "/artworks/previews/248-1RwLzJo3-1000.webp",
@@ -2853,6 +3101,7 @@
   },
   {
     "id": 249,
+    "series": "wave",
     "title": "wave-249",
     "pickerUrl": "/artworks/previews/249-1VEC3QvS-600.webp",
     "pickerLargeUrl": "/artworks/previews/249-1VEC3QvS-1000.webp",
@@ -2864,6 +3113,7 @@
   },
   {
     "id": 250,
+    "series": "wave",
     "title": "wave-250",
     "pickerUrl": "/artworks/previews/250-16oTI6F6-600.webp",
     "pickerLargeUrl": "/artworks/previews/250-16oTI6F6-1000.webp",
@@ -2876,6 +3126,7 @@
   },
   {
     "id": 251,
+    "series": "wave",
     "title": "wave-251",
     "pickerUrl": "/artworks/previews/251-1jgxORZk-600.webp",
     "pickerLargeUrl": "/artworks/previews/251-1jgxORZk-1000.webp",
@@ -2887,6 +3138,7 @@
   },
   {
     "id": 252,
+    "series": "wave",
     "title": "wave-252",
     "pickerUrl": "/artworks/previews/252-1Vik68_f-600.webp",
     "pickerLargeUrl": "/artworks/previews/252-1Vik68_f-1000.webp",
@@ -2898,6 +3150,7 @@
   },
   {
     "id": 253,
+    "series": "wave",
     "title": "wave-253",
     "pickerUrl": "/artworks/previews/253-1jZRMhhg-600.webp",
     "pickerLargeUrl": "/artworks/previews/253-1jZRMhhg-1000.webp",
@@ -2909,6 +3162,7 @@
   },
   {
     "id": 254,
+    "series": "wave",
     "title": "wave-254",
     "pickerUrl": "/artworks/previews/254-1QjiX74--600.webp",
     "pickerLargeUrl": "/artworks/previews/254-1QjiX74--1000.webp",
@@ -2921,6 +3175,7 @@
   },
   {
     "id": 255,
+    "series": "wave",
     "title": "wave-255",
     "pickerUrl": "/artworks/previews/255-1QJgwxbj-600.webp",
     "pickerLargeUrl": "/artworks/previews/255-1QJgwxbj-1000.webp",
@@ -2932,6 +3187,7 @@
   },
   {
     "id": 256,
+    "series": "wave",
     "title": "wave-256",
     "pickerUrl": "/artworks/previews/256-1E2t8ruR-600.webp",
     "pickerLargeUrl": "/artworks/previews/256-1E2t8ruR-1000.webp",
@@ -2943,6 +3199,7 @@
   },
   {
     "id": 257,
+    "series": "wave",
     "title": "wave-257",
     "pickerUrl": "/artworks/previews/257-1u7DoIXq-600.webp",
     "pickerLargeUrl": "/artworks/previews/257-1u7DoIXq-1000.webp",
@@ -2955,6 +3212,7 @@
   },
   {
     "id": 258,
+    "series": "wave",
     "title": "wave-258",
     "pickerUrl": "/artworks/previews/258-1VVnsGoE-600.webp",
     "pickerLargeUrl": "/artworks/previews/258-1VVnsGoE-1000.webp",
@@ -2967,6 +3225,7 @@
   },
   {
     "id": 259,
+    "series": "wave",
     "title": "wave-259",
     "pickerUrl": "/artworks/previews/259-1pY2vTJF-600.webp",
     "pickerLargeUrl": "/artworks/previews/259-1pY2vTJF-1000.webp",
@@ -2979,6 +3238,7 @@
   },
   {
     "id": 260,
+    "series": "wave",
     "title": "wave-260",
     "pickerUrl": "/artworks/previews/260-1Onw-TC6-600.webp",
     "pickerLargeUrl": "/artworks/previews/260-1Onw-TC6-1000.webp",
@@ -2991,6 +3251,7 @@
   },
   {
     "id": 261,
+    "series": "wave",
     "title": "wave-261",
     "pickerUrl": "/artworks/previews/261-1DFn6yEG-600.webp",
     "pickerLargeUrl": "/artworks/previews/261-1DFn6yEG-1000.webp",
@@ -3002,6 +3263,7 @@
   },
   {
     "id": 262,
+    "series": "wave",
     "title": "wave-262",
     "pickerUrl": "/artworks/previews/262-16ngvXMK-600.webp",
     "pickerLargeUrl": "/artworks/previews/262-16ngvXMK-1000.webp",
@@ -3014,6 +3276,7 @@
   },
   {
     "id": 263,
+    "series": "wave",
     "title": "wave-263",
     "pickerUrl": "/artworks/previews/263-1y5xK52q-600.webp",
     "pickerLargeUrl": "/artworks/previews/263-1y5xK52q-1000.webp",
@@ -3026,6 +3289,7 @@
   },
   {
     "id": 264,
+    "series": "wave",
     "title": "wave-264",
     "pickerUrl": "/artworks/previews/264-1Jvu-ulG-600.webp",
     "pickerLargeUrl": "/artworks/previews/264-1Jvu-ulG-1000.webp",
@@ -3037,6 +3301,7 @@
   },
   {
     "id": 265,
+    "series": "wave",
     "title": "wave-265",
     "pickerUrl": "/artworks/previews/265-19XQNyfX-600.webp",
     "pickerLargeUrl": "/artworks/previews/265-19XQNyfX-1000.webp",
@@ -3048,6 +3313,7 @@
   },
   {
     "id": 266,
+    "series": "wave",
     "title": "wave-266",
     "pickerUrl": "/artworks/previews/266-1nKaacVi-600.webp",
     "pickerLargeUrl": "/artworks/previews/266-1nKaacVi-1000.webp",
@@ -3060,6 +3326,7 @@
   },
   {
     "id": 267,
+    "series": "wave",
     "title": "wave-267",
     "pickerUrl": "/artworks/previews/267-1b05rqXH-600.webp",
     "pickerLargeUrl": "/artworks/previews/267-1b05rqXH-1000.webp",
@@ -3072,6 +3339,7 @@
   },
   {
     "id": 268,
+    "series": "wave",
     "title": "wave-268",
     "pickerUrl": "/artworks/previews/268-1vOOHFki-600.webp",
     "pickerLargeUrl": "/artworks/previews/268-1vOOHFki-1000.webp",
@@ -3084,6 +3352,7 @@
   },
   {
     "id": 269,
+    "series": "wave",
     "title": "wave-269",
     "pickerUrl": "/artworks/previews/269-1ZmvQ48g-600.webp",
     "pickerLargeUrl": "/artworks/previews/269-1ZmvQ48g-1000.webp",
@@ -3096,6 +3365,7 @@
   },
   {
     "id": 270,
+    "series": "wave",
     "title": "wave-270",
     "pickerUrl": "/artworks/previews/270-1c0bmhoj-600.webp",
     "pickerLargeUrl": "/artworks/previews/270-1c0bmhoj-1000.webp",
@@ -3107,6 +3377,7 @@
   },
   {
     "id": 271,
+    "series": "wave",
     "title": "wave-271",
     "pickerUrl": "/artworks/previews/271-1g96RG7G-600.webp",
     "pickerLargeUrl": "/artworks/previews/271-1g96RG7G-1000.webp",
@@ -3118,6 +3389,7 @@
   },
   {
     "id": 272,
+    "series": "wave",
     "title": "wave-272",
     "pickerUrl": "/artworks/previews/272-1jY1qI8_-600.webp",
     "pickerLargeUrl": "/artworks/previews/272-1jY1qI8_-1000.webp",
@@ -3130,6 +3402,7 @@
   },
   {
     "id": 273,
+    "series": "wave",
     "title": "wave-273",
     "pickerUrl": "/artworks/previews/273-1LnKD0q--600.webp",
     "pickerLargeUrl": "/artworks/previews/273-1LnKD0q--1000.webp",
@@ -3141,6 +3414,7 @@
   },
   {
     "id": 274,
+    "series": "wave",
     "title": "wave-274",
     "pickerUrl": "/artworks/previews/274-1gD4OfEF-600.webp",
     "pickerLargeUrl": "/artworks/previews/274-1gD4OfEF-1000.webp",
@@ -3152,6 +3426,7 @@
   },
   {
     "id": 275,
+    "series": "wave",
     "title": "wave-275",
     "pickerUrl": "/artworks/previews/275-1qaMvv2m-600.webp",
     "pickerLargeUrl": "/artworks/previews/275-1qaMvv2m-1000.webp",
@@ -3163,6 +3438,7 @@
   },
   {
     "id": 276,
+    "series": "wave",
     "title": "wave-276",
     "pickerUrl": "/artworks/previews/276-1i3ryW6p-600.webp",
     "pickerLargeUrl": "/artworks/previews/276-1i3ryW6p-1000.webp",
@@ -3175,6 +3451,7 @@
   },
   {
     "id": 277,
+    "series": "wave",
     "title": "wave-277",
     "pickerUrl": "/artworks/previews/277-1iLHk1bz-600.webp",
     "pickerLargeUrl": "/artworks/previews/277-1iLHk1bz-1000.webp",
@@ -3187,6 +3464,7 @@
   },
   {
     "id": 278,
+    "series": "wave",
     "title": "wave-278",
     "pickerUrl": "/artworks/previews/278-1oSoQkXV-600.webp",
     "pickerLargeUrl": "/artworks/previews/278-1oSoQkXV-1000.webp",
@@ -3199,6 +3477,7 @@
   },
   {
     "id": 279,
+    "series": "wave",
     "title": "wave-279",
     "pickerUrl": "/artworks/previews/279-1uFbKtGk-600.webp",
     "pickerLargeUrl": "/artworks/previews/279-1uFbKtGk-1000.webp",
@@ -3210,6 +3489,7 @@
   },
   {
     "id": 280,
+    "series": "wave",
     "title": "wave-280",
     "pickerUrl": "/artworks/previews/280-1gdlRYOV-600.webp",
     "pickerLargeUrl": "/artworks/previews/280-1gdlRYOV-1000.webp",
@@ -3222,6 +3502,7 @@
   },
   {
     "id": 281,
+    "series": "wave",
     "title": "wave-281",
     "pickerUrl": "/artworks/previews/281-1bOf3VSM-600.webp",
     "pickerLargeUrl": "/artworks/previews/281-1bOf3VSM-1000.webp",
@@ -3234,6 +3515,7 @@
   },
   {
     "id": 282,
+    "series": "wave",
     "title": "wave-282",
     "pickerUrl": "/artworks/previews/282-1SWv8p5k-600.webp",
     "pickerLargeUrl": "/artworks/previews/282-1SWv8p5k-1000.webp",
@@ -3246,6 +3528,7 @@
   },
   {
     "id": 283,
+    "series": "wave",
     "title": "wave-283",
     "pickerUrl": "/artworks/previews/283-1DGE1I0P-600.webp",
     "pickerLargeUrl": "/artworks/previews/283-1DGE1I0P-1000.webp",
@@ -3258,6 +3541,7 @@
   },
   {
     "id": 284,
+    "series": "wave",
     "title": "wave-284",
     "pickerUrl": "/artworks/previews/284-1vg6vUZR-600.webp",
     "pickerLargeUrl": "/artworks/previews/284-1vg6vUZR-1000.webp",
@@ -3269,6 +3553,7 @@
   },
   {
     "id": 285,
+    "series": "wave",
     "title": "wave-285",
     "pickerUrl": "/artworks/previews/285-1Dh3qD7c-600.webp",
     "pickerLargeUrl": "/artworks/previews/285-1Dh3qD7c-1000.webp",
@@ -3280,6 +3565,7 @@
   },
   {
     "id": 286,
+    "series": "wave",
     "title": "wave-286",
     "pickerUrl": "/artworks/previews/286-1GK6SB3J-600.webp",
     "pickerLargeUrl": "/artworks/previews/286-1GK6SB3J-1000.webp",
@@ -3292,6 +3578,7 @@
   },
   {
     "id": 287,
+    "series": "wave",
     "title": "wave-287",
     "pickerUrl": "/artworks/previews/287-1PV6MJmw-600.webp",
     "pickerLargeUrl": "/artworks/previews/287-1PV6MJmw-1000.webp",
@@ -3304,6 +3591,7 @@
   },
   {
     "id": 288,
+    "series": "wave",
     "title": "wave-288",
     "pickerUrl": "/artworks/previews/288-1lvFzzwV-600.webp",
     "pickerLargeUrl": "/artworks/previews/288-1lvFzzwV-1000.webp",
@@ -3316,6 +3604,7 @@
   },
   {
     "id": 289,
+    "series": "wave",
     "title": "wave-289",
     "pickerUrl": "/artworks/previews/289-1tIRZeuc-600.webp",
     "pickerLargeUrl": "/artworks/previews/289-1tIRZeuc-1000.webp",
@@ -3327,6 +3616,7 @@
   },
   {
     "id": 290,
+    "series": "wave",
     "title": "wave-290",
     "pickerUrl": "/artworks/previews/290-19uebfNh-600.webp",
     "pickerLargeUrl": "/artworks/previews/290-19uebfNh-1000.webp",
@@ -3339,6 +3629,7 @@
   },
   {
     "id": 291,
+    "series": "wave",
     "title": "wave-291",
     "pickerUrl": "/artworks/previews/291-12tfZnsd-600.webp",
     "pickerLargeUrl": "/artworks/previews/291-12tfZnsd-1000.webp",
@@ -3351,6 +3642,7 @@
   },
   {
     "id": 292,
+    "series": "wave",
     "title": "wave-292",
     "pickerUrl": "/artworks/previews/292-1NmfYy8H-600.webp",
     "pickerLargeUrl": "/artworks/previews/292-1NmfYy8H-1000.webp",
@@ -3363,6 +3655,7 @@
   },
   {
     "id": 293,
+    "series": "wave",
     "title": "wave-293",
     "pickerUrl": "/artworks/previews/293-1sgMbAsv-600.webp",
     "pickerLargeUrl": "/artworks/previews/293-1sgMbAsv-1000.webp",
@@ -3374,6 +3667,7 @@
   },
   {
     "id": 294,
+    "series": "wave",
     "title": "wave-294",
     "pickerUrl": "/artworks/previews/294-1cmsYNfL-600.webp",
     "pickerLargeUrl": "/artworks/previews/294-1cmsYNfL-1000.webp",
@@ -3385,6 +3679,7 @@
   },
   {
     "id": 295,
+    "series": "wave",
     "title": "wave-295",
     "pickerUrl": "/artworks/previews/295-1BMsBg0A-600.webp",
     "pickerLargeUrl": "/artworks/previews/295-1BMsBg0A-1000.webp",
@@ -3397,6 +3692,7 @@
   },
   {
     "id": 296,
+    "series": "wave",
     "title": "wave-296",
     "pickerUrl": "/artworks/previews/296-1g5IrW9S-600.webp",
     "pickerLargeUrl": "/artworks/previews/296-1g5IrW9S-1000.webp",
@@ -3409,6 +3705,7 @@
   },
   {
     "id": 297,
+    "series": "wave",
     "title": "wave-297",
     "pickerUrl": "/artworks/previews/297-1Hc3W7BQ-600.webp",
     "pickerLargeUrl": "/artworks/previews/297-1Hc3W7BQ-1000.webp",
@@ -3421,6 +3718,7 @@
   },
   {
     "id": 298,
+    "series": "wave",
     "title": "wave-298",
     "pickerUrl": "/artworks/previews/298-1Y_rD5gg-600.webp",
     "pickerLargeUrl": "/artworks/previews/298-1Y_rD5gg-1000.webp",
@@ -3432,6 +3730,7 @@
   },
   {
     "id": 299,
+    "series": "wave",
     "title": "wave-299",
     "pickerUrl": "/artworks/previews/299-18MZJEhP-600.webp",
     "pickerLargeUrl": "/artworks/previews/299-18MZJEhP-1000.webp",
@@ -3444,6 +3743,7 @@
   },
   {
     "id": 300,
+    "series": "wave",
     "title": "wave-300",
     "pickerUrl": "/artworks/previews/300-1eyIdwLm-600.webp",
     "pickerLargeUrl": "/artworks/previews/300-1eyIdwLm-1000.webp",
@@ -3455,6 +3755,7 @@
   },
   {
     "id": 301,
+    "series": "wave",
     "title": "wave-301",
     "pickerUrl": "/artworks/previews/301-1PVl6nKR-600.webp",
     "pickerLargeUrl": "/artworks/previews/301-1PVl6nKR-1000.webp",
@@ -3466,6 +3767,7 @@
   },
   {
     "id": 302,
+    "series": "wave",
     "title": "wave-302",
     "pickerUrl": "/artworks/previews/302-12rI9ezU-600.webp",
     "pickerLargeUrl": "/artworks/previews/302-12rI9ezU-1000.webp",
@@ -3477,6 +3779,7 @@
   },
   {
     "id": 303,
+    "series": "wave",
     "title": "wave-303",
     "pickerUrl": "/artworks/previews/303-1XSntEUd-600.webp",
     "pickerLargeUrl": "/artworks/previews/303-1XSntEUd-1000.webp",
@@ -3488,6 +3791,7 @@
   },
   {
     "id": 304,
+    "series": "wave",
     "title": "wave-304",
     "pickerUrl": "/artworks/previews/304-1Cm52i-A-600.webp",
     "pickerLargeUrl": "/artworks/previews/304-1Cm52i-A-1000.webp",
@@ -3500,6 +3804,7 @@
   },
   {
     "id": 305,
+    "series": "wave",
     "title": "wave-305",
     "pickerUrl": "/artworks/previews/305-1Fagq_n8-600.webp",
     "pickerLargeUrl": "/artworks/previews/305-1Fagq_n8-1000.webp",
@@ -3512,6 +3817,7 @@
   },
   {
     "id": 306,
+    "series": "wave",
     "title": "wave-306",
     "pickerUrl": "/artworks/previews/306-1ZTryu0X-600.webp",
     "pickerLargeUrl": "/artworks/previews/306-1ZTryu0X-1000.webp",
@@ -3524,6 +3830,7 @@
   },
   {
     "id": 307,
+    "series": "wave",
     "title": "wave-307",
     "pickerUrl": "/artworks/previews/307-1DFc1Fo4-600.webp",
     "pickerLargeUrl": "/artworks/previews/307-1DFc1Fo4-1000.webp",
@@ -3535,6 +3842,7 @@
   },
   {
     "id": 308,
+    "series": "wave",
     "title": "wave-308",
     "pickerUrl": "/artworks/previews/308-10DTwcAr-600.webp",
     "pickerLargeUrl": "/artworks/previews/308-10DTwcAr-1000.webp",
@@ -3547,6 +3855,7 @@
   },
   {
     "id": 309,
+    "series": "wave",
     "title": "wave-309",
     "pickerUrl": "/artworks/previews/309-1fb5pd_q-600.webp",
     "pickerLargeUrl": "/artworks/previews/309-1fb5pd_q-1000.webp",
@@ -3558,6 +3867,7 @@
   },
   {
     "id": 310,
+    "series": "wave",
     "title": "wave-310",
     "pickerUrl": "/artworks/previews/310-1Rz0gFWC-600.webp",
     "pickerLargeUrl": "/artworks/previews/310-1Rz0gFWC-1000.webp",
@@ -3569,6 +3879,7 @@
   },
   {
     "id": 311,
+    "series": "wave",
     "title": "wave-311",
     "pickerUrl": "/artworks/previews/311-1krCgkx5-600.webp",
     "pickerLargeUrl": "/artworks/previews/311-1krCgkx5-1000.webp",
@@ -3580,6 +3891,7 @@
   },
   {
     "id": 312,
+    "series": "wave",
     "title": "wave-312",
     "pickerUrl": "/artworks/previews/312-1Dz2qY80-600.webp",
     "pickerLargeUrl": "/artworks/previews/312-1Dz2qY80-1000.webp",
@@ -3592,6 +3904,7 @@
   },
   {
     "id": 313,
+    "series": "wave",
     "title": "wave-313",
     "pickerUrl": "/artworks/previews/313-1rOzg7uM-600.webp",
     "pickerLargeUrl": "/artworks/previews/313-1rOzg7uM-1000.webp",
@@ -3604,6 +3917,7 @@
   },
   {
     "id": 314,
+    "series": "wave",
     "title": "wave-314",
     "pickerUrl": "/artworks/previews/314-1a8AWvkR-600.webp",
     "pickerLargeUrl": "/artworks/previews/314-1a8AWvkR-1000.webp",
@@ -3615,6 +3929,7 @@
   },
   {
     "id": 315,
+    "series": "wave",
     "title": "wave-315",
     "pickerUrl": "/artworks/previews/315-1TeSTP7Z-600.webp",
     "pickerLargeUrl": "/artworks/previews/315-1TeSTP7Z-1000.webp",
@@ -3627,6 +3942,7 @@
   },
   {
     "id": 316,
+    "series": "wave",
     "title": "wave-316",
     "pickerUrl": "/artworks/previews/316-1hENNr6L-600.webp",
     "pickerLargeUrl": "/artworks/previews/316-1hENNr6L-1000.webp",
@@ -3638,6 +3954,7 @@
   },
   {
     "id": 317,
+    "series": "wave",
     "title": "wave-317",
     "pickerUrl": "/artworks/previews/317-1dmvp9vb-600.webp",
     "pickerLargeUrl": "/artworks/previews/317-1dmvp9vb-1000.webp",
@@ -3649,6 +3966,7 @@
   },
   {
     "id": 318,
+    "series": "wave",
     "title": "wave-318",
     "pickerUrl": "/artworks/previews/318-1qclAuoi-600.webp",
     "pickerLargeUrl": "/artworks/previews/318-1qclAuoi-1000.webp",
@@ -3661,6 +3979,7 @@
   },
   {
     "id": 319,
+    "series": "wave",
     "title": "wave-319",
     "pickerUrl": "/artworks/previews/319-1y2JcqI_-600.webp",
     "pickerLargeUrl": "/artworks/previews/319-1y2JcqI_-1000.webp",
@@ -3673,6 +3992,7 @@
   },
   {
     "id": 320,
+    "series": "wave",
     "title": "wave-320",
     "pickerUrl": "/artworks/previews/320-1Na5QUsR-600.webp",
     "pickerLargeUrl": "/artworks/previews/320-1Na5QUsR-1000.webp",
@@ -3685,6 +4005,7 @@
   },
   {
     "id": 321,
+    "series": "wave",
     "title": "wave-321",
     "pickerUrl": "/artworks/previews/321-1XGVuYLx-600.webp",
     "pickerLargeUrl": "/artworks/previews/321-1XGVuYLx-1000.webp",
@@ -3696,6 +4017,7 @@
   },
   {
     "id": 322,
+    "series": "wave",
     "title": "wave-322",
     "pickerUrl": "/artworks/previews/322-1rRS9T43-600.webp",
     "pickerLargeUrl": "/artworks/previews/322-1rRS9T43-1000.webp",
@@ -3707,6 +4029,7 @@
   },
   {
     "id": 323,
+    "series": "wave",
     "title": "wave-323",
     "pickerUrl": "/artworks/previews/323-1AejeUAy-600.webp",
     "pickerLargeUrl": "/artworks/previews/323-1AejeUAy-1000.webp",
@@ -3719,6 +4042,7 @@
   },
   {
     "id": 324,
+    "series": "wave",
     "title": "wave-324",
     "pickerUrl": "/artworks/previews/324-1g0D4EIL-600.webp",
     "pickerLargeUrl": "/artworks/previews/324-1g0D4EIL-1000.webp",
@@ -3730,6 +4054,7 @@
   },
   {
     "id": 325,
+    "series": "wave",
     "title": "wave-325",
     "pickerUrl": "/artworks/previews/325-1Ylr1GMj-600.webp",
     "pickerLargeUrl": "/artworks/previews/325-1Ylr1GMj-1000.webp",
@@ -3741,6 +4066,7 @@
   },
   {
     "id": 326,
+    "series": "wave",
     "title": "wave-326",
     "pickerUrl": "/artworks/previews/326-1CjrsJTx-600.webp",
     "pickerLargeUrl": "/artworks/previews/326-1CjrsJTx-1000.webp",
@@ -3753,6 +4079,7 @@
   },
   {
     "id": 327,
+    "series": "wave",
     "title": "wave-327",
     "pickerUrl": "/artworks/previews/327-1VIur7b--600.webp",
     "pickerLargeUrl": "/artworks/previews/327-1VIur7b--1000.webp",
@@ -3764,6 +4091,7 @@
   },
   {
     "id": 328,
+    "series": "wave",
     "title": "wave-328",
     "pickerUrl": "/artworks/previews/328-18AvctsK-600.webp",
     "pickerLargeUrl": "/artworks/previews/328-18AvctsK-1000.webp",
@@ -3776,6 +4104,7 @@
   },
   {
     "id": 329,
+    "series": "wave",
     "title": "wave-329",
     "pickerUrl": "/artworks/previews/329-1q4xzbiT-600.webp",
     "pickerLargeUrl": "/artworks/previews/329-1q4xzbiT-1000.webp",
@@ -3788,6 +4117,7 @@
   },
   {
     "id": 330,
+    "series": "wave",
     "title": "wave-330",
     "pickerUrl": "/artworks/previews/330-1Td-XRua-600.webp",
     "pickerLargeUrl": "/artworks/previews/330-1Td-XRua-1000.webp",
@@ -3800,6 +4130,7 @@
   },
   {
     "id": 331,
+    "series": "wave",
     "title": "wave-331",
     "pickerUrl": "/artworks/previews/331-1GPQM-OZ-600.webp",
     "pickerLargeUrl": "/artworks/previews/331-1GPQM-OZ-1000.webp",
@@ -3811,6 +4142,7 @@
   },
   {
     "id": 332,
+    "series": "wave",
     "title": "wave-332",
     "pickerUrl": "/artworks/previews/332-1k5RorKB-600.webp",
     "pickerLargeUrl": "/artworks/previews/332-1k5RorKB-1000.webp",
@@ -3823,6 +4155,7 @@
   },
   {
     "id": 333,
+    "series": "wave",
     "title": "wave-333",
     "pickerUrl": "/artworks/previews/333-1Di5u6hg-600.webp",
     "pickerLargeUrl": "/artworks/previews/333-1Di5u6hg-1000.webp",
@@ -3835,6 +4168,7 @@
   },
   {
     "id": 334,
+    "series": "wave",
     "title": "wave-334",
     "pickerUrl": "/artworks/previews/334-1Nr1xZyP-600.webp",
     "pickerLargeUrl": "/artworks/previews/334-1Nr1xZyP-1000.webp",
@@ -3846,6 +4180,7 @@
   },
   {
     "id": 335,
+    "series": "wave",
     "title": "wave-335",
     "pickerUrl": "/artworks/previews/335-1fgCwSxO-600.webp",
     "pickerLargeUrl": "/artworks/previews/335-1fgCwSxO-1000.webp",
@@ -3857,6 +4192,7 @@
   },
   {
     "id": 336,
+    "series": "wave",
     "title": "wave-336",
     "pickerUrl": "/artworks/previews/336-1F3duG2e-600.webp",
     "pickerLargeUrl": "/artworks/previews/336-1F3duG2e-1000.webp",
@@ -3869,6 +4205,7 @@
   },
   {
     "id": 337,
+    "series": "wave",
     "title": "wave-337",
     "pickerUrl": "/artworks/previews/337-1wfE0cX_-600.webp",
     "pickerLargeUrl": "/artworks/previews/337-1wfE0cX_-1000.webp",
@@ -3880,6 +4217,7 @@
   },
   {
     "id": 338,
+    "series": "wave",
     "title": "wave-338",
     "pickerUrl": "/artworks/previews/338-1eENA0Ah-600.webp",
     "pickerLargeUrl": "/artworks/previews/338-1eENA0Ah-1000.webp",
@@ -3892,6 +4230,7 @@
   },
   {
     "id": 339,
+    "series": "wave",
     "title": "wave-339",
     "pickerUrl": "/artworks/previews/339-1Uk-eSl0-600.webp",
     "pickerLargeUrl": "/artworks/previews/339-1Uk-eSl0-1000.webp",
@@ -3904,6 +4243,7 @@
   },
   {
     "id": 340,
+    "series": "wave",
     "title": "wave-340",
     "pickerUrl": "/artworks/previews/340-1I38f-T3-600.webp",
     "pickerLargeUrl": "/artworks/previews/340-1I38f-T3-1000.webp",
@@ -3916,6 +4256,7 @@
   },
   {
     "id": 341,
+    "series": "wave",
     "title": "wave-341",
     "pickerUrl": "/artworks/previews/341-10-KfAxM-600.webp",
     "pickerLargeUrl": "/artworks/previews/341-10-KfAxM-1000.webp",
@@ -3927,6 +4268,7 @@
   },
   {
     "id": 342,
+    "series": "wave",
     "title": "wave-342",
     "pickerUrl": "/artworks/previews/342-14Zpsmpv-600.webp",
     "pickerLargeUrl": "/artworks/previews/342-14Zpsmpv-1000.webp",
@@ -3939,6 +4281,7 @@
   },
   {
     "id": 343,
+    "series": "wave",
     "title": "wave-343",
     "pickerUrl": "/artworks/previews/343-10kz1LOA-600.webp",
     "pickerLargeUrl": "/artworks/previews/343-10kz1LOA-1000.webp",
@@ -3951,6 +4294,7 @@
   },
   {
     "id": 344,
+    "series": "wave",
     "title": "wave-344",
     "pickerUrl": "/artworks/previews/344-1-_o3bkk-600.webp",
     "pickerLargeUrl": "/artworks/previews/344-1-_o3bkk-1000.webp",
@@ -3962,6 +4306,7 @@
   },
   {
     "id": 345,
+    "series": "wave",
     "title": "wave-345",
     "pickerUrl": "/artworks/previews/345-1m4JO3ZZ-600.webp",
     "pickerLargeUrl": "/artworks/previews/345-1m4JO3ZZ-1000.webp",
@@ -3974,6 +4319,7 @@
   },
   {
     "id": 346,
+    "series": "wave",
     "title": "wave-346",
     "pickerUrl": "/artworks/previews/346-14Gb_wj6-600.webp",
     "pickerLargeUrl": "/artworks/previews/346-14Gb_wj6-1000.webp",
@@ -3986,6 +4332,7 @@
   },
   {
     "id": 347,
+    "series": "wave",
     "title": "wave-347",
     "pickerUrl": "/artworks/previews/347-1AQTeO7p-600.webp",
     "pickerLargeUrl": "/artworks/previews/347-1AQTeO7p-1000.webp",
@@ -3998,6 +4345,7 @@
   },
   {
     "id": 348,
+    "series": "wave",
     "title": "wave-348",
     "pickerUrl": "/artworks/previews/348-1sfJuyZg-600.webp",
     "pickerLargeUrl": "/artworks/previews/348-1sfJuyZg-1000.webp",
@@ -4010,6 +4358,7 @@
   },
   {
     "id": 349,
+    "series": "wave",
     "title": "wave-349",
     "pickerUrl": "/artworks/previews/349-1oo1q7w6-600.webp",
     "pickerLargeUrl": "/artworks/previews/349-1oo1q7w6-1000.webp",
@@ -4021,6 +4370,7 @@
   },
   {
     "id": 350,
+    "series": "wave",
     "title": "wave-350",
     "pickerUrl": "/artworks/previews/350-1VL3hFGv-600.webp",
     "pickerLargeUrl": "/artworks/previews/350-1VL3hFGv-1000.webp",
@@ -4032,6 +4382,7 @@
   },
   {
     "id": 351,
+    "series": "wave",
     "title": "wave-351",
     "pickerUrl": "/artworks/previews/351-1IqsiyIj-600.webp",
     "pickerLargeUrl": "/artworks/previews/351-1IqsiyIj-1000.webp",
@@ -4043,6 +4394,7 @@
   },
   {
     "id": 352,
+    "series": "wave",
     "title": "wave-352",
     "pickerUrl": "/artworks/previews/352-16utC0Sz-600.webp",
     "pickerLargeUrl": "/artworks/previews/352-16utC0Sz-1000.webp",
@@ -4055,6 +4407,7 @@
   },
   {
     "id": 353,
+    "series": "wave",
     "title": "wave-353",
     "pickerUrl": "/artworks/previews/353-15_p78Ro-600.webp",
     "pickerLargeUrl": "/artworks/previews/353-15_p78Ro-1000.webp",
@@ -4067,6 +4420,7 @@
   },
   {
     "id": 354,
+    "series": "wave",
     "title": "wave-354",
     "pickerUrl": "/artworks/previews/354-1u8FXS8H-600.webp",
     "pickerLargeUrl": "/artworks/previews/354-1u8FXS8H-1000.webp",
@@ -4079,6 +4433,7 @@
   },
   {
     "id": 355,
+    "series": "wave",
     "title": "wave-355",
     "pickerUrl": "/artworks/previews/355-1cdDFEXk-600.webp",
     "pickerLargeUrl": "/artworks/previews/355-1cdDFEXk-1000.webp",
@@ -4091,6 +4446,7 @@
   },
   {
     "id": 356,
+    "series": "wave",
     "title": "wave-356",
     "pickerUrl": "/artworks/previews/356-1sH2edV0-600.webp",
     "pickerLargeUrl": "/artworks/previews/356-1sH2edV0-1000.webp",
@@ -4102,6 +4458,7 @@
   },
   {
     "id": 357,
+    "series": "wave",
     "title": "wave-357",
     "pickerUrl": "/artworks/previews/357-1i-mi3BF-600.webp",
     "pickerLargeUrl": "/artworks/previews/357-1i-mi3BF-1000.webp",
@@ -4114,6 +4471,7 @@
   },
   {
     "id": 358,
+    "series": "wave",
     "title": "wave-358",
     "pickerUrl": "/artworks/previews/358-1MSrtfZQ-600.webp",
     "pickerLargeUrl": "/artworks/previews/358-1MSrtfZQ-1000.webp",
@@ -4126,6 +4484,7 @@
   },
   {
     "id": 359,
+    "series": "wave",
     "title": "wave-359",
     "pickerUrl": "/artworks/previews/359-1KzTDzRV-600.webp",
     "pickerLargeUrl": "/artworks/previews/359-1KzTDzRV-1000.webp",
@@ -4138,6 +4497,7 @@
   },
   {
     "id": 360,
+    "series": "wave",
     "title": "wave-360",
     "pickerUrl": "/artworks/previews/360-1tAZY7ZX-600.webp",
     "pickerLargeUrl": "/artworks/previews/360-1tAZY7ZX-1000.webp",
@@ -4150,6 +4510,7 @@
   },
   {
     "id": 361,
+    "series": "wave",
     "title": "wave-361",
     "pickerUrl": "/artworks/previews/361-1GgtO-wm-600.webp",
     "pickerLargeUrl": "/artworks/previews/361-1GgtO-wm-1000.webp",
@@ -4162,6 +4523,7 @@
   },
   {
     "id": 362,
+    "series": "wave",
     "title": "wave-362",
     "pickerUrl": "/artworks/previews/362-1PXliiP9-600.webp",
     "pickerLargeUrl": "/artworks/previews/362-1PXliiP9-1000.webp",
@@ -4174,6 +4536,7 @@
   },
   {
     "id": 363,
+    "series": "wave",
     "title": "wave-363",
     "pickerUrl": "/artworks/previews/363-1J13ylYM-600.webp",
     "pickerLargeUrl": "/artworks/previews/363-1J13ylYM-1000.webp",
@@ -4186,6 +4549,7 @@
   },
   {
     "id": 364,
+    "series": "wave",
     "title": "wave-364",
     "pickerUrl": "/artworks/previews/364-1RLWZuUg-600.webp",
     "pickerLargeUrl": "/artworks/previews/364-1RLWZuUg-1000.webp",
@@ -4198,6 +4562,7 @@
   },
   {
     "id": 365,
+    "series": "wave",
     "title": "wave-365",
     "pickerUrl": "/artworks/previews/365-18r9lOtj-600.webp",
     "pickerLargeUrl": "/artworks/previews/365-18r9lOtj-1000.webp",
@@ -4209,6 +4574,7 @@
   },
   {
     "id": 366,
+    "series": "wave",
     "title": "wave-366",
     "pickerUrl": "/artworks/previews/366-1gSYLf5L-600.webp",
     "pickerLargeUrl": "/artworks/previews/366-1gSYLf5L-1000.webp",
@@ -4221,6 +4587,7 @@
   },
   {
     "id": 367,
+    "series": "wave",
     "title": "wave-367",
     "pickerUrl": "/artworks/previews/367-1mi8NkGX-600.webp",
     "pickerLargeUrl": "/artworks/previews/367-1mi8NkGX-1000.webp",
@@ -4233,6 +4600,7 @@
   },
   {
     "id": 368,
+    "series": "wave",
     "title": "wave-368",
     "pickerUrl": "/artworks/previews/368-19Y8REFn-600.webp",
     "pickerLargeUrl": "/artworks/previews/368-19Y8REFn-1000.webp",
@@ -4244,6 +4612,7 @@
   },
   {
     "id": 369,
+    "series": "wave",
     "title": "wave-369",
     "pickerUrl": "/artworks/previews/369-1EgKJccT-600.webp",
     "pickerLargeUrl": "/artworks/previews/369-1EgKJccT-1000.webp",
@@ -4255,6 +4624,7 @@
   },
   {
     "id": 370,
+    "series": "wave",
     "title": "wave-370",
     "pickerUrl": "/artworks/previews/370-1S2D6UhU-600.webp",
     "pickerLargeUrl": "/artworks/previews/370-1S2D6UhU-1000.webp",
@@ -4267,6 +4637,7 @@
   },
   {
     "id": 371,
+    "series": "wave",
     "title": "wave-371",
     "pickerUrl": "/artworks/previews/371-1RqaD3wC-600.webp",
     "pickerLargeUrl": "/artworks/previews/371-1RqaD3wC-1000.webp",
@@ -4279,6 +4650,7 @@
   },
   {
     "id": 372,
+    "series": "wave",
     "title": "wave-372",
     "pickerUrl": "/artworks/previews/372-13vKuK1J-600.webp",
     "pickerLargeUrl": "/artworks/previews/372-13vKuK1J-1000.webp",
@@ -4291,6 +4663,7 @@
   },
   {
     "id": 373,
+    "series": "wave",
     "title": "wave-373",
     "pickerUrl": "/artworks/previews/373-1t4mrhhp-600.webp",
     "pickerLargeUrl": "/artworks/previews/373-1t4mrhhp-1000.webp",
@@ -4302,6 +4675,7 @@
   },
   {
     "id": 374,
+    "series": "wave",
     "title": "wave-374",
     "pickerUrl": "/artworks/previews/374-1LP2QQwf-600.webp",
     "pickerLargeUrl": "/artworks/previews/374-1LP2QQwf-1000.webp",
@@ -4314,6 +4688,7 @@
   },
   {
     "id": 375,
+    "series": "wave",
     "title": "wave-375",
     "pickerUrl": "/artworks/previews/375-1npIJoT8-600.webp",
     "pickerLargeUrl": "/artworks/previews/375-1npIJoT8-1000.webp",
@@ -4325,6 +4700,7 @@
   },
   {
     "id": 376,
+    "series": "wave",
     "title": "wave-376",
     "pickerUrl": "/artworks/previews/376-1ZvZoGMe-600.webp",
     "pickerLargeUrl": "/artworks/previews/376-1ZvZoGMe-1000.webp",
@@ -4337,6 +4713,7 @@
   },
   {
     "id": 377,
+    "series": "wave",
     "title": "wave-377",
     "pickerUrl": "/artworks/previews/377-1IFITEig-600.webp",
     "pickerLargeUrl": "/artworks/previews/377-1IFITEig-1000.webp",
@@ -4348,6 +4725,7 @@
   },
   {
     "id": 378,
+    "series": "wave",
     "title": "wave-378",
     "pickerUrl": "/artworks/previews/378-1B1OdyAN-600.webp",
     "pickerLargeUrl": "/artworks/previews/378-1B1OdyAN-1000.webp",
@@ -4360,6 +4738,7 @@
   },
   {
     "id": 379,
+    "series": "wave",
     "title": "wave-379",
     "pickerUrl": "/artworks/previews/379-1cIiy87R-600.webp",
     "pickerLargeUrl": "/artworks/previews/379-1cIiy87R-1000.webp",
@@ -4372,6 +4751,7 @@
   },
   {
     "id": 380,
+    "series": "wave",
     "title": "wave-380",
     "pickerUrl": "/artworks/previews/380-19VjqdLR-600.webp",
     "pickerLargeUrl": "/artworks/previews/380-19VjqdLR-1000.webp",
@@ -4384,6 +4764,7 @@
   },
   {
     "id": 381,
+    "series": "wave",
     "title": "wave-381",
     "pickerUrl": "/artworks/previews/381-14MuOsEa-600.webp",
     "pickerLargeUrl": "/artworks/previews/381-14MuOsEa-1000.webp",
@@ -4395,6 +4776,7 @@
   },
   {
     "id": 382,
+    "series": "wave",
     "title": "wave-382",
     "pickerUrl": "/artworks/previews/382-1JSMHGgu-600.webp",
     "pickerLargeUrl": "/artworks/previews/382-1JSMHGgu-1000.webp",
@@ -4407,6 +4789,7 @@
   },
   {
     "id": 383,
+    "series": "wave",
     "title": "wave-383",
     "pickerUrl": "/artworks/previews/383-1v6Mfr8I-600.webp",
     "pickerLargeUrl": "/artworks/previews/383-1v6Mfr8I-1000.webp",
@@ -4418,12 +4801,270 @@
   },
   {
     "id": 384,
+    "series": "wave",
     "title": "wave-384",
     "pickerUrl": "/artworks/previews/384-1FK5LmRS-600.webp",
     "pickerLargeUrl": "/artworks/previews/384-1FK5LmRS-1000.webp",
     "previewUrl": "/artworks/previews/384-1FK5LmRS.webp",
     "originalUrl": "/artworks/originals/384-1FK5LmRS.jpg",
     "colors": [
+      "red"
+    ]
+  },
+  {
+    "id": 385,
+    "series": "wave",
+    "title": "wave-385",
+    "pickerUrl": "/artworks/previews/385-1AwoMmGW-600.webp",
+    "pickerLargeUrl": "/artworks/previews/385-1AwoMmGW-1000.webp",
+    "previewUrl": "/artworks/previews/385-1AwoMmGW.webp",
+    "originalUrl": "/artworks/originals/385-1AwoMmGW.jpg",
+    "colors": [
+      "green",
+      "red"
+    ]
+  },
+  {
+    "id": 386,
+    "series": "wave",
+    "title": "wave-386",
+    "pickerUrl": "/artworks/previews/386-13zshRpu-600.webp",
+    "pickerLargeUrl": "/artworks/previews/386-13zshRpu-1000.webp",
+    "previewUrl": "/artworks/previews/386-13zshRpu.webp",
+    "originalUrl": "/artworks/originals/386-13zshRpu.jpg",
+    "colors": [
+      "red",
+      "green"
+    ]
+  },
+  {
+    "id": 387,
+    "series": "wave",
+    "title": "wave-387",
+    "pickerUrl": "/artworks/previews/387-1csPz6IE-600.webp",
+    "pickerLargeUrl": "/artworks/previews/387-1csPz6IE-1000.webp",
+    "previewUrl": "/artworks/previews/387-1csPz6IE.webp",
+    "originalUrl": "/artworks/originals/387-1csPz6IE.jpg",
+    "colors": [
+      "red",
+      "green"
+    ]
+  },
+  {
+    "id": 388,
+    "series": "wave",
+    "title": "wave-388",
+    "pickerUrl": "/artworks/previews/388-1p6g-CPH-600.webp",
+    "pickerLargeUrl": "/artworks/previews/388-1p6g-CPH-1000.webp",
+    "previewUrl": "/artworks/previews/388-1p6g-CPH.webp",
+    "originalUrl": "/artworks/originals/388-1p6g-CPH.jpg",
+    "colors": [
+      "blue",
+      "purple"
+    ]
+  },
+  {
+    "id": 389,
+    "series": "wave",
+    "title": "wave-389",
+    "pickerUrl": "/artworks/previews/389-1ra2SPA0-600.webp",
+    "pickerLargeUrl": "/artworks/previews/389-1ra2SPA0-1000.webp",
+    "previewUrl": "/artworks/previews/389-1ra2SPA0.webp",
+    "originalUrl": "/artworks/originals/389-1ra2SPA0.jpg",
+    "colors": [
+      "blue"
+    ]
+  },
+  {
+    "id": 390,
+    "series": "wave",
+    "title": "wave-390",
+    "pickerUrl": "/artworks/previews/390-1hGZnTPX-600.webp",
+    "pickerLargeUrl": "/artworks/previews/390-1hGZnTPX-1000.webp",
+    "previewUrl": "/artworks/previews/390-1hGZnTPX.webp",
+    "originalUrl": "/artworks/originals/390-1hGZnTPX.jpg",
+    "colors": [
+      "green",
+      "red"
+    ]
+  },
+  {
+    "id": 391,
+    "series": "wave",
+    "title": "wave-391",
+    "pickerUrl": "/artworks/previews/391-1O5y2ENP-600.webp",
+    "pickerLargeUrl": "/artworks/previews/391-1O5y2ENP-1000.webp",
+    "previewUrl": "/artworks/previews/391-1O5y2ENP.webp",
+    "originalUrl": "/artworks/originals/391-1O5y2ENP.jpg",
+    "colors": [
+      "neutral",
+      "red"
+    ]
+  },
+  {
+    "id": 392,
+    "series": "wave",
+    "title": "wave-392",
+    "pickerUrl": "/artworks/previews/392-1YOsh9sa-600.webp",
+    "pickerLargeUrl": "/artworks/previews/392-1YOsh9sa-1000.webp",
+    "previewUrl": "/artworks/previews/392-1YOsh9sa.webp",
+    "originalUrl": "/artworks/originals/392-1YOsh9sa.jpg",
+    "colors": [
+      "blue",
+      "green"
+    ]
+  },
+  {
+    "id": 393,
+    "series": "wave",
+    "title": "wave-393",
+    "pickerUrl": "/artworks/previews/393-11cNNlT2-600.webp",
+    "pickerLargeUrl": "/artworks/previews/393-11cNNlT2-1000.webp",
+    "previewUrl": "/artworks/previews/393-11cNNlT2.webp",
+    "originalUrl": "/artworks/originals/393-11cNNlT2.jpg",
+    "colors": [
+      "blue",
+      "green"
+    ]
+  },
+  {
+    "id": 394,
+    "series": "wave",
+    "title": "wave-394",
+    "pickerUrl": "/artworks/previews/394-1xF5yCgR-600.webp",
+    "pickerLargeUrl": "/artworks/previews/394-1xF5yCgR-1000.webp",
+    "previewUrl": "/artworks/previews/394-1xF5yCgR.webp",
+    "originalUrl": "/artworks/originals/394-1xF5yCgR.jpg",
+    "colors": [
+      "red",
+      "neutral"
+    ]
+  },
+  {
+    "id": 395,
+    "series": "wave",
+    "title": "wave-395",
+    "pickerUrl": "/artworks/previews/395-1NqpK5CA-600.webp",
+    "pickerLargeUrl": "/artworks/previews/395-1NqpK5CA-1000.webp",
+    "previewUrl": "/artworks/previews/395-1NqpK5CA.webp",
+    "originalUrl": "/artworks/originals/395-1NqpK5CA.jpg",
+    "colors": [
+      "red",
+      "yellow"
+    ]
+  },
+  {
+    "id": 396,
+    "series": "wave",
+    "title": "wave-396",
+    "pickerUrl": "/artworks/previews/396-1MW2T_EL-600.webp",
+    "pickerLargeUrl": "/artworks/previews/396-1MW2T_EL-1000.webp",
+    "previewUrl": "/artworks/previews/396-1MW2T_EL.webp",
+    "originalUrl": "/artworks/originals/396-1MW2T_EL.jpg",
+    "colors": [
+      "blue",
+      "green"
+    ]
+  },
+  {
+    "id": 397,
+    "series": "wave",
+    "title": "wave-397",
+    "pickerUrl": "/artworks/previews/397-12LeoOyY-600.webp",
+    "pickerLargeUrl": "/artworks/previews/397-12LeoOyY-1000.webp",
+    "previewUrl": "/artworks/previews/397-12LeoOyY.webp",
+    "originalUrl": "/artworks/originals/397-12LeoOyY.jpg",
+    "colors": [
+      "red",
+      "purple"
+    ]
+  },
+  {
+    "id": 398,
+    "series": "wave",
+    "title": "wave-398",
+    "pickerUrl": "/artworks/previews/398-1kdQRKmH-600.webp",
+    "pickerLargeUrl": "/artworks/previews/398-1kdQRKmH-1000.webp",
+    "previewUrl": "/artworks/previews/398-1kdQRKmH.webp",
+    "originalUrl": "/artworks/originals/398-1kdQRKmH.jpg",
+    "colors": [
+      "red"
+    ]
+  },
+  {
+    "id": 399,
+    "series": "wave",
+    "title": "wave-399",
+    "pickerUrl": "/artworks/previews/399-122KcCPT-600.webp",
+    "pickerLargeUrl": "/artworks/previews/399-122KcCPT-1000.webp",
+    "previewUrl": "/artworks/previews/399-122KcCPT.webp",
+    "originalUrl": "/artworks/originals/399-122KcCPT.jpg",
+    "colors": [
+      "purple",
+      "red"
+    ]
+  },
+  {
+    "id": 400,
+    "series": "wave",
+    "title": "wave-400",
+    "pickerUrl": "/artworks/previews/400-1FQOIARU-600.webp",
+    "pickerLargeUrl": "/artworks/previews/400-1FQOIARU-1000.webp",
+    "previewUrl": "/artworks/previews/400-1FQOIARU.webp",
+    "originalUrl": "/artworks/originals/400-1FQOIARU.jpg",
+    "colors": [
+      "blue",
+      "green"
+    ]
+  },
+  {
+    "id": 401,
+    "series": "wave",
+    "title": "wave-401",
+    "pickerUrl": "/artworks/previews/401-1l_VPjsp-600.webp",
+    "pickerLargeUrl": "/artworks/previews/401-1l_VPjsp-1000.webp",
+    "previewUrl": "/artworks/previews/401-1l_VPjsp.webp",
+    "originalUrl": "/artworks/originals/401-1l_VPjsp.jpg",
+    "colors": [
+      "blue",
+      "neutral"
+    ]
+  },
+  {
+    "id": 402,
+    "series": "wave",
+    "title": "wave-402",
+    "pickerUrl": "/artworks/previews/402-1_ES-D76-600.webp",
+    "pickerLargeUrl": "/artworks/previews/402-1_ES-D76-1000.webp",
+    "previewUrl": "/artworks/previews/402-1_ES-D76.webp",
+    "originalUrl": "/artworks/originals/402-1_ES-D76.jpg",
+    "colors": [
+      "red",
+      "yellow"
+    ]
+  },
+  {
+    "id": 403,
+    "series": "wave",
+    "title": "wave-403",
+    "pickerUrl": "/artworks/previews/403-13pk5CnM-600.webp",
+    "pickerLargeUrl": "/artworks/previews/403-13pk5CnM-1000.webp",
+    "previewUrl": "/artworks/previews/403-13pk5CnM.webp",
+    "originalUrl": "/artworks/originals/403-13pk5CnM.jpg",
+    "colors": [
+      "green"
+    ]
+  },
+  {
+    "id": 404,
+    "series": "wave",
+    "title": "wave-404",
+    "pickerUrl": "/artworks/previews/404-10mnhUwT-600.webp",
+    "pickerLargeUrl": "/artworks/previews/404-10mnhUwT-1000.webp",
+    "previewUrl": "/artworks/previews/404-10mnhUwT.webp",
+    "originalUrl": "/artworks/originals/404-10mnhUwT.jpg",
+    "colors": [
+      "blue",
       "red"
     ]
   }

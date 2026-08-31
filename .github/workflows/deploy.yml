@@ -59,6 +59,19 @@ jobs:
           HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
           HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
           HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
+      - name: Upload new Wave originals
+        if: steps.preview_changes.outputs.changed == 'true'
+        run: |
+          python scripts/download-new-wave-originals.py
+          lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
+            set sftp:auto-confirm yes;
+            mirror --reverse --only-missing hostinger-upload/artworks/originals/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/originals/;
+            bye
+          "
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
       - name: Upload Notes series
         if: steps.notes_changes.outputs.changed == 'true'
         run: |
