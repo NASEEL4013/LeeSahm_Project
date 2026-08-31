@@ -1,3 +1,4 @@
+import argparse
 import json
 import subprocess
 import time
@@ -6,9 +7,12 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser()
+parser.add_argument("--base", default="HEAD^")
+args = parser.parse_args()
 current = json.loads((ROOT / "public/artworks/data.json").read_text(encoding="utf-8"))
 previous = json.loads(subprocess.check_output(
-    ["git", "show", "HEAD^:public/artworks/data.json"], cwd=ROOT, text=True, encoding="utf-8"
+    ["git", "show", f"{args.base}:public/artworks/data.json"], cwd=ROOT, text=True, encoding="utf-8"
 ))
 drive_files = json.loads((ROOT / "drive-artworks.json").read_text(encoding="utf-8"))
 drive_by_title = {file["title"].rsplit(".", 1)[0]: file for file in drive_files if "확대" not in file["title"]}

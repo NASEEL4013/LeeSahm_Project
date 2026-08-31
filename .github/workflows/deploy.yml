@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          fetch-depth: 2
+          fetch-depth: 3
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -30,10 +30,14 @@ jobs:
       - name: Check artwork preview changes
         id: preview_changes
         run: |
-          if git diff --quiet HEAD^ HEAD -- public/artworks/previews/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
+          if ! git diff --quiet HEAD^ HEAD -- public/artworks/previews/; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "base=HEAD^" >> "$GITHUB_OUTPUT"
+          elif ! git diff --quiet HEAD^ HEAD -- .github/workflows/deploy.yml && ! git diff --quiet HEAD~2 HEAD -- public/artworks/previews/; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "base=HEAD~2" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
       - name: Check Notes series changes
         id: notes_changes
@@ -50,9 +54,14 @@ jobs:
       - name: Upload artwork previews
         if: steps.preview_changes.outputs.changed == 'true'
         run: |
+          git diff --name-only --diff-filter=AM "${{ steps.preview_changes.outputs.base }}" HEAD -- public/artworks/previews/ | while read -r file; do
+            local_file="dist/${file#public/}"
+            remote_file="/home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/${file#public/}"
+            printf 'put "%s" -o "%s";\n' "$local_file" "$remote_file"
+          done > preview-uploads.lftp
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
-            mirror --reverse --only-missing dist/artworks/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/previews/;
+            source preview-uploads.lftp;
             bye
           "
         env:
@@ -62,10 +71,14 @@ jobs:
       - name: Upload new Wave originals
         if: steps.preview_changes.outputs.changed == 'true'
         run: |
-          python scripts/download-new-wave-originals.py
+          python scripts/download-new-wave-originals.py --base "${{ steps.preview_changes.outputs.base }}"
+          find hostinger-upload/artworks/originals -type f | while read -r file; do
+            remote_file="/home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/originals/${file##*/}"
+            printf 'put "%s" -o "%s";\n' "$file" "$remote_file"
+          done > original-uploads.lftp
           lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
             set sftp:auto-confirm yes;
-            mirror --reverse --only-missing hostinger-upload/artworks/originals/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/originals/;
+            source original-uploads.lftp;
             bye
           "
         env:
