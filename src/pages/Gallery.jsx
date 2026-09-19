@@ -10,7 +10,7 @@ export default function Gallery() {
   const [viewing, setViewing] = useState(null)
 
   useEffect(() => {
-    Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url).then((res) => {
+    Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url, { cache: 'no-cache' }).then((res) => {
       if (!res.ok) throw new Error('작품 목록을 불러오지 못했습니다.')
       return res.json()
     }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch((err) => setError(err.message))

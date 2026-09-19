@@ -130,7 +130,7 @@ export default function Editor() {
   const loadingIdsRef = useRef(new Set())
   const fileInputRef = useRef(null)
 
-  useEffect(() => { Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url).then((res) => { if (!res.ok) throw new Error(); return res.json() }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
+  useEffect(() => { Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url, { cache: 'no-cache' }).then((res) => { if (!res.ok) throw new Error(); return res.json() }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
   useEffect(() => {
     if (!editingPostId || !supabase || !artworks.length) return
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
