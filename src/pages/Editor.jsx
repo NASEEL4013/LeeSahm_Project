@@ -166,7 +166,7 @@ export default function Editor() {
   const filteredArtworks = useMemo(() => {
     const query = pickerQuery.trim().toLowerCase()
     const numberQuery = query.replace(/\D/g, '')
-    return artworks.filter((art) => art.series === artworkSeries && (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery))))
+    return artworks.filter((art) => art.series === artworkSeries && (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery)))).sort((a, b) => Number(b.title.toLowerCase().startsWith('sahm-')) - Number(a.title.toLowerCase().startsWith('sahm-')))
   }, [artworks, artworkSeries, pickerQuery, colorFilter])
 
   function changeSeries(series) {
