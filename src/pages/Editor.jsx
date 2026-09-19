@@ -4,7 +4,7 @@ import { boundedExportScale, bounds, collides, compositionFrame, findLargestOpen
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 import { downloadBlob } from '../download.js'
-import { ARTWORK_SERIES as SERIES, loadArtworks } from '../artworks.js'
+import { ARTWORK_SERIES as SERIES, loadArtworks, migrateArtworkDraft } from '../artworks.js'
 
 const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
@@ -70,7 +70,7 @@ function readDraft() {
   try {
     const draft = JSON.parse(localStorage.getItem(DRAFT_KEY))
     const workspaceSize = draft?.workspaceSize ?? draft?.canvasSize
-    return Array.isArray(draft?.layers) && Number.isFinite(workspaceSize?.width) && Number.isFinite(workspaceSize?.height) ? { ...draft, workspaceSize } : null
+    return Array.isArray(draft?.layers) && Number.isFinite(workspaceSize?.width) && Number.isFinite(workspaceSize?.height) ? { ...migrateArtworkDraft(draft), workspaceSize } : null
   } catch { return null }
 }
 

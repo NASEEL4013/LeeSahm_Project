@@ -15,7 +15,6 @@ PICKER_SIZES = (600, 1000)
 SERIES = {
     "wave": {"manifest": "drive-artworks.json", "prefix": "", "id_start": 1},
     "notes": {"manifest": "drive-notes.json", "prefix": "notes/", "id_start": 10001},
-    "sahm": {"manifest": "drive-sahm.json", "prefix": "sahm/", "id_start": 20001},
 }
 
 
@@ -90,7 +89,7 @@ def prepare(item, series, originals, previews):
 
     with Image.open(original) as image:
         image = ImageOps.exif_transpose(image)
-        if series == "wave":
+        if series == "wave" and file.get("normalizeF50", True):
             image = normalize_f50(image)
         for size, path in picker_previews.items():
             picker_image = image.copy()
@@ -100,7 +99,7 @@ def prepare(item, series, originals, previews):
         image.convert("RGB").save(preview, "WEBP", quality=82, method=6)
 
     return {
-        "id": SERIES[series]["id_start"] + order,
+        "id": file.get("artworkId", SERIES[series]["id_start"] + order),
         "series": series,
         "title": file["title"].rsplit(".", 1)[0],
         "pickerUrl": f"/artworks/{SERIES[series]['prefix']}previews/{picker_previews[600].name}",
@@ -122,7 +121,7 @@ def main():
     data = ROOT / "public" / "artworks" / config["prefix"] / "data.json"
     files = json.loads(manifest.read_text(encoding="utf-8"))
     files = [file for file in files if "확대" not in file["title"]]
-    files.sort(key=lambda file: (number(file["title"]), file["title"], file["id"]))
+    files.sort(key=lambda file: (series == "wave" and not file["title"].lower().startswith("wave-"), number(file["title"]), file["title"], file["id"]))
     files = list({file["title"].rsplit(".", 1)[0]: file for file in reversed(files)}.values())[::-1]
     originals.mkdir(parents=True, exist_ok=True)
     previews.mkdir(parents=True, exist_ok=True)

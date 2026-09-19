@@ -5259,5 +5259,18 @@
       "red",
       "green"
     ]
+  },
+  {
+    "id": 20001,
+    "series": "wave",
+    "title": "sahm-001",
+    "pickerUrl": "/artworks/previews/001-11CrVAmv-600.webp",
+    "pickerLargeUrl": "/artworks/previews/001-11CrVAmv-1000.webp",
+    "previewUrl": "/artworks/previews/001-11CrVAmv.webp",
+    "originalUrl": "/artworks/originals/001-11CrVAmv.jpg",
+    "colors": [
+      "neutral",
+      "blue"
+    ]
   }
 ]

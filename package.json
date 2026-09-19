@@ -12,8 +12,7 @@
     "audit:live": "node scripts/audit-live-compositions.mjs",
     "audit:assets": "node scripts/audit-live-compositions.mjs --all-assets",
     "prepare-artworks": "python scripts/prepare-artworks.py",
-    "prepare-notes": "python scripts/prepare-artworks.py --series notes",
-    "prepare-sahm": "python scripts/prepare-artworks.py --series sahm"
+    "prepare-notes": "python scripts/prepare-artworks.py --series notes"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

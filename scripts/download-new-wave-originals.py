@@ -9,10 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument("--base", default="HEAD^")
-parser.add_argument("--series", choices=("wave", "sahm"), default="wave")
 args = parser.parse_args()
-catalog = "public/artworks/data.json" if args.series == "wave" else "public/artworks/sahm/data.json"
-manifest = "drive-artworks.json" if args.series == "wave" else "drive-sahm.json"
+catalog = "public/artworks/data.json"
+manifest = "drive-artworks.json"
 current = json.loads((ROOT / catalog).read_text(encoding="utf-8"))
 exists = subprocess.check_output(["git", "ls-tree", "--name-only", args.base, "--", catalog], cwd=ROOT, text=True).strip()
 previous = json.loads(subprocess.check_output(
@@ -44,4 +43,4 @@ for artwork in added:
                 raise
             time.sleep(2 ** attempt)
 
-print(f"Prepared {len(added)} new {args.series} originals")
+print(f"Prepared {len(added)} new Wave originals")
