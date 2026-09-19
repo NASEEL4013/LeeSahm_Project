@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import { collides, withinCanvas } from '../src/editorGeometry.js'
+import { ARTWORK_SERIES } from '../src/artworks.js'
 
 const env = Object.fromEntries(
   fs.readFileSync('.env.local', 'utf8')
@@ -22,11 +23,10 @@ const response = await fetch(`${baseUrl}/rest/v1/compositions?select=*&order=cre
 if (!response.ok) throw new Error(`Could not load compositions (${response.status}).`)
 
 const posts = await response.json()
-const wave = JSON.parse(fs.readFileSync('public/artworks/data.json', 'utf8'))
-const notes = JSON.parse(fs.readFileSync('public/artworks/notes/data.json', 'utf8'))
-const artworkIds = new Set([...wave, ...notes].map((artwork) => Number(artwork.id)))
-const artworkById = new Map([...wave, ...notes].map((artwork) => [Number(artwork.id), artwork]))
-const artworkByTitle = new Map([...wave, ...notes].map((artwork) => [artwork.title, artwork]))
+const artworks = ARTWORK_SERIES.flatMap(([, , url]) => JSON.parse(fs.readFileSync(`public${url}`, 'utf8')))
+const artworkIds = new Set(artworks.map((artwork) => Number(artwork.id)))
+const artworkById = new Map(artworks.map((artwork) => [Number(artwork.id), artwork]))
+const artworkByTitle = new Map(artworks.map((artwork) => [artwork.title, artwork]))
 const usedArtworks = new Map()
 const issues = []
 
@@ -85,7 +85,7 @@ const thumbnailResults = await Promise.all(posts.map(async (post) => {
 }))
 issues.push(...thumbnailResults.filter(Boolean))
 
-const artworksToCheck = checkAllArtworkFiles ? [...wave, ...notes] : [...usedArtworks.values()]
+const artworksToCheck = checkAllArtworkFiles ? artworks : [...usedArtworks.values()]
 const artworkFiles = [...new Set(artworksToCheck.flatMap((artwork) => [artwork.pickerUrl, artwork.pickerLargeUrl, artwork.previewUrl, artwork.originalUrl].filter(Boolean)))]
 let nextArtworkFile = 0
 const artworkResults = []

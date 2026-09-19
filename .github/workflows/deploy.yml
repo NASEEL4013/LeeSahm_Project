@@ -47,6 +47,14 @@ jobs:
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Check Sahm series changes
+        id: sahm_changes
+        run: |
+          if git diff --quiet HEAD^ HEAD -- public/artworks/sahm/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Install SFTP client
         run: |
           sudo apt-get update -qq
@@ -95,6 +103,31 @@ jobs:
             mirror --reverse --only-missing dist/artworks/notes/previews/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/previews/;
             mirror --reverse --only-missing hostinger-upload/artworks/notes/originals/ /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/originals/;
             put dist/artworks/notes/data.json -o /home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/notes/data.json;
+            bye
+          "
+        env:
+          HOSTINGER_HOST: ${{ secrets.HOSTINGER_HOST }}
+          HOSTINGER_USERNAME: ${{ secrets.HOSTINGER_USERNAME }}
+          HOSTINGER_PASSWORD: ${{ secrets.HOSTINGER_PASSWORD }}
+      - name: Upload Sahm series
+        if: steps.sahm_changes.outputs.changed == 'true'
+        run: |
+          python scripts/download-new-wave-originals.py --series sahm
+          remote_root="/home/$HOSTINGER_USERNAME/domains/leesahm.art/public_html/artworks/sahm"
+          printf 'mkdir -p "%s/previews"; mkdir -p "%s/originals";\n' "$remote_root" "$remote_root" > sahm-uploads.lftp
+          git diff --name-only --diff-filter=AM HEAD^ HEAD -- public/artworks/sahm/previews/ | while read -r file; do
+            printf 'put "%s" -o "%s/previews/%s";\n' "dist/${file#public/}" "$remote_root" "${file##*/}"
+          done >> sahm-uploads.lftp
+          if [ -d hostinger-upload/artworks/sahm/originals ]; then
+            find hostinger-upload/artworks/sahm/originals -type f | while read -r file; do
+              printf 'put "%s" -o "%s/originals/%s";\n' "$file" "$remote_root" "${file##*/}"
+            done >> sahm-uploads.lftp
+          fi
+          printf 'put "dist/artworks/sahm/data.json" -o "%s/data.json";\n' "$remote_root" >> sahm-uploads.lftp
+          lftp -u "$HOSTINGER_USERNAME,$HOSTINGER_PASSWORD" "sftp://$HOSTINGER_HOST:65002" -e "
+            set cmd:fail-exit yes;
+            set sftp:auto-confirm yes;
+            source sahm-uploads.lftp;
             bye
           "
         env:

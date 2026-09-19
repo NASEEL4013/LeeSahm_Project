@@ -1,0 +1,15 @@
+[
+  {
+    "id": 20001,
+    "series": "sahm",
+    "title": "sahm-001",
+    "pickerUrl": "/artworks/sahm/previews/001-11CrVAmv-600.webp",
+    "pickerLargeUrl": "/artworks/sahm/previews/001-11CrVAmv-1000.webp",
+    "previewUrl": "/artworks/sahm/previews/001-11CrVAmv.webp",
+    "originalUrl": "/artworks/sahm/originals/001-11CrVAmv.jpg",
+    "colors": [
+      "neutral",
+      "blue"
+    ]
+  }
+]

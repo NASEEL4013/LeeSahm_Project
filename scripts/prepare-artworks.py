@@ -15,6 +15,7 @@ PICKER_SIZES = (600, 1000)
 SERIES = {
     "wave": {"manifest": "drive-artworks.json", "prefix": "", "id_start": 1},
     "notes": {"manifest": "drive-notes.json", "prefix": "notes/", "id_start": 10001},
+    "sahm": {"manifest": "drive-sahm.json", "prefix": "sahm/", "id_start": 20001},
 }
 
 
@@ -62,7 +63,7 @@ def color_tags(path):
 
 
 def number(title):
-    match = re.search(r"(?:wave-|SAHMLEE)(\d+)", title, re.IGNORECASE)
+    match = re.search(r"(?:wave-|sahm-|SAHMLEE)(\d+)", title, re.IGNORECASE)
     return int(match.group(1)) if match else 999999
 
 

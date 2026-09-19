@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-
-const SERIES = [['wave', 'Wave'], ['notes', 'Notes']]
+import { ARTWORK_SERIES as SERIES, loadArtworks } from '../artworks.js'
 
 export default function Gallery() {
   const [artworks, setArtworks] = useState([])
@@ -10,10 +9,7 @@ export default function Gallery() {
   const [viewing, setViewing] = useState(null)
 
   useEffect(() => {
-    Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url, { cache: 'no-cache' }).then((res) => {
-      if (!res.ok) throw new Error('작품 목록을 불러오지 못했습니다.')
-      return res.json()
-    }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch((err) => setError(err.message))
+    loadArtworks().then(setArtworks).catch((err) => setError(err.message))
   }, [])
 
   const seriesArtworks = useMemo(() => artworks.filter((art) => art.series === series), [artworks, series])

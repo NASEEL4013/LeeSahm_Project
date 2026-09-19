@@ -4,6 +4,7 @@ import { boundedExportScale, bounds, collides, compositionFrame, findLargestOpen
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 import { downloadBlob } from '../download.js'
+import { ARTWORK_SERIES as SERIES, loadArtworks } from '../artworks.js'
 
 const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
@@ -23,7 +24,6 @@ const COLOR_FILTERS = [
   ['all', '전체', '#d8d3c9'], ['red', '빨강·주황', '#b7442f'], ['yellow', '노랑·베이지', '#d4a43f'],
   ['green', '초록', '#557b5a'], ['blue', '파랑·남색', '#385b83'], ['purple', '보라·분홍', '#885d80'], ['neutral', '흑백·회색', '#77736d'],
 ]
-const SERIES = [['wave', 'Wave'], ['notes', 'Notes']]
 
 function loadImage(url, timeoutMs) {
   return new Promise((resolve, reject) => {
@@ -130,7 +130,7 @@ export default function Editor() {
   const loadingIdsRef = useRef(new Set())
   const fileInputRef = useRef(null)
 
-  useEffect(() => { Promise.all(['/artworks/data.json', '/artworks/notes/data.json'].map((url) => fetch(url, { cache: 'no-cache' }).then((res) => { if (!res.ok) throw new Error(); return res.json() }))).then(([wave, notes]) => setArtworks([...wave.map((art) => ({ ...art, series: art.series ?? 'wave' })), ...notes])).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
+  useEffect(() => { loadArtworks().then(setArtworks).catch(() => setMessage('작품 목록을 불러오지 못했습니다.')) }, [])
   useEffect(() => {
     if (!editingPostId || !supabase || !artworks.length) return
     supabase.from('compositions').select('*').eq('id', editingPostId).single().then(({ data, error }) => {
@@ -306,7 +306,7 @@ export default function Editor() {
     try {
       const data = JSON.parse(await file.text())
       const restored = await restoreComposition(data, artworks)
-      setCanvasSize(restored.canvasSize); setLayers(restored.layers); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
+      setCanvasSize(restored.canvasSize); setLayers(restored.layers); setArtworkSeries(restored.layers[0]?.series ?? 'wave'); setPickerQuery(''); setColorFilter('all'); setActive(null); setSelectedIds([]); setMessage('조합을 그대로 불러왔어요.')
     } catch { setMessage('올바른 LeeSahm 조합 파일이 아니거나 작품이 겹쳐 있어요.') }
     finally { event.target.value = '' }
   }
