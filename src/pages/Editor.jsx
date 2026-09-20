@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { boundedExportScale, bounds, collides, compositionFrame, findLargestOpenPlacement, findNearbyOpenPlacement, physicalMapping, placeByTopLeft, quarterTurn, withinCanvas } from '../editorGeometry.js'
+import { boundedExportScale, bounds, collides, compositionFrame, findLargestOpenPlacement, findNearbyOpenPlacement, physicalMapping, quarterTurn } from '../editorGeometry.js'
+import CompositionMap from '../components/CompositionMap.jsx'
+import { MAX_CANVAS_SIZE, CM_PER_PIXEL, FIXED_ARTWORK_LONG_EDGE, F50_LONG_EDGE_CM, F50_SHORT_EDGE_CM, fitWorkspace, loadImage, restoreComposition } from '../composition.js'
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 import { downloadBlob } from '../download.js'
@@ -9,31 +11,15 @@ import { ARTWORK_SERIES as SERIES, loadArtworks, migrateArtworkDraft } from '../
 const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
 const DRAFT_KEY = 'leesahm-compose-draft'
-const MAX_CANVAS_SIZE = 5000
 const MAX_EXPORT_EDGE = 16384
 const MAX_EXPORT_PIXELS = 48 * 1024 * 1024
 const MAX_BOARD_EDGE = 3000
 const MAX_BOARD_PIXELS = 12 * 1024 * 1024
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024
-const FIXED_ARTWORK_LONG_EDGE = 420
-const F50_LONG_EDGE_CM = 116.8
-const F50_SHORT_EDGE_CM = 91
-const CM_PER_PIXEL = F50_LONG_EDGE_CM / FIXED_ARTWORK_LONG_EDGE
-const WORKSPACE_PADDING = 120
 const COLOR_FILTERS = [
   ['all', '전체', '#d8d3c9'], ['red', '빨강·주황', '#b7442f'], ['yellow', '노랑·베이지', '#d4a43f'],
   ['green', '초록', '#557b5a'], ['blue', '파랑·남색', '#385b83'], ['purple', '보라·분홍', '#885d80'], ['neutral', '흑백·회색', '#77736d'],
 ]
-
-function loadImage(url, timeoutMs) {
-  return new Promise((resolve, reject) => {
-    const image = new Image(); image.crossOrigin = 'anonymous'
-    const timer = window.setTimeout(() => { image.src = ''; reject(new Error('Image timeout')) }, timeoutMs)
-    image.onload = () => { window.clearTimeout(timer); resolve(image) }
-    image.onerror = () => { window.clearTimeout(timer); reject(new Error('Image error')) }
-    image.src = url
-  })
-}
 
 async function loadArtworkImage(layer) {
   for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -57,54 +43,12 @@ function canvasBlob(canvas, type, quality) {
   return new Promise((resolve, reject) => canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error('Image export error')), type, quality))
 }
 
-function fitWorkspace(layers) {
-  const frame = compositionFrame(layers)
-  if (!frame) return { layers, canvasSize: { width: 1200, height: 900 } }
-  return {
-    layers: frame.layers.map((layer) => ({ ...layer, x: layer.x + WORKSPACE_PADDING, y: layer.y + WORKSPACE_PADDING })),
-    canvasSize: { width: Math.max(1200, frame.width + WORKSPACE_PADDING * 2), height: Math.max(900, frame.height + WORKSPACE_PADDING * 2) },
-  }
-}
-
 function readDraft() {
   try {
     const draft = JSON.parse(localStorage.getItem(DRAFT_KEY))
     const workspaceSize = draft?.workspaceSize ?? draft?.canvasSize
     return Array.isArray(draft?.layers) && Number.isFinite(workspaceSize?.width) && Number.isFinite(workspaceSize?.height) ? { ...migrateArtworkDraft(draft), workspaceSize } : null
   } catch { return null }
-}
-
-async function restoreComposition(data, artworks, { allowOverlap = false } = {}) {
-  if (data.format === 'leesahm-mapping' && data.version === 1) {
-    const width = Number(data.composition?.width) / CM_PER_PIXEL
-    const height = Number(data.composition?.height) / CM_PER_PIXEL
-    if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.placements)) throw new Error('Invalid mapping')
-    const artworkIds = new Set()
-    const layers = await Promise.all(data.placements.map(async (saved) => {
-      const artwork = artworks.find((item) => item.id === Number(saved.artworkId)) ?? artworks.find((item) => item.title === saved.title)
-      const values = [saved.x, saved.y, saved.rotation].map(Number)
-      if (!artwork || artworkIds.has(artwork.id) || values.some((value) => !Number.isFinite(value)) || values[0] < 0 || values[1] < 0 || values[2] % 90 !== 0) throw new Error('Invalid placement')
-      artworkIds.add(artwork.id)
-      const savedRatio = Number(saved.ratio)
-      const ratio = Number.isFinite(savedRatio) && savedRatio > 0 ? savedRatio : await loadImage(artwork.previewUrl, 10000).then((image) => image.naturalHeight / image.naturalWidth)
-      const layer = { ...artwork, x: 0, y: 0, width: FIXED_ARTWORK_LONG_EDGE / Math.max(1, ratio), ratio, rotation: values[2] }
-      return placeByTopLeft(layer, values[0] / CM_PER_PIXEL, values[1] / CM_PER_PIXEL)
-    }))
-    if ((!allowOverlap && layers.some((layer, index) => collides([layer], layers.slice(index + 1)))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
-    return fitWorkspace(layers)
-  }
-  const width = Number(data.canvas?.width); const height = Number(data.canvas?.height)
-  if (data.format !== 'leesahm-composition' || ![1, 2, 3].includes(data.version) || !Number.isFinite(width) || !Number.isFinite(height) || width < 1 || width > MAX_CANVAS_SIZE || height < 1 || height > MAX_CANVAS_SIZE || !Array.isArray(data.layers)) throw new Error('Invalid composition')
-  const ids = new Set()
-  const layers = data.layers.map((saved) => {
-    const artwork = artworks.find((item) => item.id === Number(saved.artworkId))
-    const values = [saved.x, saved.y, saved.width, saved.ratio, saved.rotation].map(Number)
-    if (!artwork || ids.has(artwork.id) || values.some((value) => !Number.isFinite(value)) || values[2] <= 0 || values[3] <= 0 || values[2] > 10000 || values[4] % 90 !== 0) throw new Error('Invalid layer')
-    ids.add(artwork.id)
-    return { ...artwork, x: values[0], y: values[1], width: values[2], ratio: values[3], rotation: values[4] }
-  })
-  if (layers.some((layer, index) => collides([layer], layers.slice(index + 1))) || !withinCanvas(layers, { width, height })) throw new Error('Invalid placement')
-  return fitWorkspace(layers)
 }
 
 export default function Editor() {
@@ -153,8 +97,6 @@ export default function Editor() {
     return () => window.clearTimeout(timer)
   }, [message])
   const activeLayer = layers.find((layer) => layer.id === active)
-  const exportFrame = useMemo(() => compositionFrame(layers), [layers])
-  const offlineMapping = useMemo(() => physicalMapping(layers, CM_PER_PIXEL), [layers])
   const selectionBounds = useMemo(() => {
     const selected = layers.filter((layer) => selectedIds.includes(layer.id))
     if (selected.length < 2) return null
@@ -448,14 +390,7 @@ export default function Editor() {
         <aside className="controls">
           <div className="panel-title"><span>조합 설정</span></div>
           <p className="control-empty">작품 크기는 고정돼요. 배치와 90도 회전만 조절할 수 있어요.</p>
-          <div className="composition-map-section">
-            <div className="canvas-control-title"><p>오프라인 배치도</p><span>{offlineMapping ? `${offlineMapping.width} × ${offlineMapping.height}cm` : '자동 맞춤'}</span></div>
-            <div className="composition-map" style={{ backgroundColor: BACKGROUND, aspectRatio: exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height, width: `min(100%, ${300 * (exportFrame ? exportFrame.width / exportFrame.height : canvasSize.width / canvasSize.height)}px)` }}>
-              {exportFrame?.layers.map((layer, index) => <button key={layer.id} className={selectedIds.includes(layer.id) ? 'selected' : ''} onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }} style={{ left: `${layer.x / exportFrame.width * 100}%`, top: `${layer.y / exportFrame.height * 100}%`, width: `${layer.width / exportFrame.width * 100}%`, transform: `rotate(${layer.rotation}deg)` }} title={layer.title}><img src={layer.previewUrl} alt="" /><span>{index + 1}</span></button>)}
-              {!layers.length && <p>작품을 추가하면 설계도가 표시돼요.</p>}
-            </div>
-            <ol className="composition-list">{exportFrame?.layers.map((layer, index) => { const placement = offlineMapping.placements[index]; return <li key={layer.id}><button onClick={() => { setActive(layer.id); setSelectedIds([layer.id]) }}><strong>{index + 1}. {layer.title}</strong><span>왼쪽 위 X {placement.x}cm · Y {placement.y}cm</span><span>회전 {placement.rotation}°</span></button></li> })}</ol>
-          </div>
+          <CompositionMap layers={layers} canvasSize={canvasSize} selectedIds={selectedIds} onSelect={(layerId) => { setActive(layerId); setSelectedIds([layerId]) }} />
           {activeLayer ? <><p className="active-name">{selectedIds.length > 1 ? `${selectedIds.length}개 작품 선택` : activeLayer.title}</p><p className="control-empty">작품을 이동하거나 위쪽 원형 손잡이로 90도 회전할 수 있어요.</p><button className="remove-button" onClick={() => { setLayers(layers.filter((layer) => !selectedIds.includes(layer.id))); setActive(null); setSelectedIds([]) }}>선택 작품 제거</button></> : <p className="control-empty">클릭해서 한 작품을, Shift + 클릭으로 여러 작품을 선택할 수 있어요.</p>}
           <div className="blueprint-actions"><button onClick={downloadBlueprint}>배치도 PNG</button><button onClick={saveComposition}>매핑 파일 저장</button><button onClick={() => fileInputRef.current?.click()}>매핑 파일 불러오기</button><input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importComposition} /></div>
           <div className="publish-panel"><p>{editingPost ? '게시 작품 수정' : '작품 게시하기'}</p><label>카테고리<select value={postCategory} onChange={(event) => setPostCategory(Number(event.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map((value) => <option value={value} key={value}>{value === 7 ? 'AI' : value === 6 ? '책' : `카테고리 ${value}`}</option>)}</select></label><input maxLength="80" value={postTitle} onChange={(event) => setPostTitle(event.target.value)} placeholder="조합 작품 제목" /><textarea maxLength="2000" value={postDescription} onChange={(event) => setPostDescription(event.target.value)} placeholder="이 조합을 만든 생각과 이야기를 적어주세요." /><button onClick={publishComposition} disabled={publishing || Boolean(editingPostId && !editingPost)}>{publishing ? '저장 중...' : editingPost ? '수정 완료' : user ? '게시판에 올리기' : '로그인하고 게시하기'}</button><span>{editingPost ? '그림 조합과 제목, 설명, 카테고리를 함께 수정해요.' : 'Compose와 다운로드는 로그인 없이 계속 사용할 수 있어요.'}</span></div>

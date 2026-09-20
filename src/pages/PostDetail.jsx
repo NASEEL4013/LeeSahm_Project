@@ -3,10 +3,15 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../AuthContext.jsx'
 import { supabase } from '../supabase.js'
 import { downloadBlob } from '../download.js'
+import { loadArtworks } from '../artworks.js'
+import { restoreComposition } from '../composition.js'
+import CompositionMap from '../components/CompositionMap.jsx'
 
 export default function PostDetail() {
   const { id } = useParams(); const navigate = useNavigate(); const { user } = useAuth()
   const [post, setPost] = useState(null); const [editing, setEditing] = useState(false)
+  const [map, setMap] = useState(null)
+  const [mapError, setMapError] = useState('')
   const [title, setTitle] = useState(''); const [description, setDescription] = useState(''); const [category, setCategory] = useState(1); const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -16,6 +21,17 @@ export default function PostDetail() {
       setPost(data); setTitle(data.title); setDescription(data.description); setCategory(data.category ?? 1)
     })
   }, [id])
+
+  const composition = post?.composition
+  useEffect(() => {
+    if (!composition) return
+    let cancelled = false
+    setMap(null); setMapError('')
+    loadArtworks().then((artworks) => restoreComposition(composition, artworks, { allowOverlap: true }))
+      .then((restored) => { if (!cancelled) setMap(restored) })
+      .catch(() => { if (!cancelled) setMapError('오프라인 배치도를 불러오지 못했어.') })
+    return () => { cancelled = true }
+  }, [composition])
 
   async function save() {
     const { error } = await supabase.from('compositions').update({ title: title.trim(), description: description.trim(), category, updated_at: new Date().toISOString() }).eq('id', id).select('id').single()
@@ -46,6 +62,7 @@ export default function PostDetail() {
         <p className="eyebrow">{post.category ? `${post.category === 7 ? 'AI' : post.category === 6 ? '책' : `Category ${String(post.category).padStart(2, '0')}`} · ` : ''}{post.author_name} · {new Date(post.created_at).toLocaleDateString('ko-KR')}</p>
         {editing ? <><label className="post-category-label">카테고리<select value={category} onChange={(event) => setCategory(Number(event.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map((value) => <option value={value} key={value}>{value === 7 ? 'AI' : value === 6 ? '책' : `카테고리 ${value}`}</option>)}</select></label><input className="post-title-input" maxLength="80" value={title} onChange={(event) => setTitle(event.target.value)} /><textarea maxLength="2000" value={description} onChange={(event) => setDescription(event.target.value)} /><button className="button button-dark" disabled={!title.trim() || !description.trim()} onClick={save}>수정 완료</button><button className="text-button" onClick={() => setEditing(false)}>취소</button></> : <><h1>{post.title}</h1><p className="post-description">{post.description}</p></>}
         <div className="used-artworks"><p>사용 작품</p><ul>{(post.composition.placements ?? post.composition.layers).map((layer) => <li key={layer.title}>{layer.title}</li>)}</ul></div>
+        {map ? <CompositionMap layers={map.layers} /> : <p role="status">{mapError || '오프라인 배치도를 불러오는 중...'}</p>}
         <button className="text-button" onClick={downloadMap}>재현용 조합 파일 다운로드</button>
         {(mine || admin) && !editing && <div className="owner-actions"><Link to={`/compose/${post.id}`}>그림 조합 수정</Link><button onClick={() => setEditing(true)}>게시물 정보 수정</button><button onClick={remove}>게시물 삭제</button></div>}
         {message && <p className="form-message">{message}</p>}
