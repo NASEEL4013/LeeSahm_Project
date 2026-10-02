@@ -2125,10 +2125,23 @@
     "size": 9980202
   },
   {
+    "id": "1o3Avd81bp5Y_k1eiyrZnwTKr6KzxChSO",
+    "title": "wave-424.jpg",
+    "size": 9844860,
+    "artworkId": 424
+  },
+  {
     "id": "11CrVAmvjKvva3AIph-eBtj26a-DLl504",
     "title": "sahm-001.jpg",
     "size": 7823161,
     "artworkId": 20001,
+    "normalizeF50": false
+  },
+  {
+    "id": "1AxWmSyfmvYRIgjApGBTFIgOwss-O4pq7",
+    "title": "sahm-014.jpg",
+    "size": 5624080,
+    "artworkId": 20014,
     "normalizeF50": false
   }
 ]

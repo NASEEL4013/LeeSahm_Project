@@ -5261,6 +5261,19 @@
     ]
   },
   {
+    "id": 424,
+    "series": "wave",
+    "title": "wave-424",
+    "pickerUrl": "/artworks/previews/424-1o3Avd81-600.webp",
+    "pickerLargeUrl": "/artworks/previews/424-1o3Avd81-1000.webp",
+    "previewUrl": "/artworks/previews/424-1o3Avd81.webp",
+    "originalUrl": "/artworks/originals/424-1o3Avd81.jpg",
+    "colors": [
+      "red",
+      "green"
+    ]
+  },
+  {
     "id": 20001,
     "series": "wave",
     "title": "sahm-001",
@@ -5271,6 +5284,18 @@
     "colors": [
       "neutral",
       "blue"
+    ]
+  },
+  {
+    "id": 20014,
+    "series": "wave",
+    "title": "sahm-014",
+    "pickerUrl": "/artworks/previews/014-1AxWmSyf-600.webp",
+    "pickerLargeUrl": "/artworks/previews/014-1AxWmSyf-1000.webp",
+    "previewUrl": "/artworks/previews/014-1AxWmSyf.webp",
+    "originalUrl": "/artworks/originals/014-1AxWmSyf.jpg",
+    "colors": [
+      "neutral"
     ]
   }
 ]
