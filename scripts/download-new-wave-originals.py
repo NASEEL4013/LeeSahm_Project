@@ -19,8 +19,8 @@ previous = json.loads(subprocess.check_output(
 )) if exists else []
 drive_files = json.loads((ROOT / manifest).read_text(encoding="utf-8"))
 drive_by_title = {file["title"].rsplit(".", 1)[0]: file for file in drive_files if "확대" not in file["title"]}
-previous_titles = {artwork["title"] for artwork in previous}
-added = [artwork for artwork in current if artwork["title"] not in previous_titles]
+previous_originals = {artwork["originalUrl"] for artwork in previous}
+added = [artwork for artwork in current if artwork["originalUrl"] not in previous_originals]
 
 for artwork in added:
     file = drive_by_title[artwork["title"]]
@@ -43,4 +43,4 @@ for artwork in added:
                 raise
             time.sleep(2 ** attempt)
 
-print(f"Prepared {len(added)} new Wave originals")
+print(f"Prepared {len(added)} new or replaced Wave originals")
