@@ -1,6 +1,24 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { loadArtworks, migrateArtworkDraft } from './artworks.js'
+import { readFileSync } from 'node:fs'
+import { isAGroupArtwork, loadArtworks, migrateArtworkDraft } from './artworks.js'
+
+test('approved A group contains 93 Wave and 9 Sahm works with original identities', () => {
+  const catalog = JSON.parse(readFileSync(new URL('../public/artworks/data.json', import.meta.url), 'utf8'))
+    .map((art) => ({ ...art, series: 'wave' }))
+  const selected = catalog.filter(isAGroupArtwork)
+  assert.equal(selected.length, 102)
+  assert.equal(new Set(selected.map((art) => art.id)).size, 102)
+  assert.equal(selected.filter((art) => art.title.startsWith('wave-')).length, 93)
+  assert.deepEqual(selected.filter((art) => art.title.startsWith('sahm-')).map((art) => art.title).sort(),
+    ['sahm-002', 'sahm-003', 'sahm-005', 'sahm-006', 'sahm-007', 'sahm-008', 'sahm-009', 'sahm-012', 'sahm-014'])
+  assert.equal(isAGroupArtwork({ title: 'WAVE-001', series: 'wave' }), true)
+  assert.equal(isAGroupArtwork({ title: 'sahm-001', series: 'wave' }), false)
+  assert.equal(isAGroupArtwork({ title: 'wave-002', series: 'wave' }), false)
+  assert.equal(isAGroupArtwork({ title: 'WAVE-001', series: 'notes' }), false)
+  const draft = { artworkSeries: 'a-group', layers: [selected[0]] }
+  assert.deepEqual(migrateArtworkDraft(draft), draft)
+})
 
 test('Sahm artwork loads inside Wave with its saved identity and only two catalogs', async (t) => {
   const catalogs = {

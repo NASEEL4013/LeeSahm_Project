@@ -6,7 +6,9 @@ import { MAX_CANVAS_SIZE, CM_PER_PIXEL, FIXED_ARTWORK_LONG_EDGE, F50_LONG_EDGE_C
 import { useAuth } from '../AuthContext.jsx'
 import { isSupabaseReady, supabase } from '../supabase.js'
 import { downloadBlob } from '../download.js'
-import { ARTWORK_SERIES as SERIES, loadArtworks, migrateArtworkDraft } from '../artworks.js'
+import { ARTWORK_SERIES, isAGroupArtwork, loadArtworks, migrateArtworkDraft } from '../artworks.js'
+
+const SERIES = [...ARTWORK_SERIES, ['a-group', 'A군']]
 
 const SNAP_PX = 3
 const BACKGROUND = '#a9a59d'
@@ -108,12 +110,12 @@ export default function Editor() {
   const filteredArtworks = useMemo(() => {
     const query = pickerQuery.trim().toLowerCase()
     const numberQuery = query.replace(/\D/g, '')
-    return artworks.filter((art) => art.series === artworkSeries && (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery)))).sort((a, b) => Number(b.title.toLowerCase().startsWith('sahm-')) - Number(a.title.toLowerCase().startsWith('sahm-')))
+    return artworks.filter((art) => (artworkSeries === 'a-group' ? isAGroupArtwork(art) : art.series === artworkSeries) && (colorFilter === 'all' || art.colors?.includes(colorFilter)) && (!query || art.title.toLowerCase().includes(query) || (numberQuery && art.title.replace(/\D/g, '').includes(numberQuery)))).sort((a, b) => Number(b.title.toLowerCase().startsWith('sahm-')) - Number(a.title.toLowerCase().startsWith('sahm-')))
   }, [artworks, artworkSeries, pickerQuery, colorFilter])
 
   function changeSeries(series) {
     if (series === artworkSeries) return
-    if (layers.length && !window.confirm('시리즈를 바꾸면 현재 작업 영역이 비워져요. 바꿀까요?')) return
+    if (layers.length && !window.confirm('작품 메뉴를 바꾸면 현재 작업 영역이 비워져요. 바꿀까요?')) return
     setArtworkSeries(series); setLayers([]); setCanvasSize({ width: 1200, height: 900 }); setActive(null); setSelectedIds([]); setPickerQuery(''); setColorFilter('all')
   }
 
