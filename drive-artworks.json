@@ -2155,6 +2155,12 @@
     "artworkId": 424
   },
   {
+    "id": "1XyoJQHpUqxwN43G0IlxyavNLQ5dj9Mx1",
+    "title": "wave-425.jpg",
+    "size": 11424250,
+    "artworkId": 425
+  },
+  {
     "id": "11CrVAmvjKvva3AIph-eBtj26a-DLl504",
     "title": "sahm-001.jpg",
     "size": 7823161,
@@ -2250,6 +2256,104 @@
     "title": "sahm-014.jpg",
     "size": 5624080,
     "artworkId": 20014,
+    "normalizeF50": false
+  },
+  {
+    "id": "1mJpoBMbJ2Tio1Ndzt8ymwq63Ni2hG7_a",
+    "title": "sahm-015.jpg",
+    "size": 6880530,
+    "artworkId": 20015,
+    "normalizeF50": false
+  },
+  {
+    "id": "16US8_vggvyx_D8f8ntpQ8Kcw1S3yB1eG",
+    "title": "sahm-016.jpg",
+    "size": 7030844,
+    "artworkId": 20016,
+    "normalizeF50": false
+  },
+  {
+    "id": "1kMbzZlJLMwOaTAYxEc5SERsi8VMDWCsF",
+    "title": "sahm-017.jpg",
+    "size": 5841161,
+    "artworkId": 20017,
+    "normalizeF50": false
+  },
+  {
+    "id": "1m7TFBdNk2fISnCYzvZCBnAiFERbWFuIs",
+    "title": "sahm-018.jpg",
+    "size": 5859919,
+    "artworkId": 20018,
+    "normalizeF50": false
+  },
+  {
+    "id": "17OZRbaEhYBmh2ReoeqzWX4YGUNM5s7kc",
+    "title": "sahm-019.jpg",
+    "size": 6080587,
+    "artworkId": 20019,
+    "normalizeF50": false
+  },
+  {
+    "id": "1VzrU802EXydqKlBDfcCa2Qm2OxvPpCWY",
+    "title": "sahm-020.jpg",
+    "size": 7062693,
+    "artworkId": 20020,
+    "normalizeF50": false
+  },
+  {
+    "id": "1wiFb-A0uRp-rmz7otVP5BblilhXhAQLM",
+    "title": "sahm-021.jpg",
+    "size": 6392990,
+    "artworkId": 20021,
+    "normalizeF50": false
+  },
+  {
+    "id": "1nbau3rwyBG1Rx-3ZzJujNSSKzE4loOhj",
+    "title": "sahm-022.jpg",
+    "size": 7878192,
+    "artworkId": 20022,
+    "normalizeF50": false
+  },
+  {
+    "id": "13XnDo6nu81C5DFEdGIlt0LlxNKpjjVtC",
+    "title": "sahm-023.jpg",
+    "size": 7697328,
+    "artworkId": 20023,
+    "normalizeF50": false
+  },
+  {
+    "id": "1NyVP93CcPNL-q_4ViSP9E6x0A958xJ0E",
+    "title": "sahm-024.jpg",
+    "size": 6639088,
+    "artworkId": 20024,
+    "normalizeF50": false
+  },
+  {
+    "id": "1gW977gm01ZPt1FmMiEJUjJ9W0a_I4ZAE",
+    "title": "sahm-025.jpg",
+    "size": 6096496,
+    "artworkId": 20025,
+    "normalizeF50": false
+  },
+  {
+    "id": "1DyoBZQHFhFFmGqQpyKuB4yE8tXyUQRIZ",
+    "title": "sahm-026.jpg",
+    "size": 6466696,
+    "artworkId": 20026,
+    "normalizeF50": false
+  },
+  {
+    "id": "1NdOzU8pLJ21LS6wL0SMPBzbG780AHVZU",
+    "title": "sahm-027.jpg",
+    "size": 6555865,
+    "artworkId": 20027,
+    "normalizeF50": false
+  },
+  {
+    "id": "1YsgMXM8bkdfIoiOGjvaRiV042MSDBI3u",
+    "title": "sahm-028.jpg",
+    "size": 6694153,
+    "artworkId": 20028,
     "normalizeF50": false
   }
 ]
