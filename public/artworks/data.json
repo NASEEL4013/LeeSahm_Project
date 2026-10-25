@@ -5338,6 +5338,92 @@
     ]
   },
   {
+    "id": 426,
+    "series": "wave",
+    "title": "wave-426",
+    "pickerUrl": "/artworks/previews/426-1YfFYTN2-600.webp",
+    "pickerLargeUrl": "/artworks/previews/426-1YfFYTN2-1000.webp",
+    "previewUrl": "/artworks/previews/426-1YfFYTN2.webp",
+    "originalUrl": "/artworks/originals/426-1YfFYTN2.jpg",
+    "colors": [
+      "red"
+    ]
+  },
+  {
+    "id": 427,
+    "series": "wave",
+    "title": "wave-427",
+    "pickerUrl": "/artworks/previews/427-1Ad1nWM9-600.webp",
+    "pickerLargeUrl": "/artworks/previews/427-1Ad1nWM9-1000.webp",
+    "previewUrl": "/artworks/previews/427-1Ad1nWM9.webp",
+    "originalUrl": "/artworks/originals/427-1Ad1nWM9.jpg",
+    "colors": [
+      "blue"
+    ]
+  },
+  {
+    "id": 428,
+    "series": "wave",
+    "title": "wave-428",
+    "pickerUrl": "/artworks/previews/428-1XPG8dDe-600.webp",
+    "pickerLargeUrl": "/artworks/previews/428-1XPG8dDe-1000.webp",
+    "previewUrl": "/artworks/previews/428-1XPG8dDe.webp",
+    "originalUrl": "/artworks/originals/428-1XPG8dDe.jpg",
+    "colors": [
+      "blue"
+    ]
+  },
+  {
+    "id": 429,
+    "series": "wave",
+    "title": "wave-429",
+    "pickerUrl": "/artworks/previews/429-1Jycr7NW-600.webp",
+    "pickerLargeUrl": "/artworks/previews/429-1Jycr7NW-1000.webp",
+    "previewUrl": "/artworks/previews/429-1Jycr7NW.webp",
+    "originalUrl": "/artworks/originals/429-1Jycr7NW.jpg",
+    "colors": [
+      "blue"
+    ]
+  },
+  {
+    "id": 430,
+    "series": "wave",
+    "title": "wave-430",
+    "pickerUrl": "/artworks/previews/430-1zdWmRHc-600.webp",
+    "pickerLargeUrl": "/artworks/previews/430-1zdWmRHc-1000.webp",
+    "previewUrl": "/artworks/previews/430-1zdWmRHc.webp",
+    "originalUrl": "/artworks/originals/430-1zdWmRHc.jpg",
+    "colors": [
+      "red"
+    ]
+  },
+  {
+    "id": 431,
+    "series": "wave",
+    "title": "wave-431",
+    "pickerUrl": "/artworks/previews/431-1eibP0eb-600.webp",
+    "pickerLargeUrl": "/artworks/previews/431-1eibP0eb-1000.webp",
+    "previewUrl": "/artworks/previews/431-1eibP0eb.webp",
+    "originalUrl": "/artworks/originals/431-1eibP0eb.jpg",
+    "colors": [
+      "green",
+      "blue"
+    ]
+  },
+  {
+    "id": 432,
+    "series": "wave",
+    "title": "wave-432",
+    "pickerUrl": "/artworks/previews/432-1sAaTBlA-600.webp",
+    "pickerLargeUrl": "/artworks/previews/432-1sAaTBlA-1000.webp",
+    "previewUrl": "/artworks/previews/432-1sAaTBlA.webp",
+    "originalUrl": "/artworks/originals/432-1sAaTBlA.jpg",
+    "colors": [
+      "blue",
+      "purple"
+    ]
+  },
+  {
     "id": 20001,
     "series": "wave",
     "title": "sahm-001",
@@ -5674,6 +5760,114 @@
     "pickerLargeUrl": "/artworks/previews/028-1YsgMXM8-1000.webp",
     "previewUrl": "/artworks/previews/028-1YsgMXM8.webp",
     "originalUrl": "/artworks/originals/028-1YsgMXM8.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20029,
+    "series": "wave",
+    "title": "sahm-029",
+    "pickerUrl": "/artworks/previews/029-1R4O4ONz-600.webp",
+    "pickerLargeUrl": "/artworks/previews/029-1R4O4ONz-1000.webp",
+    "previewUrl": "/artworks/previews/029-1R4O4ONz.webp",
+    "originalUrl": "/artworks/originals/029-1R4O4ONz.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20030,
+    "series": "wave",
+    "title": "sahm-030",
+    "pickerUrl": "/artworks/previews/030-1_LrXsD7-600.webp",
+    "pickerLargeUrl": "/artworks/previews/030-1_LrXsD7-1000.webp",
+    "previewUrl": "/artworks/previews/030-1_LrXsD7.webp",
+    "originalUrl": "/artworks/originals/030-1_LrXsD7.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20031,
+    "series": "wave",
+    "title": "sahm-031",
+    "pickerUrl": "/artworks/previews/031-1e-Pqnm4-600.webp",
+    "pickerLargeUrl": "/artworks/previews/031-1e-Pqnm4-1000.webp",
+    "previewUrl": "/artworks/previews/031-1e-Pqnm4.webp",
+    "originalUrl": "/artworks/originals/031-1e-Pqnm4.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20032,
+    "series": "wave",
+    "title": "sahm-032",
+    "pickerUrl": "/artworks/previews/032-1SumhnPI-600.webp",
+    "pickerLargeUrl": "/artworks/previews/032-1SumhnPI-1000.webp",
+    "previewUrl": "/artworks/previews/032-1SumhnPI.webp",
+    "originalUrl": "/artworks/originals/032-1SumhnPI.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20033,
+    "series": "wave",
+    "title": "sahm-033",
+    "pickerUrl": "/artworks/previews/033-1159YFnq-600.webp",
+    "pickerLargeUrl": "/artworks/previews/033-1159YFnq-1000.webp",
+    "previewUrl": "/artworks/previews/033-1159YFnq.webp",
+    "originalUrl": "/artworks/originals/033-1159YFnq.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20034,
+    "series": "wave",
+    "title": "sahm-034",
+    "pickerUrl": "/artworks/previews/034-18EFveHc-600.webp",
+    "pickerLargeUrl": "/artworks/previews/034-18EFveHc-1000.webp",
+    "previewUrl": "/artworks/previews/034-18EFveHc.webp",
+    "originalUrl": "/artworks/originals/034-18EFveHc.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20035,
+    "series": "wave",
+    "title": "sahm-035",
+    "pickerUrl": "/artworks/previews/035-1wQMzvzu-600.webp",
+    "pickerLargeUrl": "/artworks/previews/035-1wQMzvzu-1000.webp",
+    "previewUrl": "/artworks/previews/035-1wQMzvzu.webp",
+    "originalUrl": "/artworks/originals/035-1wQMzvzu.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20036,
+    "series": "wave",
+    "title": "sahm-036",
+    "pickerUrl": "/artworks/previews/036-1X4kdl6z-600.webp",
+    "pickerLargeUrl": "/artworks/previews/036-1X4kdl6z-1000.webp",
+    "previewUrl": "/artworks/previews/036-1X4kdl6z.webp",
+    "originalUrl": "/artworks/originals/036-1X4kdl6z.jpg",
+    "colors": [
+      "neutral"
+    ]
+  },
+  {
+    "id": 20037,
+    "series": "wave",
+    "title": "sahm-037",
+    "pickerUrl": "/artworks/previews/037-1PksO_Zo-600.webp",
+    "pickerLargeUrl": "/artworks/previews/037-1PksO_Zo-1000.webp",
+    "previewUrl": "/artworks/previews/037-1PksO_Zo.webp",
+    "originalUrl": "/artworks/originals/037-1PksO_Zo.jpg",
     "colors": [
       "neutral"
     ]
